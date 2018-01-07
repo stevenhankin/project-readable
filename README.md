@@ -15,6 +15,8 @@ I've based the project structure on a [Feature Layout](https://medium.com/@alexm
       /index.js
       /static
         /logo.svg
+  /services
+    /api.js
 ```
 
 ## Start Developing
