@@ -23,8 +23,8 @@ class Categories extends Component {
       <div>
         <h1>Categories</h1>
         <ul>
-          {this.state.categories.map((val, idx) => {
-            return <li key={idx}>{val.name}</li>;
+          {this.state.categories.map(val => {
+            return <li key={val.name}>{val.name}</li>;
           })}
         </ul>
       </div>
