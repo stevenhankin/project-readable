@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import fetchCategories from '../../../services/api.js';
+import { fetchCategories } from '../../../services/api.js';
+import { Link } from 'react-router-dom';
 
 class Categories extends Component {
   constructor(props) {
@@ -22,11 +23,13 @@ class Categories extends Component {
     return (
       <div>
         <h1>Categories</h1>
-        <ul>
-          {this.state.categories.map(val => {
-            return <li key={val.name}>{val.name}</li>;
-          })}
-        </ul>
+        {this.state.categories.map(val => {
+          return (
+            <p>
+              <Link to={`/categories/${val.path}`}>{val.name}</Link>
+            </p>
+          );
+        })}
       </div>
     );
   }
