@@ -21,9 +21,9 @@ const store = createStore(
 console.log(store.getState());
 
 ReactDOM.render(
-  <Provider store={createStore}>
+  <Provider store={store}>
     <Router>
-      <div>
+      <div className="container-fluid">
         <Route exact path="/" component={App} />
         <Route path="/categories/:categoryId" component={Category} />
       </div>

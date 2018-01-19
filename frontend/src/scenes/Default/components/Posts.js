@@ -23,11 +23,37 @@ class Posts extends Component {
     return (
       <div>
         <h1>Posts</h1>
-        <ul>
-          {this.state.posts.map(val => {
-            return <li key={val.id}>{JSON.stringify(val)}</li>;
-          })}
-        </ul>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Title</th>
+              <th>Body</th>
+              <th>Author</th>
+              <th>Category</th>
+              <th>Vote Score</th>
+              <th>Deleted</th>
+              <th>Comment Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.posts.map(val => {
+              return (
+                <tr key={val.id}>
+                  {/* <td>{JSON.stringify(val)}</td> */}
+                  <td>{val.timestamp}</td>
+                  <td>{val.title}</td>
+                  <td>{val.body}</td>
+                  <td>{val.author}</td>
+                  <td>{val.category}</td>
+                  <td>{val.voteScore}</td>
+                  <td>{val.deleted}</td>
+                  <td>{val.commentCount}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     );
   }

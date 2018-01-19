@@ -25,7 +25,7 @@ class Categories extends Component {
         <h1>Categories</h1>
         {this.state.categories.map(val => {
           return (
-            <p>
+            <p key={val.name}>
               <Link to={`/categories/${val.path}`}>{val.name}</Link>
             </p>
           );
