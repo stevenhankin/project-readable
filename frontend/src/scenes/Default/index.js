@@ -16,9 +16,6 @@ class App extends Component {
         <section>
           <Posts />
         </section>
-        <p className="App-intro">
-          To start, edit <code>src/App.js</code> and save to reload.
-        </p>
       </div>
     );
   }
