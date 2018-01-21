@@ -22,11 +22,14 @@ class Posts extends Component {
             {name: "Comment Count", field: "commentCount"}
         ];
 
+        console.log('Category filter is',props);
+
         /* Storing the posts, index of sort column and sort direction */
         this.state = {
             posts: [],
             sortCol: 0,
-            sortDir: ""
+            sortDir: "",
+            categoryFilter: props.category
         };
     }
 
@@ -65,10 +68,15 @@ class Posts extends Component {
             })
     }
 
-    /* Returns a sorted table body of Posts */
+    /*
+    Returns a filtered, sorted table body of Posts
+    Filtering is done first, to reduce effort on sort
+     */
     sortedTableBody() {
         const sortBy = this.columns[this.state.sortCol].field;
-        const sortedRows = this.state.posts
+        const categoryFilter = this.state.categoryFilter;
+        const filteredRows = categoryFilter ? this.state.posts.filter( post => post.category === categoryFilter) : this.state.posts;
+        const sortedRows = filteredRows
             .sort((a, b) => {
                     return this.state.sortDir === "ASC" ? a[sortBy] > b[sortBy] : a[sortBy] < b[sortBy]
                 }
