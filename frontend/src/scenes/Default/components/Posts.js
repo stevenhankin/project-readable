@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {fetchPosts} from '../../../services/api.js';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 class Posts extends Component {
     constructor(props) {
@@ -22,9 +22,10 @@ class Posts extends Component {
             {name: "Comment Count", field: "commentCount"}
         ];
 
-        console.log('Category filter is',props);
-
-        /* Storing the posts, index of sort column and sort direction */
+        /*
+        Storing the posts, index of sort
+        column and sort direction
+        */
         this.state = {
             posts: [],
             sortCol: 0,
@@ -33,10 +34,13 @@ class Posts extends Component {
         };
     }
 
-    /*
-    If a new sort column is clicked, it will become the active sort column with initial ascending sort order
-    If the same sort column is clicked, the sort direction will be flipped
-    i.e. a render will always trigger on header click
+    /**
+     * Curry function for each column heading
+     * If a new sort column is clicked, it will become the active sort column with initial ascending sort order
+     * If the same sort column is clicked, the sort direction will be flipped
+     * i.e. a render will always trigger on header click
+     * @param newCol
+     * @returns {function(*)}
      */
     setSortCol(newCol) {
         return (e) => {
@@ -49,6 +53,10 @@ class Posts extends Component {
         }
     }
 
+    /**
+     * Fetch the Posts when
+     * component has mounted
+     */
     componentDidMount() {
         fetchPosts().then(posts => {
             this.setState({
@@ -57,8 +65,12 @@ class Posts extends Component {
         });
     }
 
-    /* Product a human readable value for
-       the supplied javascript timestamp */
+    /**
+     * Produce a human readable value for
+     * the supplied javascript timestamp
+     * @param tstamp
+     * @returns {string}
+     */
     formatTimestamp(tstamp) {
         return new Date(tstamp)
             .toLocaleDateString('en-GB', {
@@ -68,24 +80,45 @@ class Posts extends Component {
             })
     }
 
-    /*
-    Returns a filtered, sorted table body of Posts
-    Filtering is done first, to reduce effort on sort
+    /**
+     * Return table header elements
+     * Keeps track of which column to sort and in which direction
+     * @returns Array of the headers with icon on sorted column
+     */
+    tableHeadings() {
+        const SORT_ASC_ICON = 'glyphicon glyphicon-sort-by-order';
+        const SORT_DESC_ICON = 'glyphicon glyphicon-sort-by-order-alt';
+        return this.columns
+            .map((val, idx) => {
+                return <th key={val.name} onClick={this.setSortCol(idx)}>{val.name}
+                    {this.state.sortCol === idx &&
+                    (<span>&nbsp;<span className={this.state.sortDir === 'ASC' ?
+                        SORT_ASC_ICON : SORT_DESC_ICON}
+                                       aria-hidden="true"/></span>)}
+                </th>
+            })
+    }
+
+    /**
+     * Returns a filtered, sorted table body of Posts
+     * Filtering is done before sort, to reduce effort on sort
+     * @returns {*}
      */
     sortedTableBody() {
-        const sortBy = this.columns[this.state.sortCol].field;
         const categoryFilter = this.state.categoryFilter;
-        const filteredRows = categoryFilter ? this.state.posts.filter( post => post.category === categoryFilter) : this.state.posts;
+        const filteredRows = categoryFilter ? this.state.posts.filter(post => post.category === categoryFilter) : this.state.posts;
         const sortedRows = filteredRows
             .sort((a, b) => {
-                    return this.state.sortDir === "ASC" ? a[sortBy] > b[sortBy] : a[sortBy] < b[sortBy]
-                }
-            )
+                const sortBy = this.columns[this.state.sortCol].field;
+                return this.state.sortDir === "ASC" ? a[sortBy] > b[sortBy] : a[sortBy] < b[sortBy]
+            })
             .map(post => {
                 return (
                     <tr key={post.id}>
-                        {this.columns.map((column, idx) => <td key={idx}>{
-                            column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]}</td>)}
+                        {this.columns.map((column, idx) => <td key={idx}><Link to={`/posts/${post.id}`}>{
+                            column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]}
+                        </Link></td>)}
+
                     </tr>
                 )
             });
@@ -93,32 +126,21 @@ class Posts extends Component {
     }
 
     render() {
-        const SORT_ASC_ICON = 'glyphicon glyphicon-sort-by-order';
-        const SORT_DESC_ICON = 'glyphicon glyphicon-sort-by-order-alt';
         return (
             <div>
-                <h1>Posts <Link to="/post/create"><span className="glyphicon glyphicon-plus-sign"/></Link></h1>
+                <h1>Posts <Link to="/post/create">
+                    <small><span className="glyphicon glyphicon-plus-sign"/></small>
+                </Link></h1>
                 <table className="table table-striped">
                     <thead>
                     <tr>
-                        {this.columns
-                            .map((val, idx) => {
-                                return <th key={val.name} onClick={this.setSortCol(idx)}>{val.name}
-                                    {this.state.sortCol === idx &&
-                                    (<span>&nbsp;<span className={this.state.sortDir === 'ASC' ?
-                                        SORT_ASC_ICON : SORT_DESC_ICON}
-                                                       aria-hidden="true"/></span>)
-
-                                    }
-                                </th>
-                            })}
+                        {this.tableHeadings()}
                     </tr>
                     </thead>
                     {this.sortedTableBody()}
                 </table>
             </div>
-        );
-    }
+        )}
 }
 
 export default Posts;

@@ -1,34 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './styles/index.css';
 import App from './scenes/Default/index.js';
 import CategoryView from './scenes/Default/scenes/CategoryView/index.js';
-import registerServiceWorker from './registerServiceWorker';
+import PostDetailView from './scenes/PostDetailView/index.js';
 
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
+import {store} from './store';
 
-const reducer = (state, action) => {
-  return state;
-};
 
-const store = createStore(
-  reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-
-console.log(store.getState());
+console.log('store state is',store.getState());
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router>
-      <div className="container-fluid">
-        <Route exact path="/" component={App} />
-        <Route path="/categories/:category" component={CategoryView} />
-      </div>
-    </Router>
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <Router>
+            <div className="container-fluid">
+                <div className="App">
+                    <header className="App-header">
+                        <h1 className="App-title">Readable</h1>
+                    </header>
+                    <Route exact path="/" component={App}/>
+                    <Route path="/categories/:category" component={CategoryView}/>
+                    <Route path="/posts/:post" component={PostDetailView}/>
+                </div>
+            </div>
+        </Router>
+    </Provider>,
+    document.getElementById('root')
 );
-registerServiceWorker();
