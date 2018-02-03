@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {getPost, updatePost} from "./actions";
-import {Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import {Form, FormGroup, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 class PostDetailView extends Component {
@@ -13,11 +13,13 @@ class PostDetailView extends Component {
         Set isLoading flag to suppress render of post
         in case a previous post is already in props.
          */
-        this.state = {isLoading: true};
+        this.state = {isLoading: true, editing: false};
 
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleBodyChange = this.handleBodyChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.editPost = this.editPost.bind(this);
+        this.cancelEdit = this.cancelEdit.bind(this);
 
         /* Async fetch for the supplied post id */
         this.props.getPost(this.props.match.params.postId);
@@ -29,6 +31,14 @@ class PostDetailView extends Component {
 
     handleBodyChange(event) {
         this.setState({body: event.target.value});
+    }
+
+    editPost() {
+        this.setState({editing: true});
+    }
+
+    cancelEdit() {
+        this.setState({editing: false});
     }
 
     /**
@@ -49,51 +59,114 @@ class PostDetailView extends Component {
      */
     componentWillReceiveProps(nextProps) {
         this.setState({...nextProps.post});
+        this.setState({editing: false});
     }
 
     render() {
         const props = this.props;
         return (
             <section>
-                <h1>Post</h1>
 
-                <Form onSubmit={this.handleSubmit}>
-                    {/*<FormGroup>*/}
-                    {/*<ControlLabel>ID</ControlLabel>*/}
-                    {/*<p>{this.state.id}</p>*/}
-                    {/*</FormGroup>*/}
-                    <FormGroup>
-                        <ControlLabel>Title</ControlLabel>
-                        <FormControl type="text" value={(!props.isLoading && this.state.title) || ''}
-                                     onChange={this.handleTitleChange}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>Body</ControlLabel>
-                        <FormControl type="text" componentClass="textarea"
-                                     value={(!props.isLoading && this.state.body) || ''}
-                                     onChange={this.handleBodyChange}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>Author</ControlLabel>
-                        <p>{this.state.author}</p>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>Category</ControlLabel>
-                        <p>{this.state.category}</p>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>Vote Score</ControlLabel>
-                        <p>{this.state.voteScore}</p>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>Deleted</ControlLabel>
-                        <p>{this.state.deleted}</p>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>Comment Count</ControlLabel>
-                        <p>{this.state.commentCount}</p>
-                    </FormGroup>
-                    <Button type="submit" disabled={props.isLoading} bsStyle="primary">Submit</Button>
+                <Form componentClass="fieldset" horizontal onSubmit={this.handleSubmit}>
+                    <h1>Post
+                        <span className="myFormControl">
+                            {this.state.editing ?
+                                <span><Button type="submit" disabled={props.isLoading} bsStyle="primary">Submit</Button>
+                                    <Button bsStyle="warning" onClick={this.cancelEdit}>Cancel</Button></span>
+                                :
+                                <a onClick={this.editPost}>
+                                    <small><span className="glyphicon glyphicon-edit"/></small>
+                                </a>
+                            }
+                        </span>
+                    </h1>
+
+                    <Row>
+                        <Col xs={4}>
+                            <FormGroup>
+                                <Col xs={1}>
+                                    <ControlLabel>Title</ControlLabel>
+                                </Col>
+                                <Col xs={11}>
+                                    {this.state.editing ?
+                                        <FormControl type="text" value={(!props.isLoading && this.state.title) || ''}
+                                                     onChange={this.handleTitleChange}/>
+                                        :
+                                        <Well bsSize="small">{this.state.title}</Well>
+                                    }
+                                </Col>
+                            </FormGroup>
+                        </Col>
+
+                        <Col xs={8}>
+                            <FormGroup>
+                                <Col xs={1}>
+                                    <ControlLabel>Body</ControlLabel>
+                                </Col>
+                                <Col xs={11}>
+                                    {this.state.editing ?
+                                        <FormControl type="text" componentClass="textarea"
+                                                     value={(!props.isLoading && this.state.body) || ''}
+                                                     onChange={this.handleBodyChange}/>
+                                        :
+                                        <Well>{this.state.body}</Well>
+                                    }
+                                </Col>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col xs={3}>
+                            <FormGroup>
+                                <Col xs={6}>
+                                    <ControlLabel>Author</ControlLabel>
+                                </Col>
+                                <Col xs={6}>
+                                    <Well bsSize="small">{this.state.author}</Well>
+                                </Col>
+                            </FormGroup>
+                        </Col>
+
+                        <Col xs={3}>
+                            <FormGroup>
+                                <Col xs={6}>
+                                    <ControlLabel>Category</ControlLabel>
+                                </Col>
+                                <Col xs={6}>
+                                    <Well bsSize="small">{this.state.category}</Well>
+                                </Col>
+                            </FormGroup>
+                        </Col>
+
+                        <Col xs={3}>
+                            <FormGroup>
+                                <Col xs={6}>
+                                    <ControlLabel>Vote Score</ControlLabel>
+                                </Col>
+                                <Col xs={6}>
+                                    <p><Badge>{this.state.voteScore}</Badge></p>
+                                </Col>
+                            </FormGroup>
+                        </Col>
+
+                        {/*<FormGroup>*/}
+                        {/*<ControlLabel>Deleted</ControlLabel>*/}
+                        {/*<p>{this.state.deleted}</p>*/}
+                        {/*</FormGroup>*/}
+
+                        <Col xs={3}>
+                            <FormGroup>
+                                <Col xs={6}>
+                                    <ControlLabel>Comment Count</ControlLabel>
+                                </Col>
+                                <Col xs={6}>
+                                    <p><Badge>{this.state.commentCount}</Badge></p>
+                                </Col>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+
                 </Form>
 
             </section>
