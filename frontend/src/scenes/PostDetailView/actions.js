@@ -16,3 +16,9 @@ export const getPost = (id) => dispatch => (
                 dispatch(receivePost(post))
             })
 );
+
+
+export const updatePost = post => ({
+    type: RECEIVE_POST,
+    post
+});
