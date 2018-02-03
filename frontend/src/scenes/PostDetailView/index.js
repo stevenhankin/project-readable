@@ -68,8 +68,10 @@ class PostDetailView extends Component {
             <section>
 
                 <Form componentClass="fieldset" horizontal onSubmit={this.handleSubmit}>
-                    <h1>Post
-                        <span className="myFormControl">
+                    <Row>
+                        <Col xs={12}>
+                        <h1>Post
+                            <span className="myFormControl">
                             {this.state.editing ?
                                 <span><Button type="submit" disabled={props.isLoading} bsStyle="primary">Submit</Button>
                                     <Button bsStyle="warning" onClick={this.cancelEdit}>Cancel</Button></span>
@@ -78,8 +80,10 @@ class PostDetailView extends Component {
                                     <small><span className="glyphicon glyphicon-edit"/></small>
                                 </a>
                             }
-                        </span>
-                    </h1>
+                            </span>
+                        </h1>
+                        </Col>
+                    </Row>
 
                     <Row>
                         <Col xs={4}>
@@ -144,7 +148,7 @@ class PostDetailView extends Component {
                                 <Col xs={6}>
                                     <ControlLabel>Vote Score</ControlLabel>
                                 </Col>
-                                <Col xs={6}>
+                                <Col xs={2}>
                                     <p><Badge>{this.state.voteScore}</Badge></p>
                                 </Col>
                             </FormGroup>
@@ -160,7 +164,7 @@ class PostDetailView extends Component {
                                 <Col xs={6}>
                                     <ControlLabel>Comment Count</ControlLabel>
                                 </Col>
-                                <Col xs={6}>
+                                <Col xs={2}>
                                     <p><Badge>{this.state.commentCount}</Badge></p>
                                 </Col>
                             </FormGroup>
@@ -168,6 +172,11 @@ class PostDetailView extends Component {
                     </Row>
 
                 </Form>
+
+                <h1>Comments</h1>
+                <section>
+
+                </section>
 
             </section>
         );
