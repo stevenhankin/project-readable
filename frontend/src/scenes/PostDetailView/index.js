@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {getPost} from "./actions";
-// import {store} from '../../store';
-import {Form, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
+import {getPost, updatePost} from "./actions";
+import {Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 class PostDetailView extends Component {
@@ -9,27 +8,22 @@ class PostDetailView extends Component {
     constructor(props) {
         super(props);
 
-        console.log('Props!!',props);
+        /*
+        isLoading flag to prevent flicker.
+        Set isLoading flag to suppress render of post
+        in case a previous post is already in props.
+         */
+        this.state = {isLoading: true};
 
-        this.state = {id: 'hi', title:'hi', loading: true};
-        this.handleIdChange = this.handleIdChange.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
-    }
+        this.handleBodyChange = this.handleBodyChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
-
-    componentDidMount() {
-        const postId = this.props.match.params.post;
-        this.props.getPost(postId);
-    }
-
-
-    handleIdChange(event) {
-        this.setState({id: event.target.value});
+        /* Async fetch for the supplied post id */
+        this.props.getPost(this.props.match.params.postId);
     }
 
     handleTitleChange(event) {
-        console.log(this.state);
-        console.log('title',event.target.value);
         this.setState({title: event.target.value});
     }
 
@@ -37,98 +31,83 @@ class PostDetailView extends Component {
         this.setState({body: event.target.value});
     }
 
-    handleAuthorChange(event) {
-        this.setState({author: event.target.value});
+    /**
+     * Async update of current state to server
+     * @param e
+     */
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.putPost(this.state.id, this.state.title, this.state.body);
     }
 
-    handleCategoryChange(event) {
-        this.setState({category: event.target.value});
-    }
-
-    handleVoteScoreChange(event) {
-        this.setState({voteScore: event.target.value});
-    }
-
-    handleDeletedChange(event) {
-        this.setState({deleted: event.target.value});
-    }
-
-    handleCommentCountChange(event) {
-        this.setState({commentCount: event.target.value});
+    /**
+     * Redux will map received properties from the server
+     * then they will be copied into Controlled Component state
+     * for local handling; want to avoid continual updates to
+     * server for optimum performance
+     * @param nextProps
+     */
+    componentWillReceiveProps(nextProps) {
+        this.setState({...nextProps.post});
     }
 
     render() {
-        // const post = Object.assign(store.getState().post);
-        const props = this.props;// || {id:''};
-        console.log('render',this.state);
+        const props = this.props;
         return (
             <section>
                 <h1>Post</h1>
 
-                {props.id === this.props.match.params.post &&
-
-                <Form>
-                    <FormGroup>
-                        <ControlLabel>ID</ControlLabel>
-                        {/*<FormControl type="text" defaultValue={props.id} disabled onChange={this.handleIdChange}/>*/}
-                        <p>{props.id}</p>
-                    </FormGroup>
+                <Form onSubmit={this.handleSubmit}>
+                    {/*<FormGroup>*/}
+                    {/*<ControlLabel>ID</ControlLabel>*/}
+                    {/*<p>{this.state.id}</p>*/}
+                    {/*</FormGroup>*/}
                     <FormGroup>
                         <ControlLabel>Title</ControlLabel>
-                        <FormControl type="text" value={this.state.title} onChange={this.handleTitleChange}/>
+                        <FormControl type="text" value={(!props.isLoading && this.state.title) || ''}
+                                     onChange={this.handleTitleChange}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Body</ControlLabel>
-                        <FormControl type="text" value={props.body} onChange={this.handleBodyChange}/>
+                        <FormControl type="text" componentClass="textarea"
+                                     value={(!props.isLoading && this.state.body) || ''}
+                                     onChange={this.handleBodyChange}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Author</ControlLabel>
-                        <FormControl type="text" value={props.author} onChange={this.handleAuthorChange}/>
+                        <p>{this.state.author}</p>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Category</ControlLabel>
-                        <FormControl type="text" value={props.category} onChange={this.handleCategoryChange}/>
+                        <p>{this.state.category}</p>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Vote Score</ControlLabel>
-                        <FormControl type="text" value={props.voteScore} onChange={this.handleVoteScoreChange}/>
+                        <p>{this.state.voteScore}</p>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Deleted</ControlLabel>
-                        <p>{props.deleted}</p>
+                        <p>{this.state.deleted}</p>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Comment Count</ControlLabel>
-                        <FormControl type="text" value={props.commentCount} onChange={this.handleCommentCountChange}/>
+                        <p>{this.state.commentCount}</p>
                     </FormGroup>
+                    <Button type="submit" disabled={props.isLoading} bsStyle="primary">Submit</Button>
                 </Form>
 
-                }
-
-                {/*id(pin): "6ni6ok3ym7mf1p33lnez"*/}
-                {/*timestamp(pin): 1468479767190*/}
-                {/*title(pin): "Learn Redux in 10 minutes!"*/}
-                {/*body(pin): "Just kidding. It takes more than 10 minutes to learn technology."*/}
-                {/*author(pin): "thingone"*/}
-                {/*category(pin): "redux"*/}
-                {/*voteScore(pin): -5*/}
-                {/*deleted(pin): false*/}
-                {/*commentCount(pin): 0*/}
-
             </section>
-
         );
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('mapStateToProps',state);
-    return {...state.post, loading: state.loading}
+    return {post: state.post, isLoading: state.isLoading}
 };
 
 const mapDispatchToProps = dispatch => ({
     getPost: (postId) => dispatch(getPost(postId)),
-
+    putPost: (id, title, body) => dispatch(updatePost(id, title, body))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetailView);

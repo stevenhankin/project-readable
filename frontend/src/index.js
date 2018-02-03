@@ -22,7 +22,7 @@ ReactDOM.render(
                     </header>
                     <Route exact path="/" component={App}/>
                     <Route path="/categories/:category" component={CategoryView}/>
-                    <Route path="/posts/:post" component={PostDetailView}/>
+                    <Route path="/posts/:postId" component={PostDetailView}/>
                 </div>
             </div>
         </Router>
