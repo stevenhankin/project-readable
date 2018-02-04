@@ -47,6 +47,7 @@ class PostDetailView extends Component {
      */
     handleSubmit(e) {
         e.preventDefault();
+        console.log('SUBMIT!');
         this.props.putPost(this.state.id, this.state.title, this.state.body);
     }
 
@@ -67,13 +68,13 @@ class PostDetailView extends Component {
         return (
             <section>
 
-                <Form componentClass="fieldset" horizontal onSubmit={this.handleSubmit}>
+                <Form componentClass="fieldset" horizontal>
                     <Row>
                         <Col xs={12}>
                         <h1>Post
                             <span className="myFormControl">
                             {this.state.editing ?
-                                <span><Button type="submit" disabled={props.isLoading} bsStyle="primary">Submit</Button>
+                                <span><Button type="submit" onClick={this.handleSubmit} disabled={props.isLoading} bsStyle="primary">Submit</Button>
                                     <Button bsStyle="warning" onClick={this.cancelEdit}>Cancel</Button></span>
                                 :
                                 <a onClick={this.editPost}>
@@ -85,91 +86,85 @@ class PostDetailView extends Component {
                         </Col>
                     </Row>
 
-                    <Row>
-                        <Col xs={4}>
-                            <FormGroup>
-                                <Col xs={1}>
-                                    <ControlLabel>Title</ControlLabel>
-                                </Col>
-                                <Col xs={11}>
-                                    {this.state.editing ?
-                                        <FormControl type="text" value={(!props.isLoading && this.state.title) || ''}
-                                                     onChange={this.handleTitleChange}/>
-                                        :
-                                        <Well bsSize="small">{this.state.title}</Well>
-                                    }
-                                </Col>
-                            </FormGroup>
-                        </Col>
+                    <Col xs={8}>
+                        <Row>
+                                <FormGroup>
+                                    <Col xs={1}>
+                                        <ControlLabel>Title</ControlLabel>
+                                    </Col>
+                                    <Col xs={11}>
+                                        {this.state.editing ?
+                                            <FormControl type="text" value={(!props.isLoading && this.state.title) || ''}
+                                                         onChange={this.handleTitleChange}/>
+                                            :
+                                            <Well bsSize="small">{this.state.title}</Well>
+                                        }
+                                    </Col>
+                                </FormGroup>
+                        </Row>
+                        <Row>
+                                <FormGroup>
+                                    <Col xs={1}>
+                                        <ControlLabel>Body</ControlLabel>
+                                    </Col>
+                                    <Col xs={11}>
+                                        {this.state.editing ?
+                                            <FormControl type="text" componentClass="textarea"
+                                                         value={(!props.isLoading && this.state.body) || ''}
+                                                         onChange={this.handleBodyChange}/>
+                                            :
+                                            <Well>{this.state.body}</Well>
+                                        }
+                                    </Col>
+                                </FormGroup>
+                        </Row>
 
-                        <Col xs={8}>
-                            <FormGroup>
-                                <Col xs={1}>
-                                    <ControlLabel>Body</ControlLabel>
-                                </Col>
-                                <Col xs={11}>
-                                    {this.state.editing ?
-                                        <FormControl type="text" componentClass="textarea"
-                                                     value={(!props.isLoading && this.state.body) || ''}
-                                                     onChange={this.handleBodyChange}/>
-                                        :
-                                        <Well>{this.state.body}</Well>
-                                    }
-                                </Col>
-                            </FormGroup>
-                        </Col>
-                    </Row>
+                    </Col>
 
-                    <Row>
-                        <Col xs={3}>
-                            <FormGroup>
-                                <Col xs={6}>
-                                    <ControlLabel>Author</ControlLabel>
-                                </Col>
-                                <Col xs={6}>
-                                    <Well bsSize="small">{this.state.author}</Well>
-                                </Col>
-                            </FormGroup>
-                        </Col>
+                    <Col xs={1}/>
 
-                        <Col xs={3}>
-                            <FormGroup>
-                                <Col xs={6}>
-                                    <ControlLabel>Category</ControlLabel>
-                                </Col>
-                                <Col xs={6}>
-                                    <Well bsSize="small">{this.state.category}</Well>
-                                </Col>
-                            </FormGroup>
-                        </Col>
+                    <Col xs={3}>
+                        <Row>
+                                <FormGroup>
+                                    <Col xs={6}>
+                                        <ControlLabel>Author</ControlLabel>
+                                    </Col>
+                                    <Col xs={6}>
+                                        <Well bsSize="small">{this.state.author}</Well>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Col xs={6}>
+                                        <ControlLabel>Category</ControlLabel>
+                                    </Col>
+                                    <Col xs={6}>
+                                        <Well bsSize="small">{this.state.category}</Well>
+                                    </Col>
+                                </FormGroup>
+                        </Row>
 
-                        <Col xs={3}>
-                            <FormGroup>
-                                <Col xs={6}>
-                                    <ControlLabel>Vote Score</ControlLabel>
-                                </Col>
-                                <Col xs={2}>
-                                    <p><Badge>{this.state.voteScore}</Badge></p>
-                                </Col>
-                            </FormGroup>
-                        </Col>
+                        <Row>
+                                <FormGroup>
+                                    <Col xs={6}>
+                                        <ControlLabel>Vote Score</ControlLabel>
+                                    </Col>
+                                    <Col xs={2}>
+                                        <p><Badge>{this.state.voteScore}</Badge></p>
+                                    </Col>
+                                </FormGroup>
 
-                        {/*<FormGroup>*/}
-                        {/*<ControlLabel>Deleted</ControlLabel>*/}
-                        {/*<p>{this.state.deleted}</p>*/}
-                        {/*</FormGroup>*/}
+                                <FormGroup>
+                                    <Col xs={6}>
+                                        <ControlLabel>Comment Count</ControlLabel>
+                                    </Col>
+                                    <Col xs={2}>
+                                        <p><Badge>{this.state.commentCount}</Badge></p>
+                                    </Col>
+                                </FormGroup>
+                        </Row>
+                    </Col>
 
-                        <Col xs={3}>
-                            <FormGroup>
-                                <Col xs={6}>
-                                    <ControlLabel>Comment Count</ControlLabel>
-                                </Col>
-                                <Col xs={2}>
-                                    <p><Badge>{this.state.commentCount}</Badge></p>
-                                </Col>
-                            </FormGroup>
-                        </Col>
-                    </Row>
+
 
                 </Form>
 

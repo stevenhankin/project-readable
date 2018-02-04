@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {fetchPosts} from '../../../services/api.js';
 import {Link} from 'react-router-dom';
 
-class Posts extends Component {
+class PostsTable extends Component {
     constructor(props) {
         super(props);
 
@@ -12,14 +12,14 @@ class Posts extends Component {
         without breaking functionality
          */
         this.columns = [
-            {name: "Timestamp", field: "timestamp"},
+            {name: "Date", field: "timestamp"},
             {name: "Title", field: "title"},
             {name: "Body", field: "body"},
             {name: "Author", field: "author"},
             {name: "Category", field: "category"},
-            {name: "Vote Score", field: "voteScore"},
+            {name: "Votes", field: "voteScore"},
             {name: "Deleted", field: "deleted"},
-            {name: "Comment Count", field: "commentCount"}
+            {name: "Comments", field: "commentCount"}
         ];
 
         /*
@@ -54,7 +54,7 @@ class Posts extends Component {
     }
 
     /**
-     * Fetch the Posts when
+     * Fetch the PostsTable when
      * component has mounted
      */
     componentDidMount() {
@@ -100,7 +100,7 @@ class Posts extends Component {
     }
 
     /**
-     * Returns a filtered, sorted table body of Posts
+     * Returns a filtered, sorted table body of PostsTable
      * Filtering is done before sort, to reduce effort on sort
      * @returns {*}
      */
@@ -143,4 +143,4 @@ class Posts extends Component {
         )}
 }
 
-export default Posts;
+export default PostsTable;

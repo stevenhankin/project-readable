@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Posts from '../../components/Posts.js';
+import Posts from '../../components/PostsTable.js';
 
 class CategoryView extends Component {
   render() {

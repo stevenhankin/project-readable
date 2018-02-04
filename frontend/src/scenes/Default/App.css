@@ -11,3 +11,18 @@ Button {
 .glyphicon {
     color: blue;
 }
+
+section {
+    margin-bottom: 40px;
+}
+
+textarea {
+    width: auto;
+    height: 200px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}

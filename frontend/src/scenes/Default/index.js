@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
-import Categories from './components/Categories.js';
-import Posts from './components/Posts.js';
+import Categories from './components/CategoryNav.js';
+import Posts from './components/PostsTable.js';
 
-class App extends Component {
-    render() {
+const App = () =>  {
         return (
             <div>
                 <section>
@@ -15,7 +14,7 @@ class App extends Component {
                 </section>
             </div>
         );
-    }
-}
+    };
+
 
 export default App;
