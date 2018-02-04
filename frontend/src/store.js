@@ -1,5 +1,5 @@
 import {createStore, applyMiddleware} from 'redux';
-import {reducer} from './scenes/PostDetailView/reducer';
+import {reducer} from './scenes/PostDetailView/components/reducer';
 import thunk from 'redux-thunk';
 
 export const store = createStore(

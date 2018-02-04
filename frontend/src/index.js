@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Route,Link} from 'react-router-dom';
 import './styles/index.css';
 import App from './scenes/Default/index.js';
-import CategoryView from './scenes/Default/scenes/CategoryView/index.js';
-import PostDetailView from './scenes/PostDetailView/index.js';
+import CategoryView from './scenes/CategoryView/index.js';
+// import PostDetailView from './scenes/PostDetailView/index.js';
+import PostCreateView from './scenes/CreateEditView/index';
 import {Col, Row, Jumbotron, Image} from 'react-bootstrap';
 import {Provider} from 'react-redux';
 import {store} from './store';
@@ -31,7 +32,8 @@ ReactDOM.render(
                 <Row>
                     <Route exact path="/" component={App}/>
                     <Route path="/categories/:category" component={CategoryView}/>
-                    <Route path="/posts/:postId" component={PostDetailView}/>
+                    <Route path="/post/edit/:postId" component={PostCreateView}/>
+                    <Route path="/post/create" component={PostCreateView}/>
                 </Row>
             </div>
         </Router>

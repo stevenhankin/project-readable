@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Posts from '../../components/PostsTable.js';
+import Posts from '../Default/components/PostsTable.js';
 
 class CategoryView extends Component {
   render() {
-      // console.log(this.props.match.params.category)
     return (
             <section>
                 <h1>Category {this.props.match.params.category}</h1>

@@ -115,7 +115,7 @@ class PostsTable extends Component {
             .map(post => {
                 return (
                     <tr key={post.id}>
-                        {this.columns.map((column, idx) => <td key={idx}><Link to={`/posts/${post.id}`}>{
+                        {this.columns.map((column, idx) => <td key={idx}><Link to={`/post/edit/${post.id}`}>{
                             column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]}
                         </Link></td>)}
 

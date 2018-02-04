@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import './App.css';
-import Categories from './components/CategoryNav.js';
-import Posts from './components/PostsTable.js';
+import CategoryNav from './components/CategoryNav.js';
+import PostsTable from './components/PostsTable.js';
 
 const App = () =>  {
         return (
             <div>
                 <section>
-                    <Categories/>
+                    <CategoryNav/>
                 </section>
                 <section>
-                    <Posts/>
+                    <PostsTable/>
                 </section>
             </div>
         );
