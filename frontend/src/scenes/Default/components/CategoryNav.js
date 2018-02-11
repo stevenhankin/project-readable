@@ -26,10 +26,8 @@ class CategoryNav extends Component {
             <div>
                 <h1>Categories</h1>
                 {this.state.categories.map(val =>
-                    <Link  key={val.name} to={`/categories/${val.path}`}>
-                    <Button>
-                {val.name}
-                    </Button>
+                    <Link key={val.name} to={`/categories/${val.path}`}>
+                        <Button>{val.name}</Button>
                     </Link>
                 )}
             </div>
