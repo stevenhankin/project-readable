@@ -138,7 +138,7 @@ class PostEdit extends Component {
                                 <ControlLabel>Body</ControlLabel>
                             </Col>
                             <Col xs={10}>
-                                <FormControl type="text" componentClass="textarea"
+                                <FormControl type="text" componentClass="textarea" rows={5}
                                              value={(!props.isLoading && this.state.post.body) || ''}
                                              onChange={this.handleBodyChange}/>
                             </Col>
