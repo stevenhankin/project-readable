@@ -1,6 +1,4 @@
-import {fetchPost} from '../../../services/api.js'
-import {putPost} from '../../../services/api.js'
-import {postPost} from '../../../services/api.js'
+import {fetchPost,putPost,postPost} from '../../../services/api.js'
 
 
 export const RECEIVE_POST = "RECEIVE_POST";
@@ -43,18 +41,12 @@ export const updatePost = (id, title, body) => dispatch => (
         )
 );
 
-// POST /posts
-// USAGE:
-//     Add a new post
-//
-// PARAMS:
-//     id - UUID should be fine, but any unique id will work
-// timestamp - timestamp in whatever format you like, you can use Date.now() if you like
-// title - String
-// body - String
-// author - String
-// category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
 
+/**
+ * Thunk : Create a NEW post via REST API on server
+ * @param postDetails
+ * @returns {function(*): (PromiseLike<T> | Promise<T>)}
+ */
 export const createPost = (postDetails) => dispatch => (
     postPost(postDetails)
         .then(

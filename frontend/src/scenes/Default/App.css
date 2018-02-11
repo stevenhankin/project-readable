@@ -26,3 +26,7 @@ textarea {
     background-color: #f8f8f8;
     resize: none;
 }
+
+.form-control {
+    margin-bottom: 15px;
+}

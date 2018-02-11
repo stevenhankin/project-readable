@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PostFormCreate from "./components/PostEdit.js";
 
 const PostCreateView = (props) => {

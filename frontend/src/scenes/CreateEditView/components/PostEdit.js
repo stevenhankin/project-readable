@@ -1,8 +1,7 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
 import {getPost, updatePost, createPost} from "./actions";
-import {Form, FormGroup, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
-import uuidv1 from 'uuid/v1';
+import {Form, FormGroup, ControlLabel, FormControl, Button, Badge, Col, Row, Well, Clearfix} from 'react-bootstrap';
 
 class PostEdit extends Component {
 
@@ -11,27 +10,21 @@ class PostEdit extends Component {
 
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleBodyChange = this.handleBodyChange.bind(this);
+        this.handleAuthorChange = this.handleAuthorChange.bind(this);
+        this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.isCreating = this.isCreating.bind(this);
-
-        console.log('props is', props);
-        // let creating = false;
-        // if (props.postId) {
-        //     creating = false;
-        //
-        // }
-        // else {
-        //     creating = true;
-        // }
 
         /*
         isLoading flag to prevent flicker.
         Set isLoading flag to suppress render of post
         in case a previous post is already in props.
+        "creating" is true if no postId has been supplied
          */
         this.state = {
             isLoading: true,
-            creating:false || props.postId,
+            selectedCategory: "b",
+            creating: props.postId == null ? true : false,
             post: {id: '', title: '', body: '', timestamp: '', author: '', category: ''}
         };
 
@@ -63,6 +56,22 @@ class PostEdit extends Component {
         this.setState({post: {...this.state.post, body: event.target.value}});
     }
 
+    /**
+     * TODO
+     * @param e
+     */
+    handleAuthorChange(event) {
+        /* TODO */
+        // console.log('Author Change detected', e.target.value);
+        this.setState({post: {...this.state.post, author: event.target.value}});
+        // this.setState({selectedAuthor: e.target.value});
+    }
+
+    handleCategoryChange(e) {
+        /* TODO */
+        console.log('Category Change detected', e.target.value);
+        this.setState({selectedCategory: e.target.value});
+    }
 
     /**
      * Async update of current state to server
@@ -70,37 +79,25 @@ class PostEdit extends Component {
      */
     handleSubmit(e) {
         e.preventDefault();
-        console.log('SUBMIT!');
-
-        if (this.props.postId) {
-            console.log('Updating post', this.props.postId);
-            this.props.putPost(this.state.id, this.state.title, this.state.body);
-        } else {
+        console.log('SUBMIT!', this.state);
+        const post = this.state.post;
+        if (this.state.creating) {
             /*
-               POST /posts
-               USAGE:
-                   Add a new post
-
-               PARAMS:
-                   id - UUID should be fine, but any unique id will work
-               timestamp - timestamp in whatever format you like, you can use Date.now() if you like
-               title - String
-               body - String
-               author - String
-               category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
-           */
-            // const randomId =uuidv1();
-            const randomId = Math.random().toString(36).substr(-8);
-            console.log(randomId);
-            const post = {...this.state.post, id: randomId, timestamp: Date.now()};
-            console.log('Creating post', uuidv1(), post);
-            this.props.createPost(post);
+            CREATE
+             */
+            const randomId = Math.random().toString(16).substr(2);
+            const newPost = {...post, id: randomId, timestamp: Date.now()};
+            this.props.createPost(newPost);
         }
-
-
-        // console.log('POST ID IS...',this.props.postId);
-
+        else {
+            /*
+            UPDATE
+             */
+            console.log('UPDATING post', post);
+            this.props.putPost(post.id, post.title, post.body);
+        }
     }
+
 
     /**
      * Redux will map received properties from the server
@@ -110,7 +107,8 @@ class PostEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        this.setState({post:{...nextProps.post}, creating:false});
+        console.log('CREATING = FALSE');
+        this.setState({post: {...nextProps.post}, creating: false});
     }
 
     render() {
@@ -119,91 +117,87 @@ class PostEdit extends Component {
         return (
             <Form componentClass="fieldset" horizontal>
                 <Row>
-                    <Col xs={12}>
-                        <h1>Post
-                            <span className="myFormControl">
-                            <span><Button type="submit" onClick={this.handleSubmit} disabled={props.isLoading}
-                                          bsStyle="primary">Submit</Button>
-                                {/*<Button bsStyle="warning" onClick={this.cancelEdit}>Cancel</Button>*/}
-                            </span>
-
-                            </span>
-                        </h1>
+                    <Col xs={6}>
+                        <h1>Post</h1>
                     </Col>
                 </Row>
 
-                <Col xs={8}>
-                    <Row>
-                        <FormGroup>
-                            <Col xs={1}>
+                <Row>
+                    <Col xs={8}>
+                        <Row>
+                            <Col xs={2}>
                                 <ControlLabel>Title</ControlLabel>
                             </Col>
-                            <Col xs={11}>
-
+                            <Col xs={10}>
                                 <FormControl type="text" value={(!props.isLoading && this.state.post.title) || ''}
                                              onChange={this.handleTitleChange}/>
-
                             </Col>
-                        </FormGroup>
-                    </Row>
-                    <Row>
-                        <FormGroup>
-                            <Col xs={1}>
+                        </Row>
+                        <Row>
+                            <Col xs={2}>
                                 <ControlLabel>Body</ControlLabel>
                             </Col>
-                            <Col xs={11}>
+                            <Col xs={10}>
                                 <FormControl type="text" componentClass="textarea"
                                              value={(!props.isLoading && this.state.post.body) || ''}
                                              onChange={this.handleBodyChange}/>
-
                             </Col>
-                        </FormGroup>
-                    </Row>
+                        </Row>
 
-                </Col>
-
-                <Col xs={1}/>
-
-                <Col xs={3}>
-                    <Row>
-                        <FormGroup>
-                            <Col xs={6}>
+                        <Row>
+                            <Col xs={2}>
                                 <ControlLabel>Author</ControlLabel>
                             </Col>
-                            <Col xs={6}>
-                                <Well bsSize="small">{this.state.post.author}</Well>
+                            <Col xs={10}>
+                                <FormControl type="text" value={(!props.isLoading && this.state.post.author) || ''}
+                                             onChange={this.handleAuthorChange}/>
+
                             </Col>
-                        </FormGroup>
-                        <FormGroup>
-                            <Col xs={6}>
+                        </Row>
+
+                        <Row>
+                            <Col xs={2}>
                                 <ControlLabel>Category</ControlLabel>
                             </Col>
-                            <Col xs={6}>
-                                <Well bsSize="small">{this.state.post.category}</Well>
+                            <Col xs={10}>
+                                <FormControl componentClass="select" value={this.state.selectedCategory}
+                                             onChange={this.handleCategoryChange}>
+                                    <option value="a">a</option>
+                                    <option value="b">b</option>
+                                </FormControl>
                             </Col>
-                        </FormGroup>
-                    </Row>
+                        </Row>
 
-                    <Row>
-                        <FormGroup>
-                            <Col xs={6}>
-                                <ControlLabel>Vote Score</ControlLabel>
+                        <Row>
+                            <Col xsOffset={2} xs={2}>
+                                <Button type="submit" onClick={this.handleSubmit} disabled={props.isLoading}
+                                        bsStyle="primary">Submit</Button>
+                                {/*<Button bsStyle="warning" onClick={this.cancelEdit}>Cancel</Button>*/}
                             </Col>
-                            <Col xs={2}>
-                                <p><Badge>{this.state.post.voteScore}</Badge></p>
-                            </Col>
-                        </FormGroup>
+                        </Row>
 
-                        <FormGroup>
-                            <Col xs={6}>
+                    </Col>
+
+                     {/*No need to show votes and comment count when creating NEW post */}
+                    {this.state.creating ||
+                    <Col xsOffset={1} xs={3}>
+
+                        <Row>
+                            <Col xs={12} className="text-right">
+                                <ControlLabel>Votes</ControlLabel>
+                                <Badge className="myFormControl">{this.state.post.voteScore}</Badge>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={12} className="text-right">
                                 <ControlLabel>Comment Count</ControlLabel>
+                                <Badge className="myFormControl">{this.state.post.commentCount}</Badge>
                             </Col>
-                            <Col xs={2}>
-                                <p><Badge>{this.state.post.commentCount}</Badge></p>
-                            </Col>
-                        </FormGroup>
-                    </Row>
-                </Col>
+                        </Row>
+                    </Col>
+                    }
+
+                </Row>
 
             </Form>
         )
