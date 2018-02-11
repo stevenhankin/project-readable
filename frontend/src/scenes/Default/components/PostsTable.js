@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {fetchPosts} from '../../../services/api.js';
-import {Link} from 'react-router-dom';
+import {Link,withRouter} from 'react-router-dom';
+import {Table} from 'react-bootstrap';
+
 
 class PostsTable extends Component {
     constructor(props) {
@@ -99,48 +101,65 @@ class PostsTable extends Component {
             })
     }
 
-
-    compareASC = (sortBy) =>  (a,b) => {
-        if (a[sortBy]  < b[sortBy] ) {
-            return -1;
-        }
-        if (a[sortBy]  > b[sortBy] ) {
-            return 1;
-        }
-        return 0;
-    };
-
-    compareDESC = (sortBy) => (a,b) => {
-        if (a[sortBy]  > b[sortBy] ) {
-            return -1;
-        }
-        if (a[sortBy]  < b[sortBy] ) {
-            return 1;
-        }
-        return 0;
-    };
+    rowClickHandler (postId) {
+        console.log('row clicked',postId);
+        console.log('history',this.props.history);
+        console.log('router',this.props.router);
+        this.props.history.push(`/post/edit/${postId}`);
+    }
 
     /**
      * Returns a filtered, sorted table body of PostsTable
-     * Category filtering (when a category is specified) is done before sort,
-     * to reduce effort on sort
      * @returns {*}
      */
     sortedTableBody() {
+        /*
+        An ascending sorter
+         */
+        const compareASC = (sortBy) => (a, b) => {
+            if (a[sortBy] < b[sortBy]) {
+                return -1;
+            }
+            if (a[sortBy] > b[sortBy]) {
+                return 1;
+            }
+            return 0;
+        };
+        /*
+        An descending sorter
+         */
+        const compareDESC = (sortBy) => (a, b) => {
+            if (a[sortBy] > b[sortBy]) {
+                return -1;
+            }
+            if (a[sortBy] < b[sortBy]) {
+                return 1;
+            }
+            return 0;
+        };
         const sortBy = this.columns[this.state.sortCol].field;
-        const sorter = this.state.sortDir === "ASC" ? this.compareASC(sortBy):this.compareDESC(sortBy);
+        const sorter = this.state.sortDir === "ASC" ? compareASC(sortBy) : compareDESC(sortBy);
+        /*
+        Category Filter is set on navigate from Default Screen
+        by clicking on an available category
+         */
         const categoryFilter = this.state.categoryFilter;
+        /*
+        Rows are filtered (by category) BEFORE sorting, as a potential performance optimization
+         */
         const filteredRows = categoryFilter ? this.state.posts.filter(post => post.category === categoryFilter) : this.state.posts;
         const sortedRows = filteredRows.sort(sorter).map(post => {
-                return (
-                    <tr key={post.id}>
-                        {this.columns.map((column, idx) => <td key={idx}><Link to={`/post/edit/${post.id}`}>{
-                            column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]}
-                        </Link></td>)}
+            return (
+                <tr key={post.id} onClick={()=>this.rowClickHandler(post.id)}>
+                    {this.columns.map((column, idx) =>
+                        <td key={idx}>
+                            {
+                                column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]}
 
-                    </tr>
-                )
-            });
+                        </td>)}
+                </tr>
+            )
+        });
         return <tbody>{sortedRows}</tbody>
     }
 
@@ -150,16 +169,17 @@ class PostsTable extends Component {
                 <h1>Posts <Link to="/post/create">
                     <small><span className="glyphicon glyphicon-plus-sign"/></small>
                 </Link></h1>
-                <table className="table table-striped">
+                <Table className="table table-striped" hover>
                     <thead>
                     <tr>
                         {this.tableHeadings()}
                     </tr>
                     </thead>
                     {this.sortedTableBody()}
-                </table>
+                </Table>
             </div>
-        )}
+        )
+    }
 }
 
-export default PostsTable;
+export default withRouter(PostsTable);
