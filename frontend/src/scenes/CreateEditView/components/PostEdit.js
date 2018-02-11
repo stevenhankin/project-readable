@@ -23,7 +23,7 @@ class PostEdit extends Component {
          */
         this.state = {
             isLoading: true,
-            selectedCategory: "b",
+            // selectedCategory: "b",
             creating: props.postId == null ? true : false,
             post: {id: '', title: '', body: '', timestamp: '', author: '', category: ''}
         };
@@ -56,21 +56,12 @@ class PostEdit extends Component {
         this.setState({post: {...this.state.post, body: event.target.value}});
     }
 
-    /**
-     * TODO
-     * @param e
-     */
     handleAuthorChange(event) {
-        /* TODO */
-        // console.log('Author Change detected', e.target.value);
         this.setState({post: {...this.state.post, author: event.target.value}});
-        // this.setState({selectedAuthor: e.target.value});
     }
 
     handleCategoryChange(e) {
-        /* TODO */
-        console.log('Category Change detected', e.target.value);
-        this.setState({selectedCategory: e.target.value});
+        this.setState({post : {...this.state.post, category: e.target.value}});
     }
 
     /**
@@ -79,7 +70,6 @@ class PostEdit extends Component {
      */
     handleSubmit(e) {
         e.preventDefault();
-        console.log('SUBMIT!', this.state);
         const post = this.state.post;
         if (this.state.creating) {
             /*
@@ -93,8 +83,7 @@ class PostEdit extends Component {
             /*
             UPDATE
              */
-            console.log('UPDATING post', post);
-            this.props.putPost(post.id, post.title, post.body);
+            this.props.putPost(post.id, post.title, post.body, post.author);
         }
     }
 
@@ -103,16 +92,16 @@ class PostEdit extends Component {
      * Redux will map received properties from the server
      * then they will be copied into Controlled Component state
      * for local handling; want to avoid continual updates to
-     * server for optimum performance
+     * server for optimal performance
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        console.log('CREATING = FALSE');
         this.setState({post: {...nextProps.post}, creating: false});
     }
 
     render() {
         const props = this.props;
+        const post = this.state.post;
 
         return (
             <Form componentClass="fieldset" horizontal>
@@ -129,7 +118,7 @@ class PostEdit extends Component {
                                 <ControlLabel>Title</ControlLabel>
                             </Col>
                             <Col xs={10}>
-                                <FormControl type="text" value={(!props.isLoading && this.state.post.title) || ''}
+                                <FormControl type="text" value={(!props.isLoading && post.title) || ''}
                                              onChange={this.handleTitleChange}/>
                             </Col>
                         </Row>
@@ -139,7 +128,7 @@ class PostEdit extends Component {
                             </Col>
                             <Col xs={10}>
                                 <FormControl type="text" componentClass="textarea" rows={5}
-                                             value={(!props.isLoading && this.state.post.body) || ''}
+                                             value={( post.body) || ''}
                                              onChange={this.handleBodyChange}/>
                             </Col>
                         </Row>
@@ -149,9 +138,12 @@ class PostEdit extends Component {
                                 <ControlLabel>Author</ControlLabel>
                             </Col>
                             <Col xs={10}>
-                                <FormControl type="text" value={(!props.isLoading && this.state.post.author) || ''}
-                                             onChange={this.handleAuthorChange}/>
-
+                                {this.state.creating?
+                                    <FormControl type="text" value={(!props.isLoading && post.author) || ''}
+                                                 onChange={this.handleAuthorChange}/>
+                                    :
+                                    <Well>{post.author}</Well>
+                                }
                             </Col>
                         </Row>
 
@@ -160,11 +152,20 @@ class PostEdit extends Component {
                                 <ControlLabel>Category</ControlLabel>
                             </Col>
                             <Col xs={10}>
-                                <FormControl componentClass="select" value={this.state.selectedCategory}
-                                             onChange={this.handleCategoryChange}>
-                                    <option value="a">a</option>
-                                    <option value="b">b</option>
-                                </FormControl>
+                                {this.state.creating ?
+                                    <FormControl componentClass="select"   value={post.category}
+                                                 onChange={this.handleCategoryChange}>
+                                        {
+                                            props.categories.map(
+                                                val =>
+                                                    <option key={val.name} value={val.name}>{val.name}</option>
+
+                                            )
+                                        }
+                                    </FormControl>
+                                    :
+                                    <Well>{post.category}</Well>
+                                }
                             </Col>
                         </Row>
 
@@ -185,13 +186,13 @@ class PostEdit extends Component {
                         <Row>
                             <Col xs={12} className="text-right">
                                 <ControlLabel>Votes</ControlLabel>
-                                <Badge className="myFormControl">{this.state.post.voteScore}</Badge>
+                                <Badge className="myFormControl">{post.voteScore}</Badge>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={12} className="text-right">
                                 <ControlLabel>Comment Count</ControlLabel>
-                                <Badge className="myFormControl">{this.state.post.commentCount}</Badge>
+                                <Badge className="myFormControl">{post.commentCount}</Badge>
                             </Col>
                         </Row>
                     </Col>
@@ -207,8 +208,7 @@ class PostEdit extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('ownProps', ownProps);
-    return {postId: ownProps.postId, post: state.post, isLoading: state.isLoading}
+    return {postId: ownProps.postId, post: state.CreateEditViewReducer.post, categories: state.DefaultReducer.categories, isLoading: state.CreateEditViewReducer.isLoading}
 };
 
 const mapDispatchToProps = dispatch => ({

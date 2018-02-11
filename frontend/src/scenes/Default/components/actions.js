@@ -1,39 +1,42 @@
-import {fetchPost} from '../../../services/api.js'
-import {putPost} from '../../../services/api.js'
+import {fetchPosts} from '../../../services/api.js'
+import {fetchCategories} from "../../../services/api";
 
-export const RECEIVE_POST = "RECEIVE_POST";
+export const RECEIVE_POSTS = "RECEIVE_POSTS";
+export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
 
-export const receivePost = post => ({
-    type: RECEIVE_POST,
-    post
+export const receivePosts = (posts) => ({
+    type: RECEIVE_POSTS,
+    posts
+});
+
+export const receiveCategories = (categories) => ({
+    type: RECEIVE_CATEGORIES,
+    categories
 });
 
 /**
- * Thunk : Get a post via REST API from server
+ * Thunk : Get all the posts via REST API from server
  *
- * @param id
- * @returns {function(*): (PromiseLike<T> | Promise<T>)}
+ * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
  */
-export const getPost = (id) => dispatch => (
-    fetchPost(id)
+export const getPosts = () => dispatch => (
+    fetchPosts()
         .then(
-            post => {
-                dispatch(receivePost(post))
+            posts => {
+                dispatch(receivePosts(posts))
             })
 );
 
-
 /**
- * Thunk : Update a post via REST API on server
+ * Thunk : Get all the categories via REST API from server
  *
- * @param id
- * @param title
- * @param body
- * @returns {function(*): (PromiseLike<T> | Promise<T>)}
+ * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
  */
-export const updatePost = (id, title, body) => dispatch => (
-    putPost(id, title, body)
+export const getCategories = () => dispatch => (
+    fetchCategories()
         .then(
-            dispatch(getPost(id))
-        )
+            categories => {
+                dispatch(receiveCategories(categories))
+            })
 );
+

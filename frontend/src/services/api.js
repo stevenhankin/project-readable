@@ -81,7 +81,6 @@ export const putPost = (id, title, body) => {
                 response.status);
             return;
         }
-        console.log('hi');
         return response.json();
     }).catch(function (err) {
         console.log('Fetch Error :-S', err);

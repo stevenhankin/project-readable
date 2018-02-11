@@ -1,15 +1,12 @@
-import {RECEIVE_POST} from './actions'
+import {RECEIVE_POSTS, RECEIVE_CATEGORIES} from './actions'
 
-export const reducer = (state={post:{},loading:true}, action) => {
+export const reducer = (state = {posts: [], categories: [], loading: true}, action) => {
     switch (action.type) {
-        case RECEIVE_POST:
-            console.log('Got a post for id',action.post);
-            // const newState= Object.assign({},state,{post:action.post});
-            const newState= {post:action.post, loading:false};
-            console.log('newState',newState);
-            return newState;
+        case RECEIVE_POSTS:
+            return  {...state, posts: action.posts, loading: false};
+        case RECEIVE_CATEGORIES:
+            return {...state, categories: action.categories.categories};
         default:
-            console.log('DEFAULT');
             return state;
     }
 };

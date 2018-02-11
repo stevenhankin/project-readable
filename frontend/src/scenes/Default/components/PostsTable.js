@@ -3,6 +3,8 @@ import {fetchPosts} from '../../../services/api.js';
 import {Link, withRouter} from 'react-router-dom';
 import {Table, Badge} from 'react-bootstrap';
 import TimeAgo from 'timeago-react';
+import {connect} from "react-redux";
+import {getPosts} from "./actions";
 
 
 class PostsTable extends Component {
@@ -15,7 +17,7 @@ class PostsTable extends Component {
         without breaking functionality
          */
         this.columns = [
-            {name: "Date", field: "timestamp", timeAgo: true},
+            {name: "Created", field: "timestamp", timeAgo: true},
             {name: "Title", field: "title"},
             {name: "Body", field: "body"},
             {name: "Author", field: "author"},
@@ -30,17 +32,12 @@ class PostsTable extends Component {
         column and sort direction
         */
         this.state = {
-            posts: [],
             sortCol: 0,
             sortDir: "ASC",
             categoryFilter: props.category
         };
 
-        fetchPosts().then(posts => {
-            this.setState({
-                posts
-            });
-        });
+        this.props.getPosts();
     }
 
     /**
@@ -62,6 +59,17 @@ class PostsTable extends Component {
         }
     }
 
+    /**
+     * Redux will map received properties from the server
+     * then they will be copied into Controlled Component state
+     * for local handling; want to avoid continual updates to
+     * server for optimum performance
+     * @param nextProps
+     */
+    // componentWillReceiveProps(nextProps) {
+    //     console.log('received new props!',nextProps)
+    //     this.setState({...nextProps.posts});
+    // }
 
     /**
      * Produce a human readable value for
@@ -102,6 +110,7 @@ class PostsTable extends Component {
      * @param postId
      */
     rowClickHandler(postId) {
+        console.log('clicked',postId);
         this.props.history.push(`/post/edit/${postId}`);
     }
 
@@ -109,7 +118,7 @@ class PostsTable extends Component {
      * Returns a filtered, sorted table body of PostsTable
      * @returns {*}
      */
-    sortedTableBody() {
+    sortedTableBody(posts) {
         /*
         An ascending field sorter
          */
@@ -152,7 +161,7 @@ class PostsTable extends Component {
         /*
         Rows are filtered (by category) BEFORE sorting, as a potential performance optimization
          */
-        const filteredRows = categoryFilter ? this.state.posts.filter(post => post.category === categoryFilter) : this.state.posts;
+        const filteredRows = categoryFilter ? posts.filter(post => post.category === categoryFilter) : posts;
         const sortedRows = filteredRows.sort(sorter).map(post => {
             return (
                 <tr key={post.id} onClick={() => this.rowClickHandler(post.id)}>
@@ -168,7 +177,7 @@ class PostsTable extends Component {
                 </tr>
             )
         });
-        return <tbody>{sortedRows}</tbody>
+        return <tbody>{sortedRows}</tbody>;
     }
 
     render() {
@@ -183,11 +192,20 @@ class PostsTable extends Component {
                         {this.tableHeadings()}
                     </tr>
                     </thead>
-                    {this.sortedTableBody()}
+                    {this.props.posts &&   this.sortedTableBody(this.props.posts) }
                 </Table>
             </div>
         )
     }
 }
 
-export default withRouter(PostsTable);
+const mapStateToProps = (state, ownProps) => {
+    console.log('mapStateToProps',state);
+    return {posts: state.DefaultReducer.posts}
+};
+
+const mapDispatchToProps = dispatch => ({
+    getPosts: () => dispatch(getPosts())
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsTable));

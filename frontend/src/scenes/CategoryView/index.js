@@ -5,7 +5,7 @@ class CategoryView extends Component {
   render() {
     return (
             <section>
-                <h1>Category {this.props.match.params.category}</h1>
+                <h1>Posts for <strong>{this.props.match.params.category}</strong></h1>
                 <Posts category={this.props.match.params.category}/>
             </section>
     );

@@ -34,8 +34,8 @@ export const getPost = (id) => dispatch => (
  * @param body
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
-export const updatePost = (id, title, body) => dispatch => (
-    putPost(id, title, body)
+export const updatePost = (id, title, body, author) => dispatch => (
+    putPost(id, title, body, author)
         .then(
             dispatch(getPost(id))
         )
