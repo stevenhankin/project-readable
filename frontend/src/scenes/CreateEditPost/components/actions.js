@@ -10,7 +10,6 @@ export const receivePost = post => ({
 });
 
 
-
 /**
  * Thunk : Get a post via REST API from server
  *
@@ -53,3 +52,4 @@ export const createPost = (postDetails) => dispatch => (
             dispatch(getPost(postDetails.id))
         )
 );
+

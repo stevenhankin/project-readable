@@ -1,5 +1,5 @@
-import {fetchPosts} from '../../../services/api.js'
-import {fetchCategories} from "../../../services/api";
+import {fetchPosts,fetchCategories,fetchComments} from '../../../services/api.js'
+
 
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
@@ -13,6 +13,7 @@ export const receiveCategories = (categories) => ({
     type: RECEIVE_CATEGORIES,
     categories
 });
+
 
 /**
  * Thunk : Get all the posts via REST API from server
@@ -39,4 +40,5 @@ export const getCategories = () => dispatch => (
                 dispatch(receiveCategories(categories))
             })
 );
+
 

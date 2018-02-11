@@ -3,18 +3,18 @@ import './App.css';
 import CategoryNav from './components/CategoryNav.js';
 import PostsTable from './components/PostsTable.js';
 
-const App = () =>  {
+const DefaultView = () =>  {
         return (
-            <div>
+            <span>
                 <section>
                     <CategoryNav/>
                 </section>
                 <section>
                     <PostsTable/>
                 </section>
-            </div>
+            </span>
         );
     };
 
 
-export default App;
+export default DefaultView;

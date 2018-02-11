@@ -106,12 +106,11 @@ class PostsTable extends Component {
 
     /**
      * When a row is clicked on a Posts table,
-     * jump to the Edit screen of the post
+     * jump to the Post Detail View
      * @param postId
      */
     rowClickHandler(postId) {
-        console.log('clicked',postId);
-        this.props.history.push(`/post/edit/${postId}`);
+        this.props.history.push(`/post/view/${postId}`);
     }
 
     /**

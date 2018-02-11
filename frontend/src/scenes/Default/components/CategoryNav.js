@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {fetchCategories} from '../../../services/api.js';
 import {Link, withRouter} from 'react-router-dom';
-import {Button} from 'react-bootstrap';
+import {Button,Nav , Navbar,NavItem} from 'react-bootstrap';
 import {getCategories} from "./actions";
 import {connect} from "react-redux";
 
@@ -12,26 +12,34 @@ class CategoryNav extends Component {
 
         this.props.getCategories();
     }
-    //
-    // componentDidMount() {
-    //     fetchCategories().then(({categories}) => {
-    //         this.setState({
-    //             categories
-    //         });
-    //     });
-    // }
+
 
     render() {
-        console.log('CATS',this.props);
+        // return (
+        //     <Navbar>
+        //         <Navbar.Header>
+        //             <Navbar.Brand>
+        //                 <a href="#home">Categories</a>
+        //             </Navbar.Brand>
+        //         </Navbar.Header>
+        //         <Nav>
+        //         {this.props.categories && this.props.categories.map(val =>
+        //             <Link key={val.name} to={`/categories/${val.path}`}>
+        //                 <NavItem>{val.name}</NavItem>
+        //             </Link>
+        //         )}
+        //         </Nav>
+        //     </Navbar>
+        // );
         return (
-            <div>
-                <h1>Categories</h1>
+            <span>
+                <h1 className="category-heading">Categories</h1>
                 {this.props.categories && this.props.categories.map(val =>
                     <Link key={val.name} to={`/categories/${val.path}`}>
                         <Button>{val.name}</Button>
                     </Link>
                 )}
-            </div>
+            </span>
         );
     }
 }

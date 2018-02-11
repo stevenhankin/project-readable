@@ -103,6 +103,8 @@ class PostEdit extends Component {
         const props = this.props;
         const post = this.state.post;
 
+        console.log('PostEdit in CreateEditView')
+
         return (
             <Form componentClass="fieldset" horizontal>
                 <Row>

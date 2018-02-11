@@ -50,3 +50,11 @@ Table {
     -ms-user-select: none;
     user-select: none;
 }
+
+.category-heading {
+    margin-right: 10px;
+}
+
+.heading-button {
+    margin-left: 10px;
+}

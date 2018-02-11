@@ -29,11 +29,48 @@ export const fetchPosts = () => {
     const url = 'http://localhost:3001/posts';
     return fetch(url, {
         headers: headers,
-
     }).then(function (response) {
         return response.json();
     });
 };
+
+
+/**
+ * Return a Promise for the array of Comments for a specifed post
+ */
+export const fetchComments = (postId) => {
+    console.log('fetchComments',postId);
+    /*
+    GET /posts/:id/comments
+    USAGE:
+        Get all the comments for a single post
+    */
+    const url = `http://localhost:3001/posts/${postId}/comments`;
+    return fetch(url, {
+        headers: headers,
+    }).then(function (response) {
+        return response.json();
+    });
+};
+
+/**
+ * Return a Promise for a specifed comment
+ */
+export const fetchComment = (commentId) => {
+    console.log('fetchComment',commentId);
+    /*
+      GET /comments/:id
+      USAGE:
+        Get the details for a single comment
+    */
+    const url = `http://localhost:3001/comments/${commentId}`;
+    return fetch(url, {
+        headers: headers,
+    }).then(function (response) {
+        return response.json();
+    });
+};
+
 
 /**
  * Return a Promise for the array of posts
@@ -88,6 +125,41 @@ export const putPost = (id, title, body) => {
 };
 
 
+/**
+ * Called when modifying an existing Comment
+ * @param id
+ * @param body
+ * @returns {Promise<Response>}
+ */
+export const putComment = (id, body) => {
+    /*
+        PUT /comments/:id
+          USAGE:
+            Edit the details of an existing comment
+
+          PARAMS:
+            timestamp: timestamp. Get this however you want.
+            body: String
+     */
+    const url = `http://localhost:3001/posts/${id}`;
+    return fetch(url, {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify({timestamp:Date.now(), body})
+    }).then(function (response) {
+        console.log('put status is', response.status);
+        if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+            return;
+        }
+        return response.json();
+    }).catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
+};
+
+
 export const postPost = (postDetails) => {
     /*
        POST /posts
@@ -120,4 +192,44 @@ export const postPost = (postDetails) => {
         console.log('Fetch Error :-S', err);
     });
 };
+
+
+/**
+ * Update an existing comment
+ * @param comment
+ * @returns {Promise<Response>}
+ */
+export const postComment = (comment) => {
+    /*
+    POST /comments
+      USAGE:
+        Add a comment to a post
+
+      PARAMS:
+        id: Any unique ID. As with posts, UUID is probably the best here.
+        timestamp: timestamp. Get this however you want.
+        body: String
+        author: String
+        parentId: Should match a post id in the database.
+   */
+    const url = `http://localhost:3001/comments`;
+    console.log('postComment',comment);
+    return fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(comment)
+    }).then(function (response) {
+        console.log('put status is', response.status);
+        if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+            return;
+        }
+        console.log('Created new post');
+        return response.json();
+    }).catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
+};
+
 

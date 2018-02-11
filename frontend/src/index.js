@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './styles/index.css';
 import App from './scenes/Default/index.js';
-import CategoryView from './scenes/CategoryView/index.js';
-// import PostDetailView from './scenes/PostDetailView/index.js';
-import PostCreateView from './scenes/CreateEditView/index';
-import {Grid,Col, Row, Jumbotron, Image} from 'react-bootstrap';
+import CategoryView from './scenes/CategoryView/index';
+import PostDetailView from './scenes/PostDetailView/index';
+import CreateEditView from './scenes/CreateEditPost/index';
+import CreateEditComment from './scenes/CreateEditComment/index'
+import {Grid, Col, Row, Jumbotron, Image} from 'react-bootstrap';
 import {Provider} from 'react-redux';
 import {store} from './store';
 
@@ -22,7 +23,8 @@ ReactDOM.render(
                             </Col>
                             <Col xs={1}>
                                 <a href="https://stevenhankin.github.io/project-readable/">
-                                <Image rounded src="https://www.gravatar.com/avatar/bbed4d2a6f627e45d8de9ed6e0c0a468?s=100"/>
+                                    <Image rounded
+                                           src="https://www.gravatar.com/avatar/bbed4d2a6f627e45d8de9ed6e0c0a468?s=100"/>
                                 </a>
                             </Col>
                         </Row>
@@ -32,8 +34,11 @@ ReactDOM.render(
                 <Row>
                     <Route exact path="/" component={App}/>
                     <Route path="/categories/:category" component={CategoryView}/>
-                    <Route path="/post/edit/:postId" component={PostCreateView}/>
-                    <Route path="/post/create" component={PostCreateView}/>
+                    <Route path="/post/edit/:postId" component={CreateEditView}/>
+                    <Route path="/post/create" component={CreateEditView}/>
+                    <Route path="/post/view/:postId" component={PostDetailView}/>
+                    <Route path="/comment/create/:postId" component={CreateEditComment}/>
+                    <Route path="/comment/edit/:commentId" component={CreateEditComment}/>
                 </Row>
             </Grid>
         </Router>
