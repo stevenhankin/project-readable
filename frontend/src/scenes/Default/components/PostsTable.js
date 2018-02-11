@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {fetchPosts} from '../../../services/api.js';
-import {Link,withRouter} from 'react-router-dom';
-import {Table} from 'react-bootstrap';
+import {Link, withRouter} from 'react-router-dom';
+import {Table, Badge} from 'react-bootstrap';
 
 
 class PostsTable extends Component {
@@ -19,9 +19,9 @@ class PostsTable extends Component {
             {name: "Body", field: "body"},
             {name: "Author", field: "author"},
             {name: "Category", field: "category"},
-            {name: "Votes", field: "voteScore"},
+            {name: "Votes", field: "voteScore", badge: true},
             {name: "Deleted", field: "deleted"},
-            {name: "Comments", field: "commentCount"}
+            {name: "Comments", field: "commentCount", badge: true}
         ];
 
         /*
@@ -101,10 +101,12 @@ class PostsTable extends Component {
             })
     }
 
-    rowClickHandler (postId) {
-        console.log('row clicked',postId);
-        console.log('history',this.props.history);
-        console.log('router',this.props.router);
+    /**
+     * When a row is clicked on a Posts table,
+     * jump to the Edit screen of the post
+     * @param postId
+     */
+    rowClickHandler(postId) {
         this.props.history.push(`/post/edit/${postId}`);
     }
 
@@ -114,7 +116,7 @@ class PostsTable extends Component {
      */
     sortedTableBody() {
         /*
-        An ascending sorter
+        An ascending field sorter
          */
         const compareASC = (sortBy) => (a, b) => {
             if (a[sortBy] < b[sortBy]) {
@@ -126,7 +128,7 @@ class PostsTable extends Component {
             return 0;
         };
         /*
-        An descending sorter
+        A descending field sorter
          */
         const compareDESC = (sortBy) => (a, b) => {
             if (a[sortBy] > b[sortBy]) {
@@ -150,12 +152,16 @@ class PostsTable extends Component {
         const filteredRows = categoryFilter ? this.state.posts.filter(post => post.category === categoryFilter) : this.state.posts;
         const sortedRows = filteredRows.sort(sorter).map(post => {
             return (
-                <tr key={post.id} onClick={()=>this.rowClickHandler(post.id)}>
+                <tr key={post.id} onClick={() => this.rowClickHandler(post.id)}>
                     {this.columns.map((column, idx) =>
                         <td key={idx}>
-                            {
-                                column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]}
-
+                            {column.badge ?
+                                <Badge>
+                                    {column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]}
+                                </Badge>
+                                :
+                                column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]
+                            }
                         </td>)}
                 </tr>
             )
