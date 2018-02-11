@@ -35,6 +35,12 @@ class PostsTable extends Component {
             sortDir: "ASC",
             categoryFilter: props.category
         };
+
+        fetchPosts().then(posts => {
+            this.setState({
+                posts
+            });
+        });
     }
 
     /**
@@ -56,17 +62,6 @@ class PostsTable extends Component {
         }
     }
 
-    /**
-     * Fetch the PostsTable when
-     * component has mounted
-     */
-    componentDidMount() {
-        fetchPosts().then(posts => {
-            this.setState({
-                posts
-            });
-        });
-    }
 
     /**
      * Produce a human readable value for
@@ -89,15 +84,14 @@ class PostsTable extends Component {
      * @returns Array of the headers with icon on sorted column
      */
     tableHeadings() {
-        const SORT_ASC_ICON = 'glyphicon glyphicon-sort-by-order';
-        const SORT_DESC_ICON = 'glyphicon glyphicon-sort-by-order-alt';
+        const SORT_ASC_ICON = 'glyphicon glyphicon-sort-by-attributes my-glyph-pad';
+        const SORT_DESC_ICON = 'glyphicon glyphicon-sort-by-attributes-alt my-glyph-pad';
         return this.columns
             .map((val, idx) => {
                 return <th key={val.name} onClick={this.setSortCol(idx)}>{val.name}
                     {this.state.sortCol === idx &&
-                    (<span>&nbsp;<span className={this.state.sortDir === 'ASC' ?
-                        SORT_ASC_ICON : SORT_DESC_ICON}
-                                       aria-hidden="true"/></span>)}
+                    (<span className={this.state.sortDir === 'ASC' ?
+                        SORT_ASC_ICON : SORT_DESC_ICON} aria-hidden="true"/>)}
                 </th>
             })
     }
