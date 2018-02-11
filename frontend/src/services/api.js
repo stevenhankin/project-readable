@@ -39,7 +39,7 @@ export const fetchPosts = () => {
  * Return a Promise for the array of Comments for a specifed post
  */
 export const fetchComments = (postId) => {
-    console.log('fetchComments',postId);
+    console.log('fetchComments', postId);
     /*
     GET /posts/:id/comments
     USAGE:
@@ -57,7 +57,7 @@ export const fetchComments = (postId) => {
  * Return a Promise for a specifed comment
  */
 export const fetchComment = (commentId) => {
-    console.log('fetchComment',commentId);
+    console.log('fetchComment', commentId);
     /*
       GET /comments/:id
       USAGE:
@@ -84,6 +84,31 @@ export const fetchPost = (id) => {
     const url = `http://localhost:3001/posts/${id}`;
     return fetch(url, {
         headers: headers,
+    }).then(function (response) {
+        console.log('fetch status is', response.status);
+        return response.json();
+    });
+};
+
+
+/**
+ * Delete post
+ *
+ * @param id
+ * @returns {Promise<Response>}
+ */
+export const deletePost = (id) => {
+    /*
+    DELETE /posts/:id
+      USAGE:
+        Sets the deleted flag for a post to 'true'.
+        Sets the parentDeleted flag for all child comments to 'true'.
+
+     */
+    const url = `http://localhost:3001/posts/${id}`;
+    return fetch(url, {
+        headers: headers,
+        method: 'DELETE'
     }).then(function (response) {
         console.log('fetch status is', response.status);
         return response.json();
@@ -131,7 +156,7 @@ export const putPost = (id, title, body) => {
  * @param body
  * @returns {Promise<Response>}
  */
-export const putComment = (id, body) => {
+export const putComment = ({id, body}) => {
     /*
         PUT /comments/:id
           USAGE:
@@ -141,11 +166,13 @@ export const putComment = (id, body) => {
             timestamp: timestamp. Get this however you want.
             body: String
      */
-    const url = `http://localhost:3001/posts/${id}`;
+    const commentPart = {timestamp: Date.now(), body};
+    console.log('putComment()', commentPart);
+    const url = `http://localhost:3001/comments/${id}`;
     return fetch(url, {
         method: 'PUT',
         headers: headers,
-        body: JSON.stringify({timestamp:Date.now(), body})
+        body: JSON.stringify(commentPart)
     }).then(function (response) {
         console.log('put status is', response.status);
         if (response.status !== 200) {
@@ -160,7 +187,7 @@ export const putComment = (id, body) => {
 };
 
 
-export const postPost = (postDetails) => {
+export const postPost = ({id, title, body, author, category}) => {
     /*
        POST /posts
        USAGE:
@@ -174,11 +201,12 @@ export const postPost = (postDetails) => {
        author - String
        category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
    */
+    // console.log('postComment()', postDetails)
     const url = `http://localhost:3001/posts`;
     return fetch(url, {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify(postDetails)
+        body: JSON.stringify({id, title, timestamp: Date.now(), body, author, category})
     }).then(function (response) {
         console.log('put status is', response.status);
         if (response.status !== 200) {
@@ -213,7 +241,7 @@ export const postComment = (comment) => {
         parentId: Should match a post id in the database.
    */
     const url = `http://localhost:3001/comments`;
-    console.log('postComment',comment);
+    console.log('postComment', comment);
     return fetch(url, {
         method: 'POST',
         headers: headers,

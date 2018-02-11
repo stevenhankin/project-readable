@@ -4,15 +4,13 @@ import CommentEdit from "./components/CommentEdit";
 
 const CreateEditComment = (props) => {
 
-    const commentId = props.match.params.commentId;
     const postId = props.match.params.postId;
-
-
+    const commentId = props.match.params.commentId;
 
     return (
         <span>
             <section>
-                <CommentEdit postId={postId} commentId={commentId}/>
+                <CommentEdit parentId={postId} commentId={commentId}/>
             </section>
         </span>
     );

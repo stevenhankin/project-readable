@@ -2,13 +2,17 @@ import {fetchComment,putComment,postComment} from '../../../services/api.js'
 
 
 export const RECEIVE_COMMENT = "RECEIVE_COMMENT";
-
+export const MODIFY_COMMENT_SUCCESS = "MODIFY_COMMENT_SUCCESS";
 
 export const receiveComment = comment => ({
     type: RECEIVE_COMMENT,
     comment
 });
 
+export const modifyCommentSuccess = comment => ({
+    type: MODIFY_COMMENT_SUCCESS,
+    comment
+});
 
 /**
  * Thunk : Get a post via REST API from server
@@ -28,14 +32,14 @@ export const getComment = (id) => dispatch => (
 /**
  * Thunk : Update a comment via REST API on server then synchronously GETS the comment
  *
- * @param id
+ * @param c - comment
  * @param body
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
-export const updateComment = (id, body) => dispatch => (
-    putComment(id, body)
+export const updateComment = (c) => dispatch => (
+    putComment(c)
         .then(
-            dispatch(getComment(id))
+            dispatch(modifyCommentSuccess(c))
         )
 );
 
@@ -49,7 +53,7 @@ export const updateComment = (id, body) => dispatch => (
 export const createComment = (c) => dispatch => (
     postComment(c)
         .then(
-            dispatch(getComment(c.id))
+            dispatch(modifyCommentSuccess(c))
         )
 );
 

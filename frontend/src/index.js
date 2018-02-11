@@ -5,6 +5,7 @@ import './styles/index.css';
 import App from './scenes/Default/index.js';
 import CategoryView from './scenes/CategoryView/index';
 import PostDetailView from './scenes/PostDetailView/index';
+import PostDeleteView from './scenes/PostDeleteView/index';
 import CreateEditView from './scenes/CreateEditPost/index';
 import CreateEditComment from './scenes/CreateEditComment/index'
 import {Grid, Col, Row, Jumbotron, Image} from 'react-bootstrap';
@@ -37,8 +38,9 @@ ReactDOM.render(
                     <Route path="/post/edit/:postId" component={CreateEditView}/>
                     <Route path="/post/create" component={CreateEditView}/>
                     <Route path="/post/view/:postId" component={PostDetailView}/>
-                    <Route path="/comment/create/:postId" component={CreateEditComment}/>
-                    <Route path="/comment/edit/:commentId" component={CreateEditComment}/>
+                    <Route path="/post/delete/:postId" component={PostDeleteView}/>
+                    <Route path="/post/:postId/comment/create" component={CreateEditComment}/>
+                    <Route path="/post/:postId/comment/:commentId/edit" component={CreateEditComment}/>
                 </Row>
             </Grid>
         </Router>
