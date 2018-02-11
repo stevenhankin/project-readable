@@ -9,7 +9,7 @@ Button {
 }
 
 .glyphicon {
-    color: blue;
+    color: mediumslateblue;
 }
 
 section {
@@ -17,13 +17,6 @@ section {
 }
 
 textarea {
-    width: auto;
-    height: 200px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #f8f8f8;
     resize: none;
 }
 
@@ -31,6 +24,29 @@ textarea {
     margin-bottom: 15px;
 }
 
+/*
+Hint to the user that the table
+row are active for selection
+ */
 tr {
     cursor: pointer;
+}
+
+/*
+A little space between table headings
+and the sort direction icons
+ */
+.my-glyph-pad {
+    padding-left: 5px;
+}
+
+/*
+Disable (accidental) selection of
+text on the tables since it looks untidy
+*/
+Table {
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
 }
