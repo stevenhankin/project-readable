@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Route,Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './styles/index.css';
 import App from './scenes/Default/index.js';
 import CategoryView from './scenes/CategoryView/index.js';
 // import PostDetailView from './scenes/PostDetailView/index.js';
 import PostCreateView from './scenes/CreateEditView/index';
-import {Col, Row, Jumbotron, Image} from 'react-bootstrap';
+import {Grid,Col, Row, Jumbotron, Image} from 'react-bootstrap';
 import {Provider} from 'react-redux';
 import {store} from './store';
 
 ReactDOM.render(
     <Provider store={store}>
         <Router>
-            <div className="App container">
+            <Grid className="App container">
                 <Row>
                     <Jumbotron>
                         <Row>
@@ -35,7 +35,7 @@ ReactDOM.render(
                     <Route path="/post/edit/:postId" component={PostCreateView}/>
                     <Route path="/post/create" component={PostCreateView}/>
                 </Row>
-            </div>
+            </Grid>
         </Router>
     </Provider>,
     document.getElementById('root')
