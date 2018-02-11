@@ -99,20 +99,39 @@ class PostsTable extends Component {
             })
     }
 
+
+    compareASC = (sortBy) =>  (a,b) => {
+        if (a[sortBy]  < b[sortBy] ) {
+            return -1;
+        }
+        if (a[sortBy]  > b[sortBy] ) {
+            return 1;
+        }
+        return 0;
+    };
+
+    compareDESC = (sortBy) => (a,b) => {
+        if (a[sortBy]  > b[sortBy] ) {
+            return -1;
+        }
+        if (a[sortBy]  < b[sortBy] ) {
+            return 1;
+        }
+        return 0;
+    };
+
     /**
      * Returns a filtered, sorted table body of PostsTable
-     * Filtering is done before sort, to reduce effort on sort
+     * Category filtering (when a category is specified) is done before sort,
+     * to reduce effort on sort
      * @returns {*}
      */
     sortedTableBody() {
+        const sortBy = this.columns[this.state.sortCol].field;
+        const sorter = this.state.sortDir === "ASC" ? this.compareASC(sortBy):this.compareDESC(sortBy);
         const categoryFilter = this.state.categoryFilter;
         const filteredRows = categoryFilter ? this.state.posts.filter(post => post.category === categoryFilter) : this.state.posts;
-        const sortedRows = filteredRows
-            .sort((a, b) => {
-                const sortBy = this.columns[this.state.sortCol].field;
-                return this.state.sortDir === "ASC" ? a[sortBy] > b[sortBy] : a[sortBy] < b[sortBy]
-            })
-            .map(post => {
+        const sortedRows = filteredRows.sort(sorter).map(post => {
                 return (
                     <tr key={post.id}>
                         {this.columns.map((column, idx) => <td key={idx}><Link to={`/post/edit/${post.id}`}>{
