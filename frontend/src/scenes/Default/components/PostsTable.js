@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {fetchPosts} from '../../../services/api.js';
 import {Link, withRouter} from 'react-router-dom';
 import {Table, Badge} from 'react-bootstrap';
+import TimeAgo from 'timeago-react';
 
 
 class PostsTable extends Component {
@@ -14,7 +15,7 @@ class PostsTable extends Component {
         without breaking functionality
          */
         this.columns = [
-            {name: "Date", field: "timestamp"},
+            {name: "Date", field: "timestamp", timeAgo: true},
             {name: "Title", field: "title"},
             {name: "Body", field: "body"},
             {name: "Author", field: "author"},
@@ -31,7 +32,7 @@ class PostsTable extends Component {
         this.state = {
             posts: [],
             sortCol: 0,
-            sortDir: "",
+            sortDir: "ASC",
             categoryFilter: props.category
         };
     }
@@ -139,8 +140,16 @@ class PostsTable extends Component {
             }
             return 0;
         };
-        const sortBy = this.columns[this.state.sortCol].field;
-        const sorter = this.state.sortDir === "ASC" ? compareASC(sortBy) : compareDESC(sortBy);
+        const column = this.columns[this.state.sortCol];
+        const sortBy = column.field;
+        /*
+        To make the sort more intuitive, order the TimeAgo column
+        in the reverse to other columns (because TimeAgo is decreases
+        as timestamp increases)
+         */
+        const sorter =  column.timeAgo ?
+            this.state.sortDir === "ASC" ? compareDESC(sortBy) : compareASC(sortBy)
+        :   this.state.sortDir === "ASC" ? compareASC(sortBy) : compareDESC(sortBy);
         /*
         Category Filter is set on navigate from Default Screen
         by clicking on an available category
@@ -156,11 +165,10 @@ class PostsTable extends Component {
                     {this.columns.map((column, idx) =>
                         <td key={idx}>
                             {column.badge ?
-                                <Badge>
-                                    {column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]}
-                                </Badge>
-                                :
-                                column.field === "timestamp" ? this.formatTimestamp(post[column.field]) : post[column.field]
+                                <Badge>{post[column.field]}</Badge>
+                                : column.timeAgo  ?
+                                        <TimeAgo datetime={post[column.field]}/>
+                                        : post[column.field]
                             }
                         </td>)}
                 </tr>
