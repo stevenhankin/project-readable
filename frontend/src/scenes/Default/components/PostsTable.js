@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import {fetchPosts} from '../../../services/api.js';
 import {Link, withRouter} from 'react-router-dom';
 import {Table, Badge} from 'react-bootstrap';
 import TimeAgo from 'timeago-react';
 import {connect} from "react-redux";
-import {getPosts} from "./actions";
-
+import {getPosts} from "../../../store/PostActions";
+import PostVoteScore from '../../components/PostVoteScore';
 
 class PostsTable extends Component {
     constructor(props) {
@@ -23,7 +22,7 @@ class PostsTable extends Component {
             {name: "Author", field: "author"},
             {name: "Category", field: "category"},
             {name: "Votes", field: "voteScore", badge: true},
-            {name: "Deleted", field: "deleted"},
+            // {name: "Deleted", field: "deleted"},
             {name: "Comments", field: "commentCount", badge: true}
         ];
 
@@ -59,17 +58,6 @@ class PostsTable extends Component {
         }
     }
 
-    /**
-     * Redux will map received properties from the server
-     * then they will be copied into Controlled Component state
-     * for local handling; want to avoid continual updates to
-     * server for optimum performance
-     * @param nextProps
-     */
-    // componentWillReceiveProps(nextProps) {
-    //     console.log('received new props!',nextProps)
-    //     this.setState({...nextProps.posts});
-    // }
 
     /**
      * Produce a human readable value for
@@ -109,7 +97,7 @@ class PostsTable extends Component {
      * jump to the Post Detail View
      * @param postId
      */
-    rowClickHandler(postId) {
+    cellClickHandler(postId) {
         this.props.history.push(`/post/view/${postId}`);
     }
 
@@ -149,9 +137,9 @@ class PostsTable extends Component {
         in the reverse to other columns (because TimeAgo is decreases
         as timestamp increases)
          */
-        const sorter =  column.timeAgo ?
+        const sorter = column.timeAgo ?
             this.state.sortDir === "ASC" ? compareDESC(sortBy) : compareASC(sortBy)
-        :   this.state.sortDir === "ASC" ? compareASC(sortBy) : compareDESC(sortBy);
+            : this.state.sortDir === "ASC" ? compareASC(sortBy) : compareDESC(sortBy);
         /*
         Category Filter is set on navigate from Default Screen
         by clicking on an available category
@@ -163,15 +151,23 @@ class PostsTable extends Component {
         const filteredRows = categoryFilter ? posts.filter(post => post.category === categoryFilter) : posts;
         const sortedRows = filteredRows.sort(sorter).map(post => {
             return (
-                <tr key={post.id} onClick={() => this.rowClickHandler(post.id)}>
+                <tr key={post.id}>
                     {this.columns.map((column, idx) =>
                         <td key={idx}>
-                            {column.badge ?
-                                <Badge>{post[column.field]}</Badge>
-                                : column.timeAgo  ?
-                                        <TimeAgo datetime={post[column.field]}/>
-                                        : post[column.field]
+
+                            {
+                                column.field === "voteScore" ?
+                                    <PostVoteScore postId={post.id}/>
+                                    :
+                                    <span onClick={() => this.cellClickHandler(post.id)}>
+                                    {column.badge ?
+                                        <Badge>{post[column.field]}</Badge>
+                                        : column.timeAgo ?
+                                            <TimeAgo datetime={post[column.field]}/>
+                                            : post[column.field]}
+                                    </span>
                             }
+
                         </td>)}
                 </tr>
             )
@@ -191,7 +187,7 @@ class PostsTable extends Component {
                         {this.tableHeadings()}
                     </tr>
                     </thead>
-                    {this.props.posts &&   this.sortedTableBody(this.props.posts) }
+                    {this.props.posts && this.sortedTableBody(this.props.posts)}
                 </Table>
             </div>
         )
@@ -199,8 +195,8 @@ class PostsTable extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('mapStateToProps',state);
-    return {posts: state.DefaultReducer.posts}
+    console.log('mapStateToProps', state);
+    return {posts: state.PostReducer.posts}
 };
 
 const mapDispatchToProps = dispatch => ({

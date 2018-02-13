@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import React, {Component} from 'react';
 import {getPost} from "./actions";
 import {Link} from 'react-router-dom';
-import {Button,Form, ControlLabel, FormControl, Badge, Col, Row, Well} from 'react-bootstrap';
+import {Button, Form, ControlLabel, FormControl, Badge, Col, Row, Well} from 'react-bootstrap';
 
 class PostView extends Component {
 
@@ -25,17 +25,7 @@ class PostView extends Component {
                     <Col xs={2}>
                         <h1>Post</h1>
                     </Col>
-                    <Col xs={2}>
-                            <Link to={`/post/edit/${post.id}`}>
-                                <Button className="h1 heading-button" bsStyle="primary">Edit</Button>
-                            </Link>
-                    </Col>
-                    <Col>
-                            <Link to={`/post/delete/${post.id}`}>
-                                <Button className="h1 heading-button" bsStyle="danger">Delete</Button>
-                            </Link>
 
-                    </Col>
                 </Row>
 
                 <Row>
@@ -71,6 +61,20 @@ class PostView extends Component {
                             </Col>
                             <Col xs={10}>
                                 <Well>{post.category}</Well>
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col xsOffset={2} xs={2}>
+                                <Link to={`/post/edit/${post.id}`}>
+                                    <Button className="h1 heading-button" bsStyle="primary">Edit</Button>
+                                </Link>
+                            </Col>
+                            <Col>
+                                <Link to={`/post/delete/${post.id}`}>
+                                    <Button className="h1 heading-button" bsStyle="danger">Delete</Button>
+                                </Link>
+
                             </Col>
                         </Row>
                     </Col>

@@ -12,15 +12,14 @@ class CommentsView extends Component {
 
         this.commentClickHandler = this.commentClickHandler.bind(this);
         this.props.getComments(this.props.postId);
-
     }
-
 
 
     commentClickHandler= (postId, commentId) => () => {
         console.log('Clicked comment',commentId);
         this.props.history.push(`/post/${postId}/comment/${commentId}/edit`);
     };
+
 
     render() {
         const props = this.props;
@@ -65,10 +64,7 @@ class CommentsView extends Component {
                 </Table>
             </div>
         )
-
-
     }
-
 }
 
 
@@ -76,6 +72,7 @@ const mapStateToProps = (state, ownProps) => {
     console.log('state',state);
     return {postId: ownProps.postId, comments: state.PostDetailViewReducer.comments }
 };
+
 
 const mapDispatchToProps = dispatch => ({
     getComments: (postId) => dispatch(getComments(postId)),

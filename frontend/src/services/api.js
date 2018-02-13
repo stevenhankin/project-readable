@@ -261,3 +261,32 @@ export const postComment = (comment) => {
 };
 
 
+export const postVote = (id,option) => {
+    /*
+    POST /posts/:id
+    USAGE:
+        Used for voting on a post
+    PARAMS:
+        option - String: Either "upVote" or "downVote"
+    */
+    console.log('postVote',id,option);
+    const url = `http://localhost:3001/posts/${id}`;
+    return fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({option:option})
+    }).then(function (response) {
+        console.log('put status is', response.status);
+        if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+            return;
+        }
+        console.log('Created new post');
+        return response.json();
+    }).catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
+};
+
+

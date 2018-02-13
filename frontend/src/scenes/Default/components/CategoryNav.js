@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {fetchCategories} from '../../../services/api.js';
-import {Link, withRouter} from 'react-router-dom';
-import {Button,Nav , Navbar,NavItem} from 'react-bootstrap';
-import {getCategories} from "./actions";
+import {Link} from 'react-router-dom';
+import {Button} from 'react-bootstrap';
+import {getCategories} from "../../../store/CategoryActions";
 import {connect} from "react-redux";
 
 
@@ -10,31 +9,15 @@ class CategoryNav extends Component {
     constructor(props) {
         super(props);
 
-        this.props.getCategories();
+
     }
 
-
     render() {
-        // return (
-        //     <Navbar>
-        //         <Navbar.Header>
-        //             <Navbar.Brand>
-        //                 <a href="#home">Categories</a>
-        //             </Navbar.Brand>
-        //         </Navbar.Header>
-        //         <Nav>
-        //         {this.props.categories && this.props.categories.map(val =>
-        //             <Link key={val.name} to={`/categories/${val.path}`}>
-        //                 <NavItem>{val.name}</NavItem>
-        //             </Link>
-        //         )}
-        //         </Nav>
-        //     </Navbar>
-        // );
+        this.props.getCategories();
         return (
             <span>
                 <h1 className="category-heading">Categories</h1>
-                {this.props.categories && this.props.categories.map(val =>
+                {this.props.categories.map(val =>
                     <Link key={val.name} to={`/categories/${val.path}`}>
                         <Button>{val.name}</Button>
                     </Link>
@@ -45,7 +28,7 @@ class CategoryNav extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return {categories: state.DefaultReducer.categories}
+    return {categories: state.CategoryReducer.categories}
 };
 
 const mapDispatchToProps = dispatch => ({
