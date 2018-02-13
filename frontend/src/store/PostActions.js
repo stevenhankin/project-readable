@@ -23,9 +23,9 @@ export const deletePostSuccess = post => ({
     type: DELETE_POST_SUCCESS
 });
 
-export const updatePostSuccess = post => ({
-    type: UPDATE_POST_SUCCESS,
-    post
+export const updatePostSuccess = () => ({
+    type: UPDATE_POST_SUCCESS
+
 });
 
 export const createPostSuccess = post => ({
@@ -69,12 +69,13 @@ export const getPosts = () => dispatch => (
  */
 export const deletePost = (id) => dispatch => (
     api.deletePost(id)
-        .then(post => {
-            dispatch(deletePostSuccess(post))
-        })
         .then(() => {
             dispatch(createToast('Successfully deleted the post'))
         })
+        .then(post => {
+            dispatch(deletePostSuccess(post))
+        })
+
 );
 
 
@@ -88,8 +89,11 @@ export const deletePost = (id) => dispatch => (
  */
 export const updatePost = (id, title, body, author) => dispatch => (
     api.updatePost(id, title, body, author)
+        .then(() => {
+            dispatch(createToast('Successfully updated the post'))
+        })
         .then(
-            dispatch(getPost(id))
+            dispatch(updatePostSuccess())
         )
 );
 
@@ -102,11 +106,12 @@ export const updatePost = (id, title, body, author) => dispatch => (
 export const createPost = (postDetails) => dispatch => (
     api.createPost(postDetails)
         .then(() => {
-            dispatch(createPostSuccess(postDetails))
-        })
-        .then(() => {
             dispatch(createToast('Successfully created the post'))
         })
+        .then(() => {
+            dispatch(createPostSuccess(postDetails))
+        })
+
 );
 
 

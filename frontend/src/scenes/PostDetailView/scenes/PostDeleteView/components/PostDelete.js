@@ -28,7 +28,7 @@ class PostView extends Component {
      */
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.deleted) {
+        if (nextProps.modified) {
             // Homepage redirect
             nextProps.history.push(`/`);
         }
@@ -134,7 +134,7 @@ class PostView extends Component {
 const mapStateToProps = (state, ownProps) => {
     console.log('mapStateToProps',state,ownProps);
     return {postId: ownProps.postId,
-        deleted: state.PostReducer.deleted,
+        modified: state.PostReducer.modified,
         post: state.PostReducer.posts[ownProps.postId],
         toast:state.PostReducer.toast}
 };

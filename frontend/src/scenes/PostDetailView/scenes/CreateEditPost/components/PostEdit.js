@@ -101,19 +101,21 @@ class PostEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        console.log('Redirect?');
-        if (nextProps.created) {
+        console.log('Redirect?',nextProps);
+        if (nextProps.modified) {
             console.log('******REDIRECTING');
             // Homepage redirect when post created
             nextProps.history.push(`/`);
         }
 
         this.setState({post: nextProps.posts[nextProps.postId], creating: false});
+
     }
 
     render() {
         const props = this.props;
-        const post = this.state.post||{};
+        const post = this.state.post||{title:'',author:'',body:''};
+        console.log('post',post)
 
 
         return (
@@ -131,7 +133,7 @@ class PostEdit extends Component {
                                 <ControlLabel>Title</ControlLabel>
                             </Col>
                             <Col xs={10}>
-                                <FormControl type="text" value={(!props.isLoading && post.title) || ''}
+                                <FormControl type="text" value={post.title || ''}
                                              onChange={this.handleTitleChange}/>
                             </Col>
                         </Row>
@@ -184,7 +186,7 @@ class PostEdit extends Component {
 
                         <Row>
                             <Col xsOffset={2} xs={2}>
-                                <Button type="submit" onClick={this.handleSubmit} disabled={props.isLoading}
+                                <Button type="submit" onClick={this.handleSubmit} disabled={props.isLoading || ( post.title.length===0 || post.body.length===0 ||post.author.length===0) }
                                         bsStyle="primary">Submit</Button>
                                 {/*<Button bsStyle="warning" onClick={this.cancelEdit}>Cancel</Button>*/}
                             </Col>
@@ -226,7 +228,8 @@ const mapStateToProps = (state, ownProps) => {
         posts: state.PostReducer.posts,
         categories: state.CategoryReducer.categories,
         isLoading: state.PostReducer.isLoading,
-        created: state.PostReducer.created
+        created: state.PostReducer.created,
+        modified: state.PostReducer.modified
     }
 };
 
