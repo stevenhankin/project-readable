@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 
 
-class PostVoteScore extends Component {
+class CommentVoteScore extends Component {
     constructor(props) {
         super(props);
         this.upVoteHandler = this.upVoteHandler.bind(this)
@@ -25,23 +25,23 @@ class PostVoteScore extends Component {
 
 
     render() {
-        const post = this.props.post || {};
+        const comment = this.props.comment || {};
         return (
             <span onClick={(e)=>{e.stopPropagation()}}>
                 <span className="glyphicon glyphicon-thumbs-up vote-score-glyph-left" onClick={this.upVoteHandler}/>
-                <Badge >{post.voteScore}</Badge>
+                <Badge >{comment.voteScore}</Badge>
                 <span className="glyphicon glyphicon-thumbs-down vote-score-glyph-right" onClick={this.downVoteHandler}/>
             </span>
         );
     }
 }
 
-PostVoteScore.propTypes = {
-    postId: PropTypes.string.isRequired
+CommentVoteScore.propTypes = {
+    commentId: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId, post: state.PostReducer.posts[ownProps.postId]}
+    return {commentId: ownProps.commentId, comment: state.CommentReducer.comments[ownProps.commentId]}
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -50,4 +50,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostVoteScore);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentVoteScore);

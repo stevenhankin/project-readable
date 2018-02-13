@@ -37,7 +37,7 @@ class CommentEdit extends Component {
     }
 
     handleBodyChange(event) {
-        this.setState({comment: {...this.state.comment, body: event.target.value}});
+        this.setState({comment:{...this.state.comment, body:event.target.value } });
     }
 
     handleAuthorChange(event) {
@@ -83,15 +83,16 @@ class CommentEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        this.setState({comment: {...nextProps.comment}, modifiedOK: nextProps.modifiedOK});
+        console.log('nextProps',nextProps);
+        this.setState({comment: nextProps.comments[nextProps.commentId], modifiedOK: nextProps.modifiedOK});
     }
 
 
     render() {
         const props = this.props;
         const comment = this.state.comment;
+        console.log('rendering comment',comment);
 
-        console.log('props?', props);
         if (this.state.modifiedOK) {
             /*
           Homepage redirect after a few seconds
@@ -153,20 +154,17 @@ class CommentEdit extends Component {
 
                     </Col>
                 </Row>
-
             </Form>
-
         )
     }
 
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('ownProps will now be', ownProps)
     return {
         parentId: ownProps.parentId,
         commentId: ownProps.commentId,
-        comment: state.CommentReducer.comment,
+        comments: state.CommentReducer.comments,
         modifiedOK: state.CommentReducer.modifiedOK
     }
 };

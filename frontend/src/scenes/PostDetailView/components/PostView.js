@@ -1,18 +1,21 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {getPost} from "../../../store/PostActions";
+import {getPost,getPosts} from "../../../store/PostActions";
 import {Link} from 'react-router-dom';
 import {Button, Form, ControlLabel, FormControl, Badge, Col, Row, Well} from 'react-bootstrap';
+import PostVoteScore from "../../components/PostVoteScore";
 
 class PostView extends Component {
 
     constructor(props) {
         super(props);
-        this.props.getPost(this.props.postId);
+
+        props.getPost(props.postId);
     }
 
     render() {
-        const post = this.props.post;
+
+        const post = this.props.posts[this.props.postId] ||{};
 
         return (
             <Form componentClass="fieldset" horizontal>
@@ -75,14 +78,18 @@ class PostView extends Component {
 
                     <Col xsOffset={1} xs={3}>
                         <Row>
-                            <Col xs={12} className="text-right">
+                                <Col xs={4}>
                                 <ControlLabel>Votes</ControlLabel>
-                                <Badge className="myFormControl">{post.voteScore}</Badge>
-                            </Col>
+                                </Col>
+                                <Col xs={6}>
+                                    <PostVoteScore postId={this.props.postId}/>
+                                </Col>
                         </Row>
                         <Row>
-                            <Col xs={12} className="text-right">
-                                <ControlLabel>Comment Count</ControlLabel>
+                            <Col xs={4}>
+                                <ControlLabel>Comments</ControlLabel>
+                            </Col>
+                            <Col xs={6}>
                                 <Badge className="myFormControl">{post.commentCount}</Badge>
                             </Col>
                         </Row>
@@ -97,11 +104,13 @@ class PostView extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId, post: state.PostReducer.post}
+    console.log('MAPPING posts:',state.PostReducer.posts);
+    return {postId: ownProps.postId, posts: state.PostReducer.posts}
 };
 
 const mapDispatchToProps = dispatch => ({
-    getPost: (postId) => dispatch(getPost(postId))
+    getPost: (postId) => dispatch(getPost(postId)),
+    getPosts: () => dispatch(getPosts())
 });
 
 

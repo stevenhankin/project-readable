@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import './styles/index.css';
+import './styles/App.css';
 import App from './scenes/Default/index.js';
-import CategoryView from './scenes/CategoryView/index';
+import CategoryView from './scenes/Default/scenes/CategoryView/index';
 import PostDetailView from './scenes/PostDetailView/index';
-import PostDeleteView from './scenes/PostDeleteView/index';
-import CreateEditView from './scenes/CreateEditPost/index';
+import PostDeleteView from './scenes/PostDetailView/scenes/PostDeleteView/index';
+import CreateEditView from './scenes/PostDetailView/scenes/CreateEditPost/index';
 import CreateEditComment from './scenes/CreateEditComment/index'
 import {Grid, Col, Row, Jumbotron, Image} from 'react-bootstrap';
 import {Provider} from 'react-redux';
@@ -19,9 +19,18 @@ ReactDOM.render(
                 <Row>
                     <Jumbotron>
                         <Row>
+
                             <Col xs={10}>
+                                <Row>
                                 <h1>Readable</h1>
+
+                                </Row>
+                                <Row>
+                                    <p>Project showcasing Redux with React</p>
+                                </Row>
+
                             </Col>
+
                             <Col xs={1}>
                                 <a href="https://stevenhankin.github.io/project-readable/">
                                     <Image rounded
@@ -29,7 +38,7 @@ ReactDOM.render(
                                 </a>
                             </Col>
                         </Row>
-                        <p>Project showcasing Redux with React</p>
+
                     </Jumbotron>
                 </Row>
                 <Row>

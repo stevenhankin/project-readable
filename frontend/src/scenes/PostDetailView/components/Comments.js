@@ -1,9 +1,10 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {getComments} from "../../../store/CommentActions";
+import * as action from "../../../store/CommentActions";
 import {Table,Badge} from 'react-bootstrap';
 import TimeAgo from 'timeago-react';
 import {Link, withRouter} from 'react-router-dom';
+import CommentVoteScore from '../../components/CommentVoteScore';
 
 class CommentsView extends Component {
 
@@ -11,6 +12,7 @@ class CommentsView extends Component {
         super(props);
 
         this.commentClickHandler = this.commentClickHandler.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.props.getComments(this.props.postId);
     }
 
@@ -20,10 +22,17 @@ class CommentsView extends Component {
         this.props.history.push(`/post/${postId}/comment/${commentId}/edit`);
     };
 
+    handleDelete = (postId, commentId) => (e) => {
+        e.stopPropagation();
+        console.log('handleDelete clicked',postId, commentId);
+        this.props.deleteComment(postId, commentId);
+    };
+
+
 
     render() {
         const props = this.props;
-        const comments = this.props.comments;
+        const comments = Object.values(this.props.comments);
 
         console.log('RENDER',comments);
 
@@ -45,6 +54,7 @@ class CommentsView extends Component {
                         <th>Comment</th>
                         <th>Author</th>
                         <th>Vote Score</th>
+                        <th>Delete?</th>
                     </tr>
 
                     </thead>
@@ -56,7 +66,8 @@ class CommentsView extends Component {
                                     <td><TimeAgo datetime={comment.timestamp}/></td>
                                     <td>{comment.body}</td>
                                     <td>{comment.author}</td>
-                                    <td><Badge>{comment.voteScore}</Badge></td>
+                                    <td><CommentVoteScore commentId={comment.id}/></td>
+                                    <td onClick={this.handleDelete(props.postId,comment.id)}><span className="glyphicon glyphicon-trash"/></td>
                                 </tr>
                         )
                     }
@@ -75,8 +86,9 @@ const mapStateToProps = (state, ownProps) => {
 
 
 const mapDispatchToProps = dispatch => ({
-    getComments: (postId) => dispatch(getComments(postId)),
-    // putPost: (id, title, body) => dispatch(updatePost(id, title, body)),
+    getComments: (postId) => dispatch(action.getComments(postId)),
+    deleteComment: (postId,commentId) => dispatch(action.deleteComment(postId,commentId))
+    // updatePost: (id, title, body) => dispatch(updatePost(id, title, body)),
     // createPost: (postDetails) => dispatch(createPost(postDetails))
 });
 

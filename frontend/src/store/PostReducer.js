@@ -1,7 +1,9 @@
-import {RECEIVE_POSTS, RECEIVE_POST, DELETE_POST_SUCCESS} from './PostActions'
+import {RECEIVE_POSTS, RECEIVE_POST, DELETE_POST_SUCCESS, CREATE_POST_SUCCESS} from './PostActions'
 
-export const reducer = (state = {posts: [], post: {}, loading: true}, action) => {
+export const reducer = (state = {posts: {}, loading: true}, action) => {
+    console.log('STATE IS SET TO', state);
     switch (action.type) {
+
         case RECEIVE_POSTS:
             console.log('RECEIVE_POSTS', action.posts);
             const objOfPosts = action.posts.reduce((postsAcc, post) => {
@@ -14,9 +16,13 @@ export const reducer = (state = {posts: [], post: {}, loading: true}, action) =>
                 loading: false
             };
         case RECEIVE_POST:
-            return {...state, post: action.post, loading: false};
+            const newPost = {};
+            newPost[action.post.id] = action.post;
+            return {...state, posts: {...state.posts, ...newPost}};
         case DELETE_POST_SUCCESS:
             return {...state, deleted: true};
+        case CREATE_POST_SUCCESS:
+            return {...state, created: true};
         default:
             return state;
     }

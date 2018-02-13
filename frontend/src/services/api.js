@@ -121,7 +121,7 @@ export const deletePost = (id) => {
  *
  * @param post
  */
-export const putPost = (id, title, body) => {
+export const updatePost = (id, title, body) => {
     /*
       PUT /posts/:id
       USAGE:
@@ -156,7 +156,7 @@ export const putPost = (id, title, body) => {
  * @param body
  * @returns {Promise<Response>}
  */
-export const putComment = ({id, body}) => {
+export const updateComment = ({id, body}) => {
     /*
         PUT /comments/:id
           USAGE:
@@ -167,7 +167,7 @@ export const putComment = ({id, body}) => {
             body: String
      */
     const commentPart = {timestamp: Date.now(), body};
-    console.log('putComment()', commentPart);
+    console.log('updateComment()', commentPart);
     const url = `http://localhost:3001/comments/${id}`;
     return fetch(url, {
         method: 'PUT',
@@ -187,7 +187,7 @@ export const putComment = ({id, body}) => {
 };
 
 
-export const postPost = ({id, title, body, author, category}) => {
+export const createPost = ({id, title, body, author, category}) => {
     /*
        POST /posts
        USAGE:
@@ -201,7 +201,7 @@ export const postPost = ({id, title, body, author, category}) => {
        author - String
        category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
    */
-    // console.log('postComment()', postDetails)
+    // console.log('createComment()', postDetails)
     const url = `http://localhost:3001/posts`;
     return fetch(url, {
         method: 'POST',
@@ -223,11 +223,11 @@ export const postPost = ({id, title, body, author, category}) => {
 
 
 /**
- * Update an existing comment
+ * Add a new comment to a post
  * @param comment
  * @returns {Promise<Response>}
  */
-export const postComment = (comment) => {
+export const createComment = (comment) => {
     /*
     POST /comments
       USAGE:
@@ -241,7 +241,7 @@ export const postComment = (comment) => {
         parentId: Should match a post id in the database.
    */
     const url = `http://localhost:3001/comments`;
-    console.log('postComment', comment);
+    console.log('createComment', comment);
     return fetch(url, {
         method: 'POST',
         headers: headers,
@@ -290,3 +290,60 @@ export const postVote = (id,option) => {
 };
 
 
+
+export const commentVote = (id,option) => {
+    /*
+
+    POST /comments/:id
+      USAGE:
+        Used for voting on a comment.
+      PARAMS:
+        option - String: Either "upVote" or "downVote"
+
+    */
+    console.log('commentVote',id,option);
+    const url = `http://localhost:3001/comments/${id}`;
+    return fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({option:option})
+    }).then(function (response) {
+        console.log('put status is', response.status);
+        if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+            return;
+        }
+        console.log('Created new post');
+        return response.json();
+    }).catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
+};
+
+
+
+
+/**
+ * Delete comment
+ *
+ * @param id
+ * @returns {Promise<Response>}
+ */
+export const deleteComment = (id) => {
+    console.log('id is set to',id)
+    /*
+    DELETE /comments/:id
+      USAGE:
+        Sets a comment's deleted flag to 'true'
+     */
+    const url = `http://localhost:3001/comments/${id}`;
+    console.log('Calling',url);
+    return fetch(url, {
+        headers: headers,
+        method: 'DELETE'
+    }).then(function (response) {
+        console.log('fetch status is', response.status);
+        return response.json();
+    });
+};

@@ -1,7 +1,6 @@
 import React from 'react';
 import PostDelete from "./components/PostDelete";
 
-
 const PostDeleteView = (props) => {
 
     const postId = props.match && props.match.params.postId;

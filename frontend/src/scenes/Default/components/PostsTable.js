@@ -5,6 +5,7 @@ import TimeAgo from 'timeago-react';
 import {connect} from "react-redux";
 import {getPosts} from "../../../store/PostActions";
 import PostVoteScore from '../../components/PostVoteScore';
+import Toast from '../../components/Toast'
 
 class PostsTable extends Component {
     constructor(props) {
@@ -151,15 +152,17 @@ class PostsTable extends Component {
         const filteredRows = categoryFilter ? posts.filter(post => post.category === categoryFilter) : posts;
         const sortedRows = filteredRows.sort(sorter).map(post => {
             return (
-                <tr key={post.id}>
+                <tr key={post.id} onClick={() => this.cellClickHandler(post.id)}>
                     {this.columns.map((column, idx) =>
                         <td key={idx}>
 
                             {
                                 column.field === "voteScore" ?
-                                    <PostVoteScore postId={post.id}/>
+
+                                        <PostVoteScore postId={post.id}/>
+
                                     :
-                                    <span onClick={() => this.cellClickHandler(post.id)}>
+                                    <span>
                                     {column.badge ?
                                         <Badge>{post[column.field]}</Badge>
                                         : column.timeAgo ?
@@ -176,15 +179,21 @@ class PostsTable extends Component {
     }
 
     render() {
+        const props = this.props;
         /*
         Need to convert the object mapping IDs to Posts to be an array of Posts
          */
-        const posts = Object.values(this.props.posts);
+        const posts = Object.values(props.posts);
         return (
             <div>
                 <h1>Posts <Link to="/post/create">
                     <small><span className="glyphicon glyphicon-plus-sign"/></small>
                 </Link></h1>
+
+                {props.toast &&
+                    <Toast/>
+                }
+
                 <Table className="table table-striped" hover>
                     <thead>
                     <tr>
@@ -200,7 +209,7 @@ class PostsTable extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     console.log('mapStateToProps', state);
-    return {posts: state.PostReducer.posts}
+    return {posts: state.PostReducer.posts, toast: state.ToastReducer.toast}
 };
 
 const mapDispatchToProps = dispatch => ({

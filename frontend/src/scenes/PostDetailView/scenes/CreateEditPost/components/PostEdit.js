@@ -1,7 +1,10 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {getPost, updatePost, createPost} from "../../../store/PostActions";
+import {withRouter} from  'react-router-dom'
+import {getPost, updatePost, createPost} from "../../../../../store/PostActions";
 import {Form, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
+import * as ToastActions from "../../../../../store/ToastActions";
+
 
 class PostEdit extends Component {
 
@@ -78,6 +81,8 @@ class PostEdit extends Component {
             const randomId = Math.random().toString(16).substr(2);
             const newPost = {...post, id: randomId, timestamp: Date.now()};
             this.props.createPost(newPost);
+
+
         }
         else {
             /*
@@ -96,14 +101,20 @@ class PostEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        this.setState({post: {...nextProps.post}, creating: false});
+        console.log('Redirect?');
+        if (nextProps.created) {
+            console.log('******REDIRECTING');
+            // Homepage redirect when post created
+            nextProps.history.push(`/`);
+        }
+
+        this.setState({post: nextProps.posts[nextProps.postId], creating: false});
     }
 
     render() {
         const props = this.props;
-        const post = this.state.post;
+        const post = this.state.post||{};
 
-        console.log('PostEdit in CreateEditView')
 
         return (
             <Form componentClass="fieldset" horizontal>
@@ -212,17 +223,19 @@ class PostEdit extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         postId: ownProps.postId,
-        post: state.PostReducer.post,
-        categories: state.PostReducer.categories,
-        isLoading: state.PostReducer.isLoading
+        posts: state.PostReducer.posts,
+        categories: state.CategoryReducer.categories,
+        isLoading: state.PostReducer.isLoading,
+        created: state.PostReducer.created
     }
 };
 
 const mapDispatchToProps = dispatch => ({
     getPost: (postId) => dispatch(getPost(postId)),
     putPost: (id, title, body) => dispatch(updatePost(id, title, body)),
-    createPost: (postDetails) => dispatch(createPost(postDetails))
+    createPost: (postDetails) => dispatch(createPost(postDetails)),
+    raiseToast: (msg) => dispatch(ToastActions.createToast(msg))
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostEdit);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostEdit));

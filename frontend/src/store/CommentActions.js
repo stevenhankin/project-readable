@@ -1,5 +1,5 @@
-import {fetchComments} from '../services/api.js'
-import {fetchComment, postComment, putComment} from "../services/api";
+import * as api from '../services/api.js'
+
 
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
 export const RECEIVE_COMMENT = "RECEIVE_COMMENT";
@@ -31,7 +31,7 @@ export const modifyCommentSuccess = comment => ({
  * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
  */
 export const getComments = (postId) => dispatch => (
-    fetchComments(postId)
+    api.fetchComments(postId)
         .then(
             comments => {
                 dispatch(receiveComments(comments))
@@ -46,7 +46,7 @@ export const getComments = (postId) => dispatch => (
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
 export const getComment = (id) => dispatch => (
-    fetchComment(id)
+    api.fetchComment(id)
         .then(
             comment => {
                 dispatch(receiveComment(comment))
@@ -62,7 +62,7 @@ export const getComment = (id) => dispatch => (
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
 export const updateComment = (c) => dispatch => (
-    putComment(c)
+    api.updateComment(c)
         .then(
             dispatch(modifyCommentSuccess(c))
         )
@@ -72,13 +72,66 @@ export const updateComment = (c) => dispatch => (
 
 /**
  * Thunk : Create a NEW comment via REST API on server then synchronously GETS the comment
+ *
  * @param c - Comment
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
 export const createComment = (c) => dispatch => (
-    postComment(c)
+    api.createComment(c)
         .then(
             dispatch(modifyCommentSuccess(c))
         )
 );
 
+
+/**
+ * Thunk : Delete a comment via REST API
+ *
+ * @param c - Comment
+ * @returns {function(*): (PromiseLike<T> | Promise<T>)}
+ */
+export const deleteComment = (postId, commentId) => dispatch => (
+    api.deleteComment(commentId)
+        .then(
+            dispatch(getComments(postId))
+        )
+);
+
+
+
+
+/**
+ * Thunk : Increase vote score on a comment
+ *
+ * @param id
+ * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
+ */
+export const upVote = (id) => dispatch => (
+    api.commentVote(id, "upVote")
+        .then(
+            api.fetchComment(id)
+                .then(
+                    post => {
+                        dispatch(receiveComment(post))
+                    }
+                )
+        )
+);
+
+/**
+ * Thunk : Decrease vote score on a comment
+ *
+ * @param id
+ * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
+ */
+export const downVote = (id) => dispatch => (
+    api.commentVote(id, "downVote")
+        .then(
+            api.fetchComment(id)
+                .then(
+                    post => {
+                        dispatch(receiveComment(post))
+                    }
+                )
+        )
+);

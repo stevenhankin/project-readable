@@ -4,8 +4,6 @@ import Comments from "./components/Comments"
 
 const PostDetailView = (props) => {
 
-    console.log('PostDetailView', props);
-
     const postId = props.match && props.match.params.postId;
 
     return (
@@ -14,7 +12,7 @@ const PostDetailView = (props) => {
                 <PostFormCreate postId={postId}/>
             </section>
             <section>
-                <Comments  postId={postId}></Comments>
+                <Comments postId={postId}/>
             </section>
         </span>
     );

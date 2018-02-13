@@ -1,11 +1,12 @@
-import {fetchPosts, postPost, putPost} from '../services/api'
-import {fetchPost} from "../services/api";
 import * as api from "../services/api";
+import {createToast} from "./ToastActions";
 
 
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const RECEIVE_POST = "RECEIVE_POST";
 export const DELETE_POST_SUCCESS = "DELETE_POST_SUCCESS";
+export const UPDATE_POST_SUCCESS = "UPDATE_POST_SUCCESS";
+export const CREATE_POST_SUCCESS = "CREATE_POST_SUCCESS";
 
 export const receivePost = post => ({
     type: RECEIVE_POST,
@@ -19,7 +20,16 @@ export const receivePosts = (posts) => ({
 });
 
 export const deletePostSuccess = post => ({
-    type: DELETE_POST_SUCCESS,
+    type: DELETE_POST_SUCCESS
+});
+
+export const updatePostSuccess = post => ({
+    type: UPDATE_POST_SUCCESS,
+    post
+});
+
+export const createPostSuccess = post => ({
+    type: CREATE_POST_SUCCESS,
     post
 });
 
@@ -31,7 +41,7 @@ export const deletePostSuccess = post => ({
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
 export const getPost = (id) => dispatch => (
-    fetchPost(id)
+    api.fetchPost(id)
         .then(
             post => {
                 dispatch(receivePost(post))
@@ -44,7 +54,7 @@ export const getPost = (id) => dispatch => (
  * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
  */
 export const getPosts = () => dispatch => (
-    fetchPosts()
+    api.fetchPosts()
         .then(
             posts => {
                 dispatch(receivePosts(posts))
@@ -59,10 +69,12 @@ export const getPosts = () => dispatch => (
  */
 export const deletePost = (id) => dispatch => (
     api.deletePost(id)
-        .then(
-            post => {
-                dispatch(deletePostSuccess(post))
-            })
+        .then(post => {
+            dispatch(deletePostSuccess(post))
+        })
+        .then(() => {
+            dispatch(createToast('Successfully deleted the post'))
+        })
 );
 
 
@@ -75,7 +87,7 @@ export const deletePost = (id) => dispatch => (
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
 export const updatePost = (id, title, body, author) => dispatch => (
-    putPost(id, title, body, author)
+    api.updatePost(id, title, body, author)
         .then(
             dispatch(getPost(id))
         )
@@ -88,13 +100,14 @@ export const updatePost = (id, title, body, author) => dispatch => (
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
 export const createPost = (postDetails) => dispatch => (
-    postPost(postDetails)
-        .then(
-            dispatch(getPost(postDetails.id))
-        )
+    api.createPost(postDetails)
+        .then(() => {
+            dispatch(createPostSuccess(postDetails))
+        })
+        .then(() => {
+            dispatch(createToast('Successfully created the post'))
+        })
 );
-
-
 
 
 /**
@@ -104,8 +117,8 @@ export const createPost = (postDetails) => dispatch => (
  * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
  */
 export const upVote = (id) => dispatch => (
-    api.postVote(id,"upVote")
-        .then (
+    api.postVote(id, "upVote")
+        .then(
             api.fetchPost(id)
                 .then(
                     post => {
@@ -122,8 +135,8 @@ export const upVote = (id) => dispatch => (
  * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
  */
 export const downVote = (id) => dispatch => (
-    api.postVote(id,"downVote")
-        .then (
+    api.postVote(id, "downVote")
+        .then(
             api.fetchPost(id)
                 .then(
                     post => {

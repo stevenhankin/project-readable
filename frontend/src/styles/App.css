@@ -1,3 +1,8 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
 
 .myFormControl {
   margin-left: 20px;
@@ -37,6 +42,13 @@ A little space between table headings
 and the sort direction icons
  */
 .my-glyph-pad {
+    padding-left: 5px;
+}
+
+.vote-score-glyph-left {
+    padding-right: 5px;
+}
+.vote-score-glyph-right {
     padding-left: 5px;
 }
 

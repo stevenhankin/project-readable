@@ -1,6 +1,7 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {getPost, deletePost} from "../../../store/PostActions";
+import * as actions from "../../../../../store/PostActions";
+import * as ToastActions from "../../../../../store/ToastActions";
 import {Link, withRouter} from 'react-router-dom';
 import {Alert, Button, Form, ControlLabel, FormControl, Badge, Col, Row, Well} from 'react-bootstrap';
 
@@ -8,10 +9,8 @@ class PostView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            deleted: false
-        };
         this.deleteHandler = this.deleteHandler.bind(this);
+        console.log('GET POST')
         props.getPost(this.props.postId);
     }
 
@@ -19,27 +18,33 @@ class PostView extends Component {
      * Launch action to delete post
      */
     deleteHandler() {
+        /* If successful, a toast will display to user on next page */
         this.props.deletePost(this.props.postId);
     }
 
+    /**
+     * Copy props into state for Controlled Component
+     * @param nextProps
+     */
+    componentWillReceiveProps(nextProps) {
+
+        if (nextProps.deleted) {
+            // Homepage redirect
+            nextProps.history.push(`/`);
+        }
+
+        this.setState({post: nextProps.post, modifiedOK: nextProps.modifiedOK});
+    }
 
     render() {
-        const props = this.props;
-        const post = props.post;
 
-        if (props.deleted) {
-            /*
-            Homepage redirect after a few seconds
-             */
-            setTimeout(function () {
-                props.history.push(`/`);
-            }, 2000);
-            return (
-                <Alert bsStyle="warning">
-                    <strong>Deleted post</strong> Will redirect to homepage..
-                </Alert>
-            )
-        }
+        console.log('***PostEdit in CreateEditView');
+
+        console.log('state',this.state);
+        console.log('props',this.props);
+        console.log('post',post);
+        const props = this.props;
+        const post = (this.state && this.state.post)||{};
 
         return (
             <Form componentClass="fieldset" horizontal>
@@ -120,21 +125,24 @@ class PostView extends Component {
                     </Col>
                 </Row>
 
-
             </Form>
         )
     }
-
 }
 
 
 const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId, deleted: state.PostReducer.deleted, post: state.PostReducer.post}
+    console.log('mapStateToProps',state,ownProps);
+    return {postId: ownProps.postId,
+        deleted: state.PostReducer.deleted,
+        post: state.PostReducer.posts[ownProps.postId],
+        toast:state.PostReducer.toast}
 };
 
 const mapDispatchToProps = dispatch => ({
-    getPost: (postId) => dispatch(getPost(postId)),
-    deletePost: (postId) => dispatch(deletePost(postId))
+    getPost: (postId) => dispatch(actions.getPost(postId)),
+    deletePost: (postId) => dispatch(actions.deletePost(postId)),
+    raiseToast: (msg) => dispatch(ToastActions.createToast(msg))
 });
 
 

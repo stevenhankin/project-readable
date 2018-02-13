@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import CategoryNav from './components/CategoryNav.js';
 import PostsTable from './components/PostsTable.js';
 
