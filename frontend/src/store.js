@@ -1,10 +1,6 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
-// import {reducer as DefaultReducer} from './store/CategoryReducer';
-// import {reducer as CreateEditViewReducer} from './scenes/CreateEditPost/components/reducer';
 
-// import {reducer as PostDeleteReducer} from './scenes/PostDeleteView/components/reducer';
-// import {reducer as CreateEditCommentReducer} from './scenes/CreateEditComment/components/reducer';
-// import {reducer as PostVoteScoreReducer} from './scenes/components/reducer';
+
 /**
  * New refactored reducers below
  */
@@ -23,3 +19,4 @@ export const store = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     applyMiddleware(thunk)
 );
+

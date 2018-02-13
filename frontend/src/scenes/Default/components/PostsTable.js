@@ -176,6 +176,10 @@ class PostsTable extends Component {
     }
 
     render() {
+        /*
+        Need to convert the object mapping IDs to Posts to be an array of Posts
+         */
+        const posts = Object.values(this.props.posts);
         return (
             <div>
                 <h1>Posts <Link to="/post/create">
@@ -187,7 +191,7 @@ class PostsTable extends Component {
                         {this.tableHeadings()}
                     </tr>
                     </thead>
-                    {this.props.posts && this.sortedTableBody(this.props.posts)}
+                    {this.sortedTableBody(posts)}
                 </Table>
             </div>
         )
