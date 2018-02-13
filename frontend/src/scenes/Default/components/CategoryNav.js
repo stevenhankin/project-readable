@@ -8,12 +8,10 @@ import {connect} from "react-redux";
 class CategoryNav extends Component {
     constructor(props) {
         super(props);
-
-
+        this.props.getCategories();
     }
 
     render() {
-        this.props.getCategories();
         return (
             <span>
                 <h1 className="category-heading">Categories</h1>

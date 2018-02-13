@@ -1,7 +1,12 @@
-import {RECEIVE_COMMENT,MODIFY_COMMENT_SUCCESS} from './actions'
+import {RECEIVE_COMMENTS,MODIFY_COMMENT_SUCCESS, RECEIVE_COMMENT} from './CommentActions'
 
-export const reducer = (state ={}, action) => {
+
+export const reducer = (state = {comments: [], comment:{}, loading: true}, action) => {
     switch (action.type) {
+
+        case RECEIVE_COMMENTS:
+            console.log('ACTION',action.comments);
+            return {...state, comments: action.comments, loading: false};
         case RECEIVE_COMMENT:
             console.log('NOT MODIFY',state,action)
             return {modifiedOK:false, comment: action.comment };

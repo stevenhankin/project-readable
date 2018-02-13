@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {getPost} from "./actions";
+import {getPost} from "../../../store/PostActions";
 import {Link} from 'react-router-dom';
 import {Button, Form, ControlLabel, FormControl, Badge, Col, Row, Well} from 'react-bootstrap';
 
@@ -13,11 +13,6 @@ class PostView extends Component {
 
     render() {
         const post = this.props.post;
-
-        if (!post) {
-            /* Post details not available yet - don't render */
-            return;
-        }
 
         return (
             <Form componentClass="fieldset" horizontal>
@@ -74,7 +69,6 @@ class PostView extends Component {
                                 <Link to={`/post/delete/${post.id}`}>
                                     <Button className="h1 heading-button" bsStyle="danger">Delete</Button>
                                 </Link>
-
                             </Col>
                         </Row>
                     </Col>
@@ -103,7 +97,7 @@ class PostView extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId, post: state.PostDetailViewReducer.post}
+    return {postId: ownProps.postId, post: state.PostReducer.post}
 };
 
 const mapDispatchToProps = dispatch => ({

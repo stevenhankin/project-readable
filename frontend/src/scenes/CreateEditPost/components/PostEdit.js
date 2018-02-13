@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {getPost, updatePost, createPost} from "./actions";
+import {getPost, updatePost, createPost} from "../../../store/PostActions";
 import {Form, FormGroup, ControlLabel, FormControl, Button, Badge, Col, Row, Well, Clearfix} from 'react-bootstrap';
 
 class PostEdit extends Component {
@@ -210,7 +210,12 @@ class PostEdit extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId, post: state.CreateEditViewReducer.post, categories: state.DefaultReducer.categories, isLoading: state.CreateEditViewReducer.isLoading}
+    return {
+        postId: ownProps.postId,
+        post: state.PostReducer.post,
+        categories: state.PostReducer.categories,
+        isLoading: state.PostReducer.isLoading
+    }
 };
 
 const mapDispatchToProps = dispatch => ({

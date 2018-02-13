@@ -1,8 +1,16 @@
-import {fetchComment,putComment,postComment} from '../../../services/api.js'
+import {fetchComments} from '../services/api.js'
+import {fetchComment, postComment, putComment} from "../services/api";
 
-
+export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
 export const RECEIVE_COMMENT = "RECEIVE_COMMENT";
 export const MODIFY_COMMENT_SUCCESS = "MODIFY_COMMENT_SUCCESS";
+
+
+export const receiveComments = (comments) => ({
+    type: RECEIVE_COMMENTS,
+    comments
+});
+
 
 export const receiveComment = comment => ({
     type: RECEIVE_COMMENT,
@@ -13,6 +21,23 @@ export const modifyCommentSuccess = comment => ({
     type: MODIFY_COMMENT_SUCCESS,
     comment
 });
+
+
+
+
+/**
+ * Thunk : Get all the comments for a Post via REST API from server
+ *
+ * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
+ */
+export const getComments = (postId) => dispatch => (
+    fetchComments(postId)
+        .then(
+            comments => {
+                dispatch(receiveComments(comments))
+            })
+);
+
 
 /**
  * Thunk : Get a post via REST API from server

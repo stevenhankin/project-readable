@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {getPost, deletePost} from "./actions";
+import {getPost, deletePost} from "../../../store/PostActions";
 import {Link, withRouter} from 'react-router-dom';
 import {Alert, Button, Form, ControlLabel, FormControl, Badge, Col, Row, Well} from 'react-bootstrap';
 
@@ -10,9 +10,9 @@ class PostView extends Component {
         super(props);
         this.state = {
             deleted: false
-        }
-        // this.props.getPost(this.props.postId);
+        };
         this.deleteHandler = this.deleteHandler.bind(this);
+        props.getPost(this.props.postId);
     }
 
     /**
@@ -24,16 +24,8 @@ class PostView extends Component {
 
 
     render() {
-        const post = this.props.post;
         const props = this.props;
-
-        console.log('post', post);
-
-        if (!post) {
-            /* Post details not available - don't render yet and retrieve the post.. */
-            props.getPost(this.props.postId);
-            return;
-        }
+        const post = props.post;
 
         if (props.deleted) {
             /*
@@ -56,7 +48,6 @@ class PostView extends Component {
                         <h1>Delete this post...</h1>
                     </Col>
                 </Row>
-
 
                 <Row>
                     <Col xs={8}>
@@ -138,8 +129,7 @@ class PostView extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('mappingstate', state.PostDeleteReducer);
-    return {postId: ownProps.postId, deleted: state.PostDeleteReducer.deleted, post: state.PostDeleteReducer.post}
+    return {postId: ownProps.postId, deleted: state.PostReducer.deleted, post: state.PostReducer.post}
 };
 
 const mapDispatchToProps = dispatch => ({

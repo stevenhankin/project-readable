@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {getComments} from "./actions";
+import {getComments} from "../../../store/CommentActions";
 import {Table,Badge} from 'react-bootstrap';
 import TimeAgo from 'timeago-react';
 import {Link, withRouter} from 'react-router-dom';
@@ -70,7 +70,7 @@ class CommentsView extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     console.log('state',state);
-    return {postId: ownProps.postId, comments: state.PostDetailViewReducer.comments }
+    return {postId: ownProps.postId, comments: state.CommentReducer.comments }
 };
 
 

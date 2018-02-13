@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import {getComment, createComment, updateComment} from "./actions";
+import {getComment, createComment, updateComment} from "../../../store/CommentActions";
 import {Alert, Form, FormGroup, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
 
 
@@ -166,8 +166,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         parentId: ownProps.parentId,
         commentId: ownProps.commentId,
-        comment: state.CreateEditCommentReducer.comment,
-        modifiedOK: state.CreateEditCommentReducer.modifiedOK
+        comment: state.CommentReducer.comment,
+        modifiedOK: state.CommentReducer.modifiedOK
     }
 };
 
