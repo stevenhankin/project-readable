@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
 import {getPost, updatePost, createPost} from "../../../store/PostActions";
-import {Form, FormGroup, ControlLabel, FormControl, Button, Badge, Col, Row, Well, Clearfix} from 'react-bootstrap';
+import {Form, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
 
 class PostEdit extends Component {
 

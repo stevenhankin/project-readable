@@ -4,7 +4,7 @@ import {createStore, applyMiddleware, combineReducers} from 'redux';
 
 // import {reducer as PostDeleteReducer} from './scenes/PostDeleteView/components/reducer';
 // import {reducer as CreateEditCommentReducer} from './scenes/CreateEditComment/components/reducer';
-import {reducer as PostVoteScoreReducer} from './scenes/components/reducer';
+// import {reducer as PostVoteScoreReducer} from './scenes/components/reducer';
 /**
  * New refactored reducers below
  */
@@ -17,7 +17,6 @@ import thunk from 'redux-thunk';
 export const store = createStore(
     combineReducers({
          CommentReducer
-        , PostVoteScoreReducer
         , PostReducer
         , CategoryReducer
     }),

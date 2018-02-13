@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {getComment, createComment, updateComment} from "../../../store/CommentActions";
-import {Alert, Form, FormGroup, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
+import {Alert, Form, ControlLabel, FormControl, Button, Col, Row, Well} from 'react-bootstrap';
 
 
 class CommentEdit extends Component {
