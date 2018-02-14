@@ -83,7 +83,8 @@ class CommentEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        this.setState({comment: nextProps.comments[nextProps.commentId], modifiedOK: nextProps.modifiedOK});
+
+        this.setState({comment: nextProps.comments[nextProps.commentId], modified: nextProps.modified});
     }
 
 
@@ -91,12 +92,16 @@ class CommentEdit extends Component {
         const props = this.props;
         const comment = this.state.comment || {};
 
-        if (this.state.modifiedOK) {
+
+        if (props.modified) {
             /*
-            Homepage redirect
+            Post parent redirect after submitting a new or modified comment
             */
             props.history.push(`/post/view/${props.parentId}`);
         }
+
+
+        console.log('RENDER',props);
 
         return (
 
@@ -154,13 +159,13 @@ const mapStateToProps = (state, ownProps) => {
         parentId: ownProps.parentId,
         commentId: ownProps.commentId,
         comments: state.CommentReducer.comments,
-        modifiedOK: state.CommentReducer.modifiedOK
+        modified: state.CommentReducer.modified
     }
 };
 
 const mapDispatchToProps = dispatch => ({
     getComment: (commentId) => dispatch(getComment(commentId)),
-    updateComment: (id, title, body) => dispatch(updateComment(id, body)),
+    updateComment: (comment) => dispatch(updateComment(comment)),
     createComment: (comment) => dispatch(createComment(comment))
 });
 

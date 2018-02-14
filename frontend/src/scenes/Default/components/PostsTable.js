@@ -5,7 +5,6 @@ import TimeAgo from 'timeago-react';
 import {connect} from "react-redux";
 import {getPosts} from "../../../store/PostActions";
 import PostVoteScore from '../../components/PostVoteScore';
-import Toast from '../../components/Toast'
 
 class PostsTable extends Component {
     constructor(props) {
@@ -189,8 +188,6 @@ class PostsTable extends Component {
                 <h1>Posts <Link to="/post/create">
                     <small><span className="glyphicon glyphicon-plus-sign"/></small>
                 </Link></h1>
-
-                <Toast/>
 
                 <Table className="table table-striped" hover>
                     <thead>

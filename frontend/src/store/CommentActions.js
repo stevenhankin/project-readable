@@ -1,5 +1,6 @@
 import * as api from '../services/api.js'
 import * as PostActions from './PostActions'
+import {createToast} from "./ToastActions";
 
 
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
@@ -9,26 +10,29 @@ export const MODIFY_COMMENT_SUCCESS = "MODIFY_COMMENT_SUCCESS";
 
 export const receiveComments = (comments) => ({
     type: RECEIVE_COMMENTS,
-    comments
+    comments,
+    modified:false
 });
 
 
 export const receiveComment = comment => ({
     type: RECEIVE_COMMENT,
-    comment
+    comment,
+    modified:false
 });
 
 export const modifyCommentSuccess = comment => ({
     type: MODIFY_COMMENT_SUCCESS,
-    comment
+    comment,
+    modified:true
 });
-
 
 
 
 /**
  * Thunk : Get all the comments for a Post via REST API from server
  *
+ * @param postId
  * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
  */
 export const getComments = (postId) => dispatch => (
@@ -64,6 +68,9 @@ export const getComment = (id) => dispatch => (
  */
 export const updateComment = (c) => dispatch => (
     api.updateComment(c)
+        .then(() => {
+            dispatch(createToast('Successfully updated the comment'))
+        })
         .then(
             dispatch(modifyCommentSuccess(c))
         )
@@ -79,6 +86,9 @@ export const updateComment = (c) => dispatch => (
  */
 export const createComment = (c) => dispatch => (
     api.createComment(c)
+        .then(() => {
+            dispatch(createToast('Successfully created a comment'))
+        })
         .then(
             dispatch(modifyCommentSuccess(c))
         )
@@ -88,14 +98,18 @@ export const createComment = (c) => dispatch => (
 /**
  * Thunk : Delete a comment via REST API
  *
- * @param c - Comment
- * @returns {function(*): (PromiseLike<T> | Promise<T>)}
+ * @param postId
+ * @param commentId
+ * @returns {function(*): Promise<Response>}
  */
 export const deleteComment = (postId, commentId) => dispatch => (
     api.deleteComment(commentId)
         .then(
             dispatch(getComments(postId))
         )
+        .then(() => {
+            dispatch(createToast('Successfully deleted the comment'))
+        })
         .then(
             /* Need to retrieve the post that this comment belonged
              * to so that the correct comment count is displayed
@@ -103,7 +117,6 @@ export const deleteComment = (postId, commentId) => dispatch => (
             dispatch(PostActions.getPost(postId))
         )
 );
-
 
 
 

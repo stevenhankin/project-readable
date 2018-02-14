@@ -70,3 +70,11 @@ Table {
 .heading-button {
     margin-left: 10px;
 }
+
+.toast {
+    position: fixed;
+    bottom: 50%;
+    right: auto;
+    width: 90%;
+    z-index: 1;
+}

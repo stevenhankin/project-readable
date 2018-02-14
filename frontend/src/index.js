@@ -11,6 +11,7 @@ import CreateEditComment from './scenes/CreateEditComment/index'
 import {Grid, Col, Row, Jumbotron, Image} from 'react-bootstrap';
 import {Provider} from 'react-redux';
 import {store} from './store';
+import Toast from './scenes/components/Toast'
 
 ReactDOM.render(
     <Provider store={store}>
@@ -42,6 +43,7 @@ ReactDOM.render(
                     </Jumbotron>
                 </Row>
                 <Row>
+                    <Toast />
                     <Route exact path="/" component={App}/>
                     <Route path="/categories/:category" component={CategoryView}/>
                     <Route path="/post/edit/:postId" component={CreateEditView}/>

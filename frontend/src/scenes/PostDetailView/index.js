@@ -1,6 +1,7 @@
 import React from 'react';
 import PostFormCreate from "./components/PostView";
 import Comments from "./components/Comments"
+import Toast from '../components/Toast'
 
 const PostDetailView = (props) => {
 

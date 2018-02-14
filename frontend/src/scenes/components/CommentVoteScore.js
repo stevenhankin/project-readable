@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Badge, Col, Row} from 'react-bootstrap';
-import * as action from "../../store/PostActions";
+import * as action from "../../store/CommentActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 
@@ -14,13 +14,13 @@ class CommentVoteScore extends Component {
 
     upVoteHandler(e) {
         e.stopPropagation();
-        this.props.upVote(this.props.postId);
+        this.props.upVote(this.props.commentId);
 
     };
 
     downVoteHandler(e) {
         e.stopPropagation();
-        this.props.downVote(this.props.postId);
+        this.props.downVote(this.props.commentId);
     };
 
 

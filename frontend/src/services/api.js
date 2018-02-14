@@ -253,8 +253,9 @@ export const createComment = (comment) => {
                 response.status);
             return;
         }
-        console.log('Created new post');
-        return response.json();
+        const j=response.json();
+        console.log('Created new comment', JSON.stringify(j) );
+        return j;
     }).catch(function (err) {
         console.log('Fetch Error :-S', err);
     });

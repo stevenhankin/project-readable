@@ -100,13 +100,14 @@ export const updatePost = (id, title, body, author) => dispatch => (
 
 /**
  * Thunk : Create a NEW post via REST API on server
+ *
  * @param postDetails
  * @returns {function(*): (PromiseLike<T> | Promise<T>)}
  */
 export const createPost = (postDetails) => dispatch => (
     api.createPost(postDetails)
         .then(() => {
-            dispatch(createToast('Successfully created the post'))
+            dispatch(createToast('Successfully created a post'))
         })
         .then(() => {
             dispatch(createPostSuccess(postDetails))

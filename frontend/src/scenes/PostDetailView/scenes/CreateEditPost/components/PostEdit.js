@@ -104,8 +104,8 @@ class PostEdit extends Component {
         console.log('Redirect?',nextProps);
         if (nextProps.modified) {
             console.log('******REDIRECTING');
-            // Homepage redirect when post created
-            nextProps.history.push(`/`);
+            // Post View redirect when post updated
+            nextProps.history.push(`/post/view/${nextProps.postId}`);
         }
 
         this.setState({post: nextProps.posts[nextProps.postId], creating: false});
