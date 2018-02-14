@@ -1,37 +1,56 @@
 # Readable API Server
 
-This is the starter project for the final assessment project for Udacity's Redux course where you will build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
+This is an implementation of Udacity's content and comment web app for the Redux course. 
+Users can post content to predefined categories, comment on their posts and other users' posts, 
+and vote on posts and comments. Users can also edit and delete posts and comments.
 
-This repository includes the code for the backend API Server that you'll use to develop and interact with the front-end portion of the project.
+The project includes a backend API Server that interacts with the front-end portion of the project.
 
-## Layout
+## Getting started
 
+These instructions will get you a copy of the project up and running on your local machine 
+for development and testing purposes. See deployment for notes on how to deploy the project 
+on a live system.
+
+### Prerequisites
+* [Node v6+](https://nodejs.org/en/) - Server and build engine
+
+### Installing and starting
+In a command window:
+```
+cd api-server
+npm install
+npm start
+```
+In a second command window:
+```
+cd frontend
+npm install
+npm start
+```
+A browser window should now open with the application running
+
+## Built with
+* [React](https://reactjs.org/) - The web framework used
+* [Redux](https://redux.js.org/) - State Management
+* [Router](https://reacttraining.com/react-router/) - Declarative client-side routing
+* [React-Bootstrap](https://react-bootstrap.github.io/) - Front-end presentation framework
+* [create-react-app](https://www.npmjs.com/package/create-react-app) - React project bootstrapper
+ 
+
+## Source Layout
 I've based the project structure on a [Feature Layout](https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3ea1920f1)
-
 ```
 /src
   /scenes
-    /Home
-      /index.js
-      /static
-        /logo.svg
-  /services
-    /api.js
+    /components     <-- React components common across scenes
+    <Scenes>        <-- Hierarchy of scenes and related components
+  /services/api.js  <-- Module for XHR interaction with api-server
+  /store            <-- Contains Action/Reducer modules for each component that uses Redux
+  index.js          <-- Application root
+  store.js          <-- Redux store and reducer bootstrap
 ```
 
-## Start Developing
 
-To get started developing right away:
-
-* Install and start the API server
-  * `cd api-server`
-  * `npm install`
-  * `node server`
-* In another terminal window, use Create React App to scaffold out the front-end
-  * `create-react-app frontend`
-  * `cd frontend`
-  * `npm start`
-
-## API Server
-
-Information about the API server and how to use it can be found in its [README file](api-server/README.md).
+## License
+This project is licensed under the MIT License - see the LICENSE.md file for details
