@@ -1,4 +1,5 @@
 import * as api from '../services/api.js'
+import * as PostActions from './PostActions'
 
 
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
@@ -94,6 +95,12 @@ export const deleteComment = (postId, commentId) => dispatch => (
     api.deleteComment(commentId)
         .then(
             dispatch(getComments(postId))
+        )
+        .then(
+            /* Need to retrieve the post that this comment belonged
+             * to so that the correct comment count is displayed
+             */
+            dispatch(PostActions.getPost(postId))
         )
 );
 
