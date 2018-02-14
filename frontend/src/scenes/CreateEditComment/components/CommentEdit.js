@@ -37,7 +37,7 @@ class CommentEdit extends Component {
     }
 
     handleBodyChange(event) {
-        this.setState({comment:{...this.state.comment, body:event.target.value } });
+        this.setState({comment: {...this.state.comment, body: event.target.value}});
     }
 
     handleAuthorChange(event) {
@@ -83,30 +83,19 @@ class CommentEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        console.log('nextProps',nextProps);
         this.setState({comment: nextProps.comments[nextProps.commentId], modifiedOK: nextProps.modifiedOK});
     }
 
 
     render() {
         const props = this.props;
-        const comment = this.state.comment;
-        console.log('rendering comment',comment);
+        const comment = this.state.comment || {};
 
         if (this.state.modifiedOK) {
             /*
-          Homepage redirect after a few seconds
-           */
-            console.log('SETTING TIMEOUT!!',this.state.modifiedOK)
-            setTimeout(function () {
-                console.log(`/post/view/${props.parentId}`);
-                props.history.push(`/post/view/${props.parentId}`);
-            }, 2000);
-            return (
-                <Alert bsStyle="warning">
-                    <strong>Updated comment</strong> Redirecting to original post..
-                </Alert>
-            )
+            Homepage redirect
+            */
+            props.history.push(`/post/view/${props.parentId}`);
         }
 
         return (

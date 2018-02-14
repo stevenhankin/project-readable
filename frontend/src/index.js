@@ -26,7 +26,7 @@ ReactDOM.render(
 
                                 </Row>
                                 <Row>
-                                    <p>Project showcasing Redux with React</p>
+                                    <p>Udacity Project showcasing Redux with React</p>
                                 </Row>
 
                             </Col>

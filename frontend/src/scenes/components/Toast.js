@@ -20,8 +20,8 @@ class Toast extends Component {
 
     render() {
         return (
-            <Alert bsStyle="warning">
-                {this.props.toast}
+            <Alert bsStyle="warning" hidden={!this.props.toast}>
+                <strong>{this.props.toast}</strong>
             </Alert>
         );
     }

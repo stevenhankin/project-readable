@@ -190,9 +190,7 @@ class PostsTable extends Component {
                     <small><span className="glyphicon glyphicon-plus-sign"/></small>
                 </Link></h1>
 
-                {props.toast &&
-                    <Toast/>
-                }
+                <Toast/>
 
                 <Table className="table table-striped" hover>
                     <thead>
