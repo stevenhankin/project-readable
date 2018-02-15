@@ -49,17 +49,36 @@ export const getPost = (id) => dispatch => (
 );
 
 /**
- * Thunk : Get all the posts via REST API from server
+ * Thunk : Get category/all posts via REST API from server
  *
+ * @param category - undefined if for all posts (default view)
  * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
  */
-export const getPosts = () => dispatch => (
-    api.fetchPosts()
-        .then(
-            posts => {
-                dispatch(receivePosts(posts))
-            })
+export const getPosts = () => dispatch =>
+            (
+        api.fetchPosts()
+            .then(
+                posts => {
+                    dispatch(receivePosts(posts))
+                })
 );
+
+/**
+ * Thunk : Get category posts via REST API from server
+ *
+ * @param category - undefined if for all posts (default view)
+ * @returns {function(*): (JQueryPromise<any> | JQueryPromise<void> | PromiseLike<T> | Promise<T>)}
+ */
+export const getCategoryPosts = (category) => dispatch =>
+    (
+        api.fetchCategoryPosts(category)
+            .then(
+                posts => {
+                    dispatch(receivePosts(posts))
+                })
+);
+
+
 
 /**
  * Thunk : DELETE a post via REST API from server

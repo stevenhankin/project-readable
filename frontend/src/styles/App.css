@@ -17,6 +17,12 @@ Button {
     color: mediumslateblue;
 }
 
+.btn .glyphicon {
+    margin-right: 8px;
+    color: white;
+}
+
+
 section {
     margin-bottom: 40px;
 }
@@ -56,7 +62,7 @@ and the sort direction icons
 Disable (accidental) selection of
 text on the tables since it looks untidy
 */
-Table {
+Table,.panel {
     -webkit-user-select: none;
     -moz-user-select: -moz-none;
     -ms-user-select: none;
@@ -71,10 +77,14 @@ Table {
     margin-left: 10px;
 }
 
-.toast {
-    position: fixed;
-    bottom: 50%;
-    right: auto;
-    width: 90%;
-    z-index: 1;
+
+.hdr {
+    background-color: #eeeeee;
+    color: #555555;
+    padding-left: 10px;
+    margin-bottom: 30px;
+}
+
+.navHome {
+    /*margin-bottom: 30px;*/
 }

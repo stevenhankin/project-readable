@@ -14,8 +14,6 @@ const CreateEditComment = (props) => {
             </section>
         </span>
     );
-
-
 };
 
 export default CreateEditComment;

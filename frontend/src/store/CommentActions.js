@@ -2,31 +2,28 @@ import * as api from '../services/api.js'
 import * as PostActions from './PostActions'
 import {createToast} from "./ToastActions";
 
-
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
 export const RECEIVE_COMMENT = "RECEIVE_COMMENT";
 export const MODIFY_COMMENT_SUCCESS = "MODIFY_COMMENT_SUCCESS";
 
-
 export const receiveComments = (comments) => ({
     type: RECEIVE_COMMENTS,
     comments,
-    modified:false
+    modified: false
 });
 
 
 export const receiveComment = comment => ({
     type: RECEIVE_COMMENT,
     comment,
-    modified:false
+    modified: false
 });
 
 export const modifyCommentSuccess = comment => ({
     type: MODIFY_COMMENT_SUCCESS,
     comment,
-    modified:true
+    modified: true
 });
-
 
 
 /**
@@ -77,7 +74,6 @@ export const updateComment = (c) => dispatch => (
 );
 
 
-
 /**
  * Thunk : Create a NEW comment via REST API on server then synchronously GETS the comment
  *
@@ -117,7 +113,6 @@ export const deleteComment = (postId, commentId) => dispatch => (
             dispatch(PostActions.getPost(postId))
         )
 );
-
 
 
 /**

@@ -3,14 +3,13 @@ import React, {Component} from 'react';
 import * as actions from "../../../../../store/PostActions";
 import * as ToastActions from "../../../../../store/ToastActions";
 import {Link, withRouter} from 'react-router-dom';
-import {Alert, Button, Form, ControlLabel, FormControl, Badge, Col, Row, Well} from 'react-bootstrap';
+import { Button, Form, ControlLabel, Badge, Col, Row} from 'react-bootstrap';
 
 class PostView extends Component {
 
     constructor(props) {
         super(props);
         this.deleteHandler = this.deleteHandler.bind(this);
-        console.log('GET POST')
         props.getPost(this.props.postId);
     }
 
@@ -38,55 +37,43 @@ class PostView extends Component {
 
     render() {
 
-        console.log('***PostEdit in CreateEditView');
-
-        console.log('state',this.state);
-        console.log('props',this.props);
-        console.log('post',post);
-        const props = this.props;
         const post = (this.state && this.state.post)||{};
 
         return (
             <Form componentClass="fieldset" horizontal>
-                <Row>
-                    <Col xs={12}>
-                        <h1>Delete this post...</h1>
-                    </Col>
-                </Row>
 
                 <Row>
                     <Col xs={8}>
                         <Row>
                             <Col xs={2}>
-                                <ControlLabel>Title</ControlLabel>
+                                <strong>Title</strong>
                             </Col>
                             <Col xs={10}>
-                                <Well>{post.title}</Well>
+                                <p>{post.title}</p>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={2}>
-                                <ControlLabel>Body</ControlLabel>
+                                <strong>Body</strong>
                             </Col>
                             <Col xs={10}>
-                                <FormControl type="text" disabled componentClass="textarea" rows={5}
-                                             value={(post.body) || ''}/>
+                                <p>{post.body}</p>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={2}>
-                                <ControlLabel>Author</ControlLabel>
+                                <strong>Author</strong>
                             </Col>
                             <Col xs={10}>
-                                <Well>{post.author}</Well>
+                                <p>{post.author}</p>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={2}>
-                                <ControlLabel>Category</ControlLabel>
+                                <strong>Category</strong>
                             </Col>
                             <Col xs={10}>
-                                <Well>{post.category}</Well>
+                                <p>{post.category}</p>
                             </Col>
                         </Row>
                     </Col>
@@ -108,16 +95,15 @@ class PostView extends Component {
                 </Row>
 
                 <Row>
-                    <Col xs={4}>
-                        <h1>...are you sure?</h1>
+                    <Col xs={12}>
+                        <h2>Delete this post...are you sure?</h2>
                     </Col>
-
-                    <Col xs={2}>
+                </Row>
+                <Row>
+                    <Col xs={12}>
                         <Button className="h1 heading-button" bsStyle="warning" onClick={this.deleteHandler}>Yes!
                             Delete...</Button>
 
-                    </Col>
-                    <Col>
                         <Link to={`/post/view/${post.id}`}>
                             <Button className="h1 heading-button">Cancel</Button>
                         </Link>
@@ -132,7 +118,6 @@ class PostView extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('mapStateToProps',state,ownProps);
     return {postId: ownProps.postId,
         modified: state.PostReducer.modified,
         post: state.PostReducer.posts[ownProps.postId],

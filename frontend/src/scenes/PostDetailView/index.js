@@ -1,7 +1,7 @@
 import React from 'react';
 import PostFormCreate from "./components/PostView";
 import Comments from "./components/Comments"
-import Toast from '../components/Toast'
+import NavHome from "../components/NavHome";
 
 const PostDetailView = (props) => {
 
@@ -9,9 +9,11 @@ const PostDetailView = (props) => {
 
     return (
         <span>
+            <NavHome/>
             <section>
                 <PostFormCreate postId={postId}/>
             </section>
+            <hr/>
             <section>
                 <Comments postId={postId}/>
             </section>

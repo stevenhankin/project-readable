@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {getComment, createComment, updateComment} from "../../../store/CommentActions";
-import {Alert, Form, ControlLabel, FormControl, Button, Col, Row, Well} from 'react-bootstrap';
+import {Form, ControlLabel, FormControl, Button, Col, Row, Well} from 'react-bootstrap';
 
 
 class CommentEdit extends Component {
@@ -14,6 +14,7 @@ class CommentEdit extends Component {
         this.handleAuthorChange = this.handleAuthorChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.isCreating = this.isCreating.bind(this);
+        this.handleCancel = this.handleCancel(this);
 
         /*
         If a Comment ID is NOT passed in,
@@ -33,6 +34,15 @@ class CommentEdit extends Component {
          */
         if (!this.isCreating()) {
             props.getComment(props.commentId);
+        }
+    }
+
+    /*
+    Return to previous page
+     */
+    handleCancel() {
+        return (e) => {
+            this.props.history.goBack();
         }
     }
 
@@ -57,7 +67,6 @@ class CommentEdit extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const comment = this.state.comment;
-        console.log('SUBMIT - comment id is ', this.props.commentId, 'with comment', comment);
         if (!this.isCreating()) {
             /*
             UPDATE
@@ -83,33 +92,26 @@ class CommentEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-
-        this.setState({comment: nextProps.comments[nextProps.commentId], modified: nextProps.modified});
+        const commentId = nextProps.commentId || nextProps.newCommentId;
+        this.setState({comment: nextProps.comments[commentId], modified: nextProps.modified});
+        if (nextProps.modified) {
+            /*
+            Post parent redirect after submitting a new or modified comment
+            */
+            nextProps.history.push(`/post/view/${nextProps.parentId}`);
+        }
     }
 
 
     render() {
-        const props = this.props;
-        const comment = this.state.comment || {};
-
-
-        if (props.modified) {
-            /*
-            Post parent redirect after submitting a new or modified comment
-            */
-            props.history.push(`/post/view/${props.parentId}`);
-        }
-
-
-        console.log('RENDER',props);
-
+        const comment = this.state.comment;
         return (
 
             <Form componentClass="fieldset" horizontal>
 
                 <Row>
                     <Col xs={6}>
-                        <h1>Comment</h1>
+                        <h2>Editing comment</h2>
                     </Col>
                 </Row>
 
@@ -140,9 +142,13 @@ class CommentEdit extends Component {
                         </Row>
 
                         <Row>
-                            <Col xsOffset={2} xs={2}>
+                            <Col xsOffset={2} xs={10}>
                                 <Button type="submit" onClick={this.handleSubmit}
+                                        disabled={comment.body.length === 0
+                                        || comment.author.length === 0}
+
                                         bsStyle="primary">Submit</Button>
+                                <Button bsStyle="warning" onClick={this.handleCancel}>Cancel</Button>
                             </Col>
                         </Row>
 
@@ -158,6 +164,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         parentId: ownProps.parentId,
         commentId: ownProps.commentId,
+        newCommentId: state.CommentReducer.newCommentId,
         comments: state.CommentReducer.comments,
         modified: state.CommentReducer.modified
     }

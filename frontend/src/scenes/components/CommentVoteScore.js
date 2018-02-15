@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import {Badge, Col, Row} from 'react-bootstrap';
+import {Badge} from 'react-bootstrap';
 import * as action from "../../store/CommentActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 
 
+/**
+ * Component for displaying the voting score of a Comment
+ * and the icons for changing the vote
+ */
 class CommentVoteScore extends Component {
     constructor(props) {
         super(props);

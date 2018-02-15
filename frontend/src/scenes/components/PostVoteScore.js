@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import {Badge, Col, Row} from 'react-bootstrap';
+import {Badge} from 'react-bootstrap';
 import * as action from "../../store/PostActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 
 
+/**
+ * Component for displaying the voting score of a Post
+ * and the icons for changing the vote
+ */
 class PostVoteScore extends Component {
     constructor(props) {
         super(props);

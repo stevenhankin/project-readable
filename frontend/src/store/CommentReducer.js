@@ -1,8 +1,8 @@
 import {RECEIVE_COMMENTS, MODIFY_COMMENT_SUCCESS, RECEIVE_COMMENT} from './CommentActions'
 
 export const reducer = (state = {comments: {}}, action) => {
-    console.log('STATE IS SET TO', state);
     switch (action.type) {
+
         case RECEIVE_COMMENTS:
             const objOfComments = action.comments.reduce((acc, comment) => {
                 acc[comment.id] = comment;
@@ -15,16 +15,25 @@ export const reducer = (state = {comments: {}}, action) => {
             };
 
         case RECEIVE_COMMENT:
-            let newComment = {};
-            newComment[action.comment.id] = action.comment;
-            let s = {...state,
-                modified: action.modified, comments: {...state.comments, ...newComment}};
-            return s;
+            let comment = {};
+            comment[action.comment.id] = action.comment;
+            return {
+                ...state,
+                modified: action.modified, comments: {...state.comments, ...comment}
+            };
 
         case MODIFY_COMMENT_SUCCESS:
-            console.log('MODIFIED!', state, action)
-            return {...state,
-                modified: action.modified};
+            /*
+            Merge updated comment into comments
+             */
+            let newComment = {};
+            newComment[action.comment.id] = action.comment;
+            return {
+                ...state,
+                modified: action.modified,
+                newCommentId: action.comment.id,
+                comments: {...state.comments, ...newComment}
+            };
 
         default:
             return state;

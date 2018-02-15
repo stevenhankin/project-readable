@@ -1,43 +1,22 @@
-import React, {Component} from 'react';
-import * as action from "../../store/ToastActions";
-import {connect} from "react-redux";
-import {Alert} from 'react-bootstrap';
+import React from 'react';
+import {Button} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 
 /**
- * Toast to raise an informational message to the
- * user which will cancel after a short time
+ * Button to navigate home
  */
-class Toast extends Component {
+const NavHome = (props) => {
 
-    render() {
-        const props = this.props;
+    return (
+        <section>
+        <Link to='/'>
+            <Button bsStyle="primary" bsSize="small" className="navHome">
+                <span className="glyphicon glyphicon-home"/>Home
+            </Button>
+        </Link>
+        </section>
+    )
 
-        if (props.show) {
-            /**
-             * If received new state and showing is enabled,
-             * set a timeout to hide the Toast again in
-             * a few seconds time
-             */
-            setTimeout(function () {
-                props.removeToast();
-            }, 2000);
-        }
-
-        return (
-            <Alert bsStyle="warning" className="toast" hidden={!props.show}>
-                <strong>{props.toast}</strong>
-            </Alert>
-        );
-    }
-}
-
-
-const mapStateToProps = (state) => {
-    return {toast: state.ToastReducer.toast, show: state.ToastReducer.show}
 };
 
-const mapDispatchToProps = dispatch => ({
-    removeToast: (id) => dispatch(action.removeToast(id))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Toast);
+export default NavHome;

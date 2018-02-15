@@ -6,7 +6,7 @@ const DefaultView = () =>  {
         return (
             <span>
                 <section>
-                    <CategoryNav/>
+                    <CategoryNav category='all'/>
                 </section>
                 <section>
                     <PostsTable/>

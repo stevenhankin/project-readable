@@ -1,24 +1,17 @@
 import React from 'react';
-import PostFormCreate from "./components/PostView";
-import Comments from "./components/Comments"
+import NavHome from '../../../components/NavHome';
 
-const PostDetailView = (props) => {
 
-    const postId = props.match && props.match.params.postId;
+const Post404 = (props) => {
 
     return (
+        <div>
+        <NavHome/>
         <span>
-            <section>
-                <PostFormCreate postId={postId}/>
-            </section>
-            <hr/>
-            <section>
-                <Comments postId={postId}/>
-            </section>
+            <h2>Unfortunately that post no longer exists...</h2>
         </span>
+        </div>
     );
-
-
 };
 
-export default PostDetailView;
+export default Post404;

@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {withRouter} from  'react-router-dom'
+import {Link,withRouter} from 'react-router-dom'
 import {getPost, updatePost, createPost} from "../../../../../store/PostActions";
 import {Form, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
 import * as ToastActions from "../../../../../store/ToastActions";
@@ -64,7 +64,7 @@ class PostEdit extends Component {
     }
 
     handleCategoryChange(e) {
-        this.setState({post : {...this.state.post, category: e.target.value}});
+        this.setState({post: {...this.state.post, category: e.target.value}});
     }
 
     /**
@@ -81,8 +81,6 @@ class PostEdit extends Component {
             const randomId = Math.random().toString(16).substr(2);
             const newPost = {...post, id: randomId, timestamp: Date.now()};
             this.props.createPost(newPost);
-
-
         }
         else {
             /*
@@ -101,28 +99,33 @@ class PostEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        console.log('Redirect?',nextProps);
+
+        const thisPostId = nextProps.createdPostId || nextProps.postId;
         if (nextProps.modified) {
-            console.log('******REDIRECTING');
-            // Post View redirect when post updated
-            nextProps.history.push(`/post/view/${nextProps.postId}`);
+            /*
+            Post View redirect when post updated
+            to either the Created Post or Edited Post
+            */
+            const redirectPostId = thisPostId;
+            nextProps.history.push(`/post/view/${redirectPostId}`);
         }
+        this.setState({post: nextProps.posts[thisPostId], creating: false});
+    }
 
-        this.setState({post: nextProps.posts[nextProps.postId], creating: false});
-
+    componentDidMount() {
+        const initialCategory = this.props.categories[0].name;
+        this.setState({post: {...this.state.post, category: initialCategory}})
     }
 
     render() {
         const props = this.props;
-        const post = this.state.post||{title:'',author:'',body:''};
-        console.log('post',post)
-
+        const post = this.state.post;// || {title: '', author: '', body: '', category:};
 
         return (
             <Form componentClass="fieldset" horizontal>
                 <Row>
                     <Col xs={6}>
-                        <h1>Post</h1>
+                        <h2>Editing Post</h2>
                     </Col>
                 </Row>
 
@@ -143,7 +146,7 @@ class PostEdit extends Component {
                             </Col>
                             <Col xs={10}>
                                 <FormControl type="text" componentClass="textarea" rows={5}
-                                             value={( post.body) || ''}
+                                             value={(post.body) || ''}
                                              onChange={this.handleBodyChange}/>
                             </Col>
                         </Row>
@@ -153,7 +156,7 @@ class PostEdit extends Component {
                                 <ControlLabel>Author</ControlLabel>
                             </Col>
                             <Col xs={10}>
-                                {this.state.creating?
+                                {this.state.creating ?
                                     <FormControl type="text" value={(!props.isLoading && post.author) || ''}
                                                  onChange={this.handleAuthorChange}/>
                                     :
@@ -168,13 +171,11 @@ class PostEdit extends Component {
                             </Col>
                             <Col xs={10}>
                                 {this.state.creating ?
-                                    <FormControl componentClass="select"   value={post.category}
+                                    <FormControl componentClass="select" value={post.category}
                                                  onChange={this.handleCategoryChange}>
                                         {
                                             props.categories.map(
-                                                val =>
-                                                    <option key={val.name} value={val.name}>{val.name}</option>
-
+                                                val => <option key={val.name} value={val.name}>{val.name}</option>
                                             )
                                         }
                                     </FormControl>
@@ -185,16 +186,17 @@ class PostEdit extends Component {
                         </Row>
 
                         <Row>
-                            <Col xsOffset={2} xs={2}>
-                                <Button type="submit" onClick={this.handleSubmit} disabled={props.isLoading || ( post.title.length===0 || post.body.length===0 ||post.author.length===0) }
+                            <Col xsOffset={2} xs={10}>
+                                <Button type="submit" onClick={this.handleSubmit}
+                                        disabled={props.isLoading || (post.title.length === 0 || post.body.length === 0 || post.author.length === 0)}
                                         bsStyle="primary">Submit</Button>
-                                {/*<Button bsStyle="warning" onClick={this.cancelEdit}>Cancel</Button>*/}
+                                <Link to='/'><Button bsStyle="warning">Cancel</Button></Link>
                             </Col>
                         </Row>
 
                     </Col>
 
-                     {/*No need to show votes and comment count when creating NEW post */}
+                    {/*No need to show votes and comment count when creating NEW post */}
                     {this.state.creating ||
                     <Col xsOffset={1} xs={3}>
 
@@ -225,6 +227,7 @@ class PostEdit extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         postId: ownProps.postId,
+        createdPostId: state.PostReducer.createdPostId,
         posts: state.PostReducer.posts,
         categories: state.CategoryReducer.categories,
         isLoading: state.PostReducer.isLoading,

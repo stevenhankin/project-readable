@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-import {Table, Badge} from 'react-bootstrap';
+import {Table, Badge, Button} from 'react-bootstrap';
 import TimeAgo from 'timeago-react';
 import {connect} from "react-redux";
-import {getPosts} from "../../../store/PostActions";
+import * as actions from "../../../store/PostActions";
 import PostVoteScore from '../../components/PostVoteScore';
 
 class PostsTable extends Component {
@@ -22,7 +22,6 @@ class PostsTable extends Component {
             {name: "Author", field: "author"},
             {name: "Category", field: "category"},
             {name: "Votes", field: "voteScore", badge: true},
-            // {name: "Deleted", field: "deleted"},
             {name: "Comments", field: "commentCount", badge: true}
         ];
 
@@ -32,12 +31,17 @@ class PostsTable extends Component {
         */
         this.state = {
             sortCol: 0,
-            sortDir: "ASC",
-            categoryFilter: props.category
+            sortDir: "ASC"
         };
+    }
 
+    /**
+     * Initialisation
+     */
+    componentDidMount() {
         this.props.getPosts();
     }
+
 
     /**
      * Curry function for each column heading
@@ -140,16 +144,10 @@ class PostsTable extends Component {
         const sorter = column.timeAgo ?
             this.state.sortDir === "ASC" ? compareDESC(sortBy) : compareASC(sortBy)
             : this.state.sortDir === "ASC" ? compareASC(sortBy) : compareDESC(sortBy);
-        /*
-        Category Filter is set on navigate from Default Screen
-        by clicking on an available category
-         */
-        const categoryFilter = this.state.categoryFilter;
-        /*
-        Rows are filtered (by category) BEFORE sorting, as a potential performance optimization
-         */
-        const filteredRows = categoryFilter ? posts.filter(post => post.category === categoryFilter) : posts;
-        const sortedRows = filteredRows.sort(sorter).map(post => {
+
+        const sortedRows = Object.values(posts).sort(sorter).map((post,idx) => {
+            /* Guard against undefined post when returning from a 404 */
+            if (!post.id ) return <tr key={idx}/>
             return (
                 <tr key={post.id} onClick={() => this.cellClickHandler(post.id)}>
                     {this.columns.map((column, idx) =>
@@ -158,7 +156,7 @@ class PostsTable extends Component {
                             {
                                 column.field === "voteScore" ?
 
-                                        <PostVoteScore postId={post.id}/>
+                                    <PostVoteScore postId={post.id}/>
 
                                     :
                                     <span>
@@ -172,7 +170,8 @@ class PostsTable extends Component {
 
                         </td>)}
                 </tr>
-            )
+
+        )
         });
         return <tbody>{sortedRows}</tbody>;
     }
@@ -185,9 +184,11 @@ class PostsTable extends Component {
         const posts = Object.values(props.posts);
         return (
             <div>
-                <h1>Posts <Link to="/post/create">
-                    <small><span className="glyphicon glyphicon-plus-sign"/></small>
-                </Link></h1>
+                <Link to="/post/create">
+                    <Button bsStyle="primary">
+                        <span className="glyphicon glyphicon-plus-sign"/>Add post
+                    </Button>
+                </Link>
 
                 <Table className="table table-striped" hover>
                     <thead>
@@ -203,12 +204,12 @@ class PostsTable extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('mapStateToProps', state);
-    return {posts: state.PostReducer.posts, toast: state.ToastReducer.toast}
+    return {category: ownProps.category, posts: state.PostReducer.posts, toast: state.ToastReducer.toast}
 };
 
 const mapDispatchToProps = dispatch => ({
-    getPosts: () => dispatch(getPosts())
+    getPosts: () => dispatch(actions.getPosts()),
+    getCategoryPosts: (category) => dispatch(actions.getCategoryPosts(category))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsTable));
