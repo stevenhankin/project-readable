@@ -28,7 +28,7 @@ cd frontend
 npm install
 npm start
 ```
-A browser window should now open with the application running
+A browser window should now open with the application running, or open [in a browser window directly](http://localhost:3000/)
 
 ## Built with
 * [React](https://reactjs.org/) - The web framework used
