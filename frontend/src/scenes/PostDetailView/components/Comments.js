@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import * as action from "../../../store/CommentActions";
+import * as actions from "../../../store/CommentActions";
 import {Table, Button} from 'react-bootstrap';
 import TimeAgo from 'timeago-react';
 import {Link, withRouter} from 'react-router-dom';
@@ -83,10 +83,5 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 
-const mapDispatchToProps = dispatch => ({
-    getComments: (postId) => dispatch(action.getComments(postId)),
-    deleteComment: (postId, commentId) => dispatch(action.deleteComment(postId, commentId))
-});
 
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CommentsView));
+export default withRouter(connect(mapStateToProps, actions)(CommentsView));
