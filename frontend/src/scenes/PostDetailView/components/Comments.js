@@ -39,7 +39,7 @@ class CommentsView extends Component {
 
     render() {
         const props = this.props;
-        const comments = Object.values(this.props.comments);
+        const comments = Object.values(props.CommentReducer.comments);
 
         if (!comments) {
             return <div>Loading..</div>;
@@ -76,8 +76,8 @@ class CommentsView extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId, comments: state.CommentReducer.comments}
-};
+function mapStateToProps({CommentReducer, ownProps}) {
+    return {CommentReducer, ownProps}
+}
 
 export default withRouter(connect(mapStateToProps, actions)(CommentsView));
