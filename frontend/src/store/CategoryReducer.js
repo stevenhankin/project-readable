@@ -1,4 +1,4 @@
-import {RECEIVE_CATEGORIES} from './CategoryActions'
+import {RECEIVE_CATEGORIES} from './types'
 
 export const reducer = (state = { categories: [], loading: true}, action) => {
     switch (action.type) {

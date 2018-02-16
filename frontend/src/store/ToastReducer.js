@@ -1,4 +1,4 @@
-import {CREATE_TOAST,REMOVE_TOAST} from './ToastActions'
+import {CREATE_TOAST,REMOVE_TOAST} from './types'
 
 export const reducer = (state = {toast: ""}, action) => {
     switch (action.type) {

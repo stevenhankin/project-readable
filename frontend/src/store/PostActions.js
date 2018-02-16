@@ -1,12 +1,8 @@
 import * as api from "../services/api";
 import {createToast} from "./ToastActions";
+import {RECEIVE_POSTS, RECEIVE_POST, DELETE_POST_SUCCESS, CREATE_POST_SUCCESS,UPDATE_POST_SUCCESS} from './types'
 
 
-export const RECEIVE_POSTS = "RECEIVE_POSTS";
-export const RECEIVE_POST = "RECEIVE_POST";
-export const DELETE_POST_SUCCESS = "DELETE_POST_SUCCESS";
-export const UPDATE_POST_SUCCESS = "UPDATE_POST_SUCCESS";
-export const CREATE_POST_SUCCESS = "CREATE_POST_SUCCESS";
 
 export const receivePost = post => ({
     type: RECEIVE_POST,

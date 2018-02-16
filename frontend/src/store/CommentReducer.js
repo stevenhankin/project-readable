@@ -1,4 +1,4 @@
-import {RECEIVE_COMMENTS, MODIFY_COMMENT_SUCCESS, RECEIVE_COMMENT} from './CommentActions'
+import {RECEIVE_COMMENTS, MODIFY_COMMENT_SUCCESS, RECEIVE_COMMENT} from './types'
 
 export const reducer = (state = {comments: {}}, action) => {
     switch (action.type) {

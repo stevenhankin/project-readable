@@ -1,10 +1,8 @@
 import * as api from '../services/api.js'
 import * as PostActions from './PostActions'
 import {createToast} from "./ToastActions";
+import {RECEIVE_COMMENTS, MODIFY_COMMENT_SUCCESS, RECEIVE_COMMENT} from './types'
 
-export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
-export const RECEIVE_COMMENT = "RECEIVE_COMMENT";
-export const MODIFY_COMMENT_SUCCESS = "MODIFY_COMMENT_SUCCESS";
 
 export const receiveComments = (comments) => ({
     type: RECEIVE_COMMENTS,

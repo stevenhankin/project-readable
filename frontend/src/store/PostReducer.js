@@ -1,4 +1,4 @@
-import {RECEIVE_POSTS, RECEIVE_POST, DELETE_POST_SUCCESS, CREATE_POST_SUCCESS,UPDATE_POST_SUCCESS} from './PostActions'
+import {RECEIVE_POSTS, RECEIVE_POST, DELETE_POST_SUCCESS, CREATE_POST_SUCCESS,UPDATE_POST_SUCCESS} from './types'
 
 export const reducer = (state = {posts: {}, loading: true}, action) => {
     switch (action.type) {

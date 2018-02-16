@@ -1,6 +1,4 @@
-
-export const REMOVE_TOAST = "REMOVE_TOAST";
-export const CREATE_TOAST = "CREATE_TOAST";
+import {CREATE_TOAST, REMOVE_TOAST} from './types';
 
 export const removeToast = () => ({
     type: REMOVE_TOAST,
