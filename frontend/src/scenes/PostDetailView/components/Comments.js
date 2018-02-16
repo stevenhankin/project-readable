@@ -10,12 +10,9 @@ class CommentsView extends Component {
 
     constructor(props) {
         super(props);
-
         this.commentClickHandler = this.commentClickHandler.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.props.getComments(this.props.postId);
     }
-
 
     commentClickHandler = (postId, commentId) => () => {
         this.props.history.push(`/post/${postId}/comment/${commentId}/edit`);
@@ -26,6 +23,19 @@ class CommentsView extends Component {
         this.props.deleteComment(postId, commentId);
     };
 
+    commentsTableBody(comments, props) {
+        return comments && comments.map(
+            comment =>
+                <tr key={comment.id} onClick={this.commentClickHandler(props.postId, comment.id)}>
+                    <td><TimeAgo datetime={comment.timestamp}/></td>
+                    <td>{comment.body}</td>
+                    <td>{comment.author}</td>
+                    <td><CommentVoteScore commentId={comment.id}/></td>
+                    <td onClick={this.handleDelete(props.postId, comment.id)}><span
+                        className="glyphicon glyphicon-trash"/></td>
+                </tr>
+        );
+    }
 
     render() {
         const props = this.props;
@@ -44,7 +54,6 @@ class CommentsView extends Component {
                     </Button>
                 </Link>
 
-
                 <Table>
                     <thead>
                     <tr>
@@ -58,17 +67,7 @@ class CommentsView extends Component {
                     </thead>
                     <tbody>
                     {
-                        comments && comments.map(
-                            comment =>
-                                <tr key={comment.id} onClick={this.commentClickHandler(props.postId, comment.id)}>
-                                    <td><TimeAgo datetime={comment.timestamp}/></td>
-                                    <td>{comment.body}</td>
-                                    <td>{comment.author}</td>
-                                    <td><CommentVoteScore commentId={comment.id}/></td>
-                                    <td onClick={this.handleDelete(props.postId, comment.id)}><span
-                                        className="glyphicon glyphicon-trash"/></td>
-                                </tr>
-                        )
+                        this.commentsTableBody(comments, props)
                     }
                     </tbody>
                 </Table>
@@ -77,11 +76,8 @@ class CommentsView extends Component {
     }
 }
 
-
 const mapStateToProps = (state, ownProps) => {
     return {postId: ownProps.postId, comments: state.CommentReducer.comments}
 };
-
-
 
 export default withRouter(connect(mapStateToProps, actions)(CommentsView));
