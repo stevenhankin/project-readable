@@ -37,6 +37,10 @@ class CommentsView extends Component {
         );
     }
 
+    componentWillMount() {
+        this.props.getComments(this.props.postId);
+    }
+
     render() {
         const props = this.props;
         const comments = Object.values(props.CommentReducer.comments);
