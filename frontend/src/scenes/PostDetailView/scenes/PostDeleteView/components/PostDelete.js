@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import React, {Component} from 'react';
 import {getPost,deletePost} from "../../../../../store/PostActions";
 import {createToast} from "../../../../../store/ToastActions";
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import { Button, Form, ControlLabel, Badge, Col, Row} from 'react-bootstrap';
 
 class PostView extends Component {
@@ -29,7 +29,7 @@ class PostView extends Component {
 
         if (nextProps.PostReducer.modified) {
             // Homepage redirect
-            nextProps.history.push(`/`);
+            nextProps.history.push('/');
         }
 
         this.setState({post: nextProps.PostReducer.posts[this.props.postId], modified: nextProps.PostReducer.modified});
@@ -104,9 +104,9 @@ class PostView extends Component {
                         <Button className="h1 heading-button" bsStyle="warning" onClick={this.deleteHandler}>Yes!
                             Delete...</Button>
 
-                        <Link to={`/post/view/${post.id}`}>
-                            <Button className="h1 heading-button">Cancel</Button>
-                        </Link>
+                        {/*<Link to={`/post/view/${post.id}`}>*/}
+                            <Button className="h1 heading-button" onClick={this.props.history.goBack}>Cancel</Button>
+                        {/*</Link>*/}
 
                     </Col>
                 </Row>

@@ -42,6 +42,35 @@ class PostsTable extends Component {
         this.props.getPosts();
     }
 
+    /*  */
+
+    /**
+     * Jump to Edit screen
+     * Need to do this as an onClick handler to stop
+     * event propagation
+     *
+     * @param postId
+     */
+    handleEditPost = (postId) => {
+        return (e) => {
+            e.stopPropagation();
+            this.props.history.push(`/post/edit/${postId}`);
+        }
+    };
+
+    /**
+     * Jump to Delete screen
+     * Need to do this as an onClick handler to stop
+     * event propagation
+     *
+     * @param postId
+     */
+    handleDeletePost = (postId) => {
+        return (e) => {
+            e.stopPropagation();
+            this.props.history.push(`/post/delete/${postId}`);
+        }
+    };
 
     /**
      * Curry function for each column heading
@@ -93,7 +122,11 @@ class PostsTable extends Component {
                     (<span className={this.state.sortDir === 'ASC' ?
                         SORT_ASC_ICON : SORT_DESC_ICON} aria-hidden="true"/>)}
                 </th>
-            })
+            }).concat(
+                <th key={100}>Edit</th>
+            ).concat(
+                <th key={101}>Delete</th>
+            )
     }
 
     /**
@@ -165,7 +198,17 @@ class PostsTable extends Component {
                                         </span>
                             }
 
-                        </td>)}
+                        </td>)
+                        .concat(
+                            <td key={100} onClick={this.handleEditPost(post.id)}>
+                                <span className="glyphicon glyphicon-pencil"/>
+                            </td>
+                        ).concat(
+                            <td key={101} onClick={this.handleDeletePost(post.id)}>
+                                <span className="glyphicon glyphicon-trash"/>
+                            </td>
+                        )
+                    }
                 </tr>
 
             )

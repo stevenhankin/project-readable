@@ -14,6 +14,7 @@ import {Provider} from 'react-redux';
 import {store} from './store';
 import Toast from './scenes/components/Toast'
 
+
 ReactDOM.render(
     <Provider store={store}>
         <Router>

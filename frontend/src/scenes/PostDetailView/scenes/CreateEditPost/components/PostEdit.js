@@ -1,9 +1,8 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import {Link,withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import {getPost, updatePost, createPost} from "../../../../../store/PostActions";
 import {Form, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
-// import {createToast} from "../../../../../store/ToastActions";
 
 
 class PostEdit extends Component {
@@ -197,7 +196,7 @@ class PostEdit extends Component {
                                 <Button type="submit" onClick={this.handleSubmit}
                                         disabled={props.isLoading || (post.title.length === 0 || post.body.length === 0 || post.author.length === 0)}
                                         bsStyle="primary">Submit</Button>
-                                <Link to='/'><Button bsStyle="warning">Cancel</Button></Link>
+                                <Button bsStyle="warning" onClick={this.props.history.goBack}>Cancel</Button>
                             </Col>
                         </Row>
 
