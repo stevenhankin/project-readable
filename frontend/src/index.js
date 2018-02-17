@@ -46,7 +46,7 @@ ReactDOM.render(
                 </Row>
                 <Row>
                     <Route exact path="/" component={App}/>
-                    <Route path="/categories/:category" component={CategoryView}/>
+                    <Route exact path="/:category" component={CategoryView}/>
                     <Route path="/post/edit/:postId" component={CreateEditView}/>
                     <Route path="/post/create" component={CreateEditView}/>
                     <Route path="/post/view/:postId" component={PostDetailView}/>

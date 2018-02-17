@@ -24,7 +24,7 @@ class CategoryNav extends Component {
                 this.props.history.push('/');
             } else {
                 this.props.getCategoryPosts(category);
-                this.props.history.push(`/categories/${category}`);
+                this.props.history.push(`/${category}`);
             }
         }
     }
