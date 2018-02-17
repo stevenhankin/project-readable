@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Badge} from 'react-bootstrap';
-import * as action from "../../store/PostActions";
+import {upVote, downVote} from "../../store/PostActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 
@@ -31,10 +31,13 @@ class PostVoteScore extends Component {
     render() {
         const post = this.props.post || {};
         return (
-            <span onClick={(e)=>{e.stopPropagation()}}>
+            <span onClick={(e) => {
+                e.stopPropagation()
+            }}>
                 <span className="glyphicon glyphicon-thumbs-up vote-score-glyph-left" onClick={this.upVoteHandler}/>
-                <Badge >{post.voteScore}</Badge>
-                <span className="glyphicon glyphicon-thumbs-down vote-score-glyph-right" onClick={this.downVoteHandler}/>
+                <Badge>{post.voteScore}</Badge>
+                <span className="glyphicon glyphicon-thumbs-down vote-score-glyph-right"
+                      onClick={this.downVoteHandler}/>
             </span>
         );
     }
@@ -44,14 +47,6 @@ PostVoteScore.propTypes = {
     postId: PropTypes.string.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId, post: state.PostReducer.posts[ownProps.postId]}
-};
+const mapStateToProps = ({PostReducer}) => ({PostReducer});
 
-const mapDispatchToProps = dispatch => ({
-    upVote: (id) => dispatch(action.upVote(id)),
-    downVote: (id) => dispatch(action.downVote(id))
-});
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostVoteScore);
+export default connect(mapStateToProps, {upVote, downVote})(PostVoteScore);

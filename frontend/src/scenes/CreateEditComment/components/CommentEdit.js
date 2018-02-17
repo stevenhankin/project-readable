@@ -55,7 +55,7 @@ class CommentEdit extends Component {
     }
 
     isCreating() {
-        return this.props.commentId ? false : true;
+        return !this.props.commentId;
     }
 
     /**
@@ -92,9 +92,11 @@ class CommentEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        const commentId = nextProps.commentId || nextProps.newCommentId;
-        this.setState({comment: nextProps.comments[commentId], modified: nextProps.modified});
-        if (nextProps.modified) {
+        console.log(nextProps);
+        const r = nextProps.CommentReducer;
+        const commentId = nextProps.commentId || r.newCommentId;
+        this.setState({comment: r.comments[commentId], modified: r.modified});
+        if (r.modified) {
             /*
             Post parent redirect after submitting a new or modified comment
             */
@@ -160,21 +162,7 @@ class CommentEdit extends Component {
 
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        parentId: ownProps.parentId,
-        commentId: ownProps.commentId,
-        newCommentId: state.CommentReducer.newCommentId,
-        comments: state.CommentReducer.comments,
-        modified: state.CommentReducer.modified
-    }
-};
 
-const mapDispatchToProps = dispatch => ({
-    getComment: (commentId) => dispatch(getComment(commentId)),
-    updateComment: (comment) => dispatch(updateComment(comment)),
-    createComment: (comment) => dispatch(createComment(comment))
-});
+const mapStateToProps = ({CommentReducer}) => ({CommentReducer});
 
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CommentEdit));
+export default withRouter(connect(mapStateToProps, {getComment, updateComment, createComment})(CommentEdit));

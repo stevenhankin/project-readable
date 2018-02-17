@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {Nav, NavItem} from 'react-bootstrap';
 import {getCategories} from "../../../store/CategoryActions";
-import * as PostActions from "../../../store/PostActions";
+import {getPosts, getCategoryPosts} from "../../../store/PostActions";
 import {connect} from "react-redux";
 
 const CATEGORY_ALL = 'ALL';
@@ -33,12 +33,12 @@ class CategoryNav extends Component {
     render() {
 
         const props = this.props;
-        const activeCategory = this.props.category;
-        const activeKey = props.categories.map((e) => e.name).indexOf(activeCategory) + 1 || 0;
+        const activeCategory = props.category;
+        const activeKey = props.CategoryReducer.categories.map((e) => e.name).indexOf(activeCategory) + 1 || 0;
         return (
             <Nav bsStyle="tabs" activeKey={activeKey}>
                 <NavItem eventKey={0} onClick={this.handleCategoryClick(CATEGORY_ALL)}>all</NavItem>
-                {this.props.categories.map((val, idx) =>
+                {props.CategoryReducer.categories.map((val, idx) =>
                     <NavItem key={val.name} eventKey={idx + 1}
                              onClick={this.handleCategoryClick(val.name)}>{val.name}</NavItem>
                 )}
@@ -47,14 +47,7 @@ class CategoryNav extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {categories: state.CategoryReducer.categories, category: ownProps.category}
-};
 
-const mapDispatchToProps = dispatch => ({
-    getCategories: () => dispatch(getCategories()),
-    getPosts: () => dispatch(PostActions.getPosts()),
-    getCategoryPosts: (category) => dispatch(PostActions.getCategoryPosts(category))
-});
+const mapStateToProps = ({CategoryReducer}) => ({CategoryReducer});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CategoryNav));
+export default withRouter(connect(mapStateToProps, {getCategories, getPosts, getCategoryPosts})(CategoryNav));

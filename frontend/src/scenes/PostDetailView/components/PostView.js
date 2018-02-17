@@ -14,7 +14,7 @@ class PostView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.postId && !nextProps.posts[nextProps.postId]) {
+        if (nextProps.postId && !nextProps.PostReducer.posts[nextProps.postId]) {
             /* Post does not exist...redirecting to "404"-like page */
             nextProps.history.replace('/postNotFound')
         }
@@ -22,11 +22,10 @@ class PostView extends Component {
 
     render() {
 
-        const post = this.props.posts[this.props.postId] || {};
+        const post = this.props.PostReducer.posts[this.props.postId] || {};
 
         return (
             <Form componentClass="fieldset" horizontal>
-
 
                 <Row>
                     <Col xs={8}>
@@ -103,14 +102,6 @@ class PostView extends Component {
 }
 
 
-const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId, posts: state.PostReducer.posts}
-};
+const mapStateToProps = ({PostReducer}) => ({PostReducer});
 
-const mapDispatchToProps = dispatch => ({
-    getPost: (postId) => dispatch(getPost(postId)),
-    getPosts: () => dispatch(getPosts())
-});
-
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostView));
+export default withRouter(connect(mapStateToProps, {getPost,getPosts})(PostView));

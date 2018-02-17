@@ -5,6 +5,7 @@ export const reducer = (state = {toast: ""}, action) => {
 
         case CREATE_TOAST:
         case REMOVE_TOAST:
+            console.log(action);
             return {...state, toast: action.toast, show:action.show};
 
         default:

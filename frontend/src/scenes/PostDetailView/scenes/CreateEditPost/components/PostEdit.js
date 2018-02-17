@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {Link,withRouter} from 'react-router-dom'
 import {getPost, updatePost, createPost} from "../../../../../store/PostActions";
 import {Form, ControlLabel, FormControl, Button, Badge, Col, Row, Well} from 'react-bootstrap';
-import * as ToastActions from "../../../../../store/ToastActions";
+// import {createToast} from "../../../../../store/ToastActions";
 
 
 class PostEdit extends Component {
@@ -86,7 +86,7 @@ class PostEdit extends Component {
             /*
             UPDATE
              */
-            this.props.putPost(post.id, post.title, post.body, post.author);
+            this.props.updatePost(post.id, post.title, post.body, post.author);
         }
     }
 
@@ -99,9 +99,11 @@ class PostEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
+        console.log('nextProps',nextProps);
 
-        const thisPostId = nextProps.createdPostId || nextProps.postId;
-        if (nextProps.modified) {
+        const thisPostId = nextProps.PostReducer.createdPostId || nextProps.postId;
+        console.log('thisPostId',thisPostId);
+        if (nextProps.PostReducer.modified) {
             /*
             Post View redirect when post updated
             to either the Created Post or Edited Post
@@ -109,12 +111,17 @@ class PostEdit extends Component {
             const redirectPostId = thisPostId;
             nextProps.history.push(`/post/view/${redirectPostId}`);
         }
-        this.setState({post: nextProps.posts[thisPostId], creating: false});
+        this.setState({post: nextProps.PostReducer.posts[thisPostId], creating: false});
     }
 
     componentDidMount() {
-        const initialCategory = this.props.categories[0].name;
-        this.setState({post: {...this.state.post, category: initialCategory}})
+        console.log('CategoryReducer',this.props.CategoryReducer);
+        const categories = this.props.CategoryReducer.categories;
+        if (categories.length > 0) {
+            const initialCategory = categories[0].name;
+            this.setState({post: {...this.state.post, category: initialCategory}})
+
+        }
     }
 
     render() {
@@ -174,7 +181,7 @@ class PostEdit extends Component {
                                     <FormControl componentClass="select" value={post.category}
                                                  onChange={this.handleCategoryChange}>
                                         {
-                                            props.categories.map(
+                                            props.CategoryReducer.categories.map(
                                                 val => <option key={val.name} value={val.name}>{val.name}</option>
                                             )
                                         }
@@ -223,25 +230,6 @@ class PostEdit extends Component {
 
 }
 
+const mapStateToProps = ({PostReducer,CategoryReducer}) => ({PostReducer,CategoryReducer});
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        postId: ownProps.postId,
-        createdPostId: state.PostReducer.createdPostId,
-        posts: state.PostReducer.posts,
-        categories: state.CategoryReducer.categories,
-        isLoading: state.PostReducer.isLoading,
-        created: state.PostReducer.created,
-        modified: state.PostReducer.modified
-    }
-};
-
-const mapDispatchToProps = dispatch => ({
-    getPost: (postId) => dispatch(getPost(postId)),
-    putPost: (id, title, body) => dispatch(updatePost(id, title, body)),
-    createPost: (postDetails) => dispatch(createPost(postDetails)),
-    raiseToast: (msg) => dispatch(ToastActions.createToast(msg))
-});
-
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostEdit));
+export default withRouter(connect(mapStateToProps, {getPost,updatePost,createPost})(PostEdit));

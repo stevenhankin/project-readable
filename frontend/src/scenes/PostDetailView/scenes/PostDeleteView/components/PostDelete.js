@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import * as actions from "../../../../../store/PostActions";
-import * as ToastActions from "../../../../../store/ToastActions";
+import {getPost,deletePost} from "../../../../../store/PostActions";
+import {createToast} from "../../../../../store/ToastActions";
 import {Link, withRouter} from 'react-router-dom';
 import { Button, Form, ControlLabel, Badge, Col, Row} from 'react-bootstrap';
 
@@ -117,18 +117,6 @@ class PostView extends Component {
 }
 
 
-const mapStateToProps = (state, ownProps) => {
-    return {postId: ownProps.postId,
-        modified: state.PostReducer.modified,
-        post: state.PostReducer.posts[ownProps.postId],
-        toast:state.PostReducer.toast}
-};
+const mapStateToProps = ({PostReducer}) => ({PostReducer});
 
-const mapDispatchToProps = dispatch => ({
-    getPost: (postId) => dispatch(actions.getPost(postId)),
-    deletePost: (postId) => dispatch(actions.deletePost(postId)),
-    raiseToast: (msg) => dispatch(ToastActions.createToast(msg))
-});
-
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostView));
+export default withRouter(connect(mapStateToProps, {getPost,deletePost,createToast})(PostView));

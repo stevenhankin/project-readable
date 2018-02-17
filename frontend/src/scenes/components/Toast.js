@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import * as action from "../../store/ToastActions";
+import {removeToast} from "../../store/ToastActions";
 import {connect} from "react-redux";
 import {Alert} from 'react-bootstrap';
 
@@ -11,33 +11,28 @@ class Toast extends Component {
 
     render() {
         const props = this.props;
+        const toast = props.ToastReducer;
 
-        if (props.show) {
+        if (toast.show) {
             /**
              * If received new state and showing is enabled,
              * set a timeout to hide the Toast again in
              * a few seconds time
              */
             setTimeout(function () {
+                console.log(props);
                 props.removeToast();
             }, 2000);
         }
 
         return (
-            <Alert bsStyle="warning" className="toast" hidden={!props.show}>
-                <strong>{props.toast}</strong>
+            <Alert bsStyle="warning" className="toast" hidden={!toast.show}>
+                <strong>{toast.toast}</strong>
             </Alert>
         );
     }
 }
 
+const mapStateToProps = ({ToastReducer}) => ({ToastReducer});
 
-const mapStateToProps = (state) => {
-    return {toast: state.ToastReducer.toast, show: state.ToastReducer.show}
-};
-
-const mapDispatchToProps = dispatch => ({
-    removeToast: (id) => dispatch(action.removeToast(id))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Toast);
+export default connect(mapStateToProps, {removeToast})(Toast);

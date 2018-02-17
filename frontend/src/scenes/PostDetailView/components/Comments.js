@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React, {Component} from 'react';
-import * as actions from "../../../store/CommentActions";
+import {deleteComment,getComments} from "../../../store/CommentActions";
 import {Table, Button} from 'react-bootstrap';
 import TimeAgo from 'timeago-react';
 import {Link, withRouter} from 'react-router-dom';
@@ -80,8 +80,6 @@ class CommentsView extends Component {
     }
 }
 
-function mapStateToProps({CommentReducer, ownProps}) {
-    return {CommentReducer, ownProps}
-}
+const mapStateToProps = ({CommentReducer, ownProps}) => ({CommentReducer, ownProps});
 
-export default withRouter(connect(mapStateToProps, actions)(CommentsView));
+export default withRouter(connect(mapStateToProps, {deleteComment,getComments})(CommentsView));

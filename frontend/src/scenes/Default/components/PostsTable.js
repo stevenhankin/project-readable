@@ -3,7 +3,7 @@ import {Link, withRouter} from 'react-router-dom';
 import {Table, Badge, Button} from 'react-bootstrap';
 import TimeAgo from 'timeago-react';
 import {connect} from "react-redux";
-import * as actions from "../../../store/PostActions";
+import {getPosts, getCategoryPosts} from "../../../store/PostActions";
 import PostVoteScore from '../../components/PostVoteScore';
 
 class PostsTable extends Component {
@@ -145,9 +145,9 @@ class PostsTable extends Component {
             this.state.sortDir === "ASC" ? compareDESC(sortBy) : compareASC(sortBy)
             : this.state.sortDir === "ASC" ? compareASC(sortBy) : compareDESC(sortBy);
 
-        const sortedRows = Object.values(posts).sort(sorter).map((post,idx) => {
+        const sortedRows = Object.values(posts).sort(sorter).map((post, idx) => {
             /* Guard against undefined post when returning from a 404 */
-            if (!post.id ) return <tr key={idx}/>
+            if (!post.id) return <tr key={idx}/>
             return (
                 <tr key={post.id} onClick={() => this.cellClickHandler(post.id)}>
                     {this.columns.map((column, idx) =>
@@ -155,33 +155,29 @@ class PostsTable extends Component {
 
                             {
                                 column.field === "voteScore" ?
-
                                     <PostVoteScore postId={post.id}/>
-
-                                    :
-                                    <span>
-                                    {column.badge ?
-                                        <Badge>{post[column.field]}</Badge>
-                                        : column.timeAgo ?
-                                            <TimeAgo datetime={post[column.field]}/>
-                                            : post[column.field]}
-                                    </span>
+                                    : <span>
+                                        {column.badge ?
+                                            <Badge>{post[column.field]}</Badge>
+                                            : column.timeAgo ?
+                                                <TimeAgo datetime={post[column.field]}/>
+                                                : post[column.field]}
+                                        </span>
                             }
 
                         </td>)}
                 </tr>
 
-        )
+            )
         });
         return <tbody>{sortedRows}</tbody>;
     }
 
     render() {
-        const props = this.props;
         /*
         Need to convert the object mapping IDs to Posts to be an array of Posts
          */
-        const posts = Object.values(props.posts);
+        const posts = Object.values(this.props.PostReducer.posts);
         return (
             <div>
                 <Link to="/post/create">
@@ -203,13 +199,7 @@ class PostsTable extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {category: ownProps.category, posts: state.PostReducer.posts, toast: state.ToastReducer.toast}
-};
 
-const mapDispatchToProps = dispatch => ({
-    getPosts: () => dispatch(actions.getPosts()),
-    getCategoryPosts: (category) => dispatch(actions.getCategoryPosts(category))
-});
+const mapStateToProps = ({PostReducer}) => ({PostReducer});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostsTable));
+export default withRouter(connect(mapStateToProps, {getPosts, getCategoryPosts})(PostsTable));
