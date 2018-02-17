@@ -12,8 +12,8 @@ import PropTypes from 'prop-types';
 class CommentVoteScore extends Component {
     constructor(props) {
         super(props);
-        this.upVoteHandler = this.upVoteHandler.bind(this)
-        this.downVoteHandler = this.downVoteHandler.bind(this)
+        this.upVoteHandler = this.upVoteHandler.bind(this);
+        this.downVoteHandler = this.downVoteHandler.bind(this);
     }
 
     upVoteHandler(e) {
@@ -29,7 +29,7 @@ class CommentVoteScore extends Component {
 
 
     render() {
-        const comment = this.props.comment || {};
+        const comment = this.props.CommentReducer.comments[this.props.commentId] || {};
         return (
             <span onClick={(e) => {
                 e.stopPropagation()

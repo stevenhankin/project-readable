@@ -29,7 +29,7 @@ class PostVoteScore extends Component {
 
 
     render() {
-        const post = this.props.post || {};
+        const post = this.props.PostReducer.posts[this.props.postId]||{};
         return (
             <span onClick={(e) => {
                 e.stopPropagation()

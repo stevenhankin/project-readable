@@ -27,12 +27,12 @@ class PostView extends Component {
      */
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.modified) {
+        if (nextProps.PostReducer.modified) {
             // Homepage redirect
             nextProps.history.push(`/`);
         }
 
-        this.setState({post: nextProps.post, modifiedOK: nextProps.modifiedOK});
+        this.setState({post: nextProps.PostReducer.posts[this.props.postId], modified: nextProps.PostReducer.modified});
     }
 
     render() {

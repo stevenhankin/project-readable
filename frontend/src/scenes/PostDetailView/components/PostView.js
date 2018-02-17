@@ -7,10 +7,8 @@ import PostVoteScore from "../../components/PostVoteScore";
 
 class PostView extends Component {
 
-    constructor(props) {
-        super(props);
-
-        props.getPost(props.postId);
+    componentDidMount() {
+        this.props.getPost(this.props.postId);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -20,8 +18,10 @@ class PostView extends Component {
         }
     }
 
+
     render() {
 
+        /* Will be undefined if deleted */
         const post = this.props.PostReducer.posts[this.props.postId] || {};
 
         return (
