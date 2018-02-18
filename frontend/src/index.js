@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './styles/App.css';
 import App from './scenes/Default/index.js';
 import CategoryView from './scenes/Default/scenes/CategoryView/index';
 import PostDetailView from './scenes/PostDetailView/index';
 import PostDeleteView from './scenes/PostDetailView/scenes/PostDeleteView/index';
 import CreateEditView from './scenes/PostDetailView/scenes/CreateEditPost/index';
-import Post404 from './scenes/PostDetailView/scenes/Post404/index';
+import Post404 from './scenes/components/Invalid404';
 import CreateEditComment from './scenes/CreateEditComment/index'
 import {Grid, Col, Row, Image} from 'react-bootstrap';
 import {Provider} from 'react-redux';
@@ -45,15 +45,17 @@ ReactDOM.render(
                     <Toast/>
                 </Row>
                 <Row>
-                    <Route exact path="/" component={App}/>
-                    <Route exact path="/:category" component={CategoryView}/>
-                    <Route path="/post/edit/:postId" component={CreateEditView}/>
-                    <Route path="/post/create" component={CreateEditView}/>
-                    <Route path="/post/view/:postId" component={PostDetailView}/>
-                    <Route path="/post/delete/:postId" component={PostDeleteView}/>
-                    <Route path="/post/:postId/comment/create" component={CreateEditComment}/>
-                    <Route path="/post/:postId/comment/:commentId/edit" component={CreateEditComment}/>
-                    <Route path="/post/notFound" component={Post404}/>
+                    <Switch>
+                        <Route exact path="/" component={App}/>
+                        <Route exact path="/:category" component={CategoryView}/>
+                        <Route path="/post/edit/:postId" component={CreateEditView}/>
+                        <Route path="/post/create" component={CreateEditView}/>
+                        <Route path="/post/view/:postId" component={PostDetailView}/>
+                        <Route path="/post/delete/:postId" component={PostDeleteView}/>
+                        <Route path="/post/:postId/comment/create" component={CreateEditComment}/>
+                        <Route path="/post/:postId/comment/:commentId/edit" component={CreateEditComment}/>
+                        <Route component={Post404}/>
+                    </Switch>
                 </Row>
             </Grid>
         </Router>
