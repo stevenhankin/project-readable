@@ -98,10 +98,7 @@ class PostEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        console.log('nextProps',nextProps);
-
         const thisPostId = nextProps.PostReducer.createdPostId || nextProps.postId;
-        console.log('thisPostId',thisPostId);
         if (nextProps.PostReducer.modified) {
             /*
             Post View redirect when post updated
@@ -114,7 +111,6 @@ class PostEdit extends Component {
     }
 
     componentDidMount() {
-        console.log('CategoryReducer',this.props.CategoryReducer);
         const categories = this.props.CategoryReducer.categories;
         if (categories.length > 0) {
             const initialCategory = categories[0].name;

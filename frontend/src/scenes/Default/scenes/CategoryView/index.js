@@ -1,21 +1,19 @@
-import React, {Component} from 'react';
+import React from 'react';
 import CategoryNav from '../../components/CategoryNav'
 import Posts from '../../components/PostsTable.js';
 
 
-class CategoryView extends Component {
-    render() {
+function CategoryView (props) {
         return (
             <span>
                 <section>
-                    <CategoryNav  category={this.props.match.params.category}/>
+                    <CategoryNav  category={props.match.params.category}/>
                 </section>
             <section>
-                <Posts category={this.props.match.params.category}/>
+                <Posts category={props.match.params.category}/>
             </section>
         </span>
         );
-    }
 }
 
 export default CategoryView;

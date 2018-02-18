@@ -39,7 +39,24 @@ class PostsTable extends Component {
      * Initialisation
      */
     componentDidMount() {
-        this.props.getPosts();
+        const category = this.props.match.params.category;
+        if (category) {
+            this.props.getCategoryPosts(category);
+        } else {
+            this.props.getPosts();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const prevCategory = this.props.match.params.category;
+        const category = nextProps.match.params.category;
+        if (category !== prevCategory) {
+            if (category) {
+                this.props.getCategoryPosts(category);
+            } else {
+                this.props.getPosts();
+            }
+        }
     }
 
     /*  */

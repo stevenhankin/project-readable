@@ -6,6 +6,8 @@ export const receiveCategories = (categories) => ({
     categories
 });
 
+
+
 /**
  * Thunk : Get all the categories via REST API from server
  *

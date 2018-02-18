@@ -10,24 +10,21 @@ const CATEGORY_ALL = 'ALL';
 
 class CategoryNav extends Component {
 
-
-    constructor(props) {
-        super(props);
+    componentDidMount() {
+        /* Need list of categories to display as Nav Items */
         this.props.getCategories();
-        this.handleCategoryClick = this.handleCategoryClick.bind(this);
     }
 
-    handleCategoryClick(category) {
+
+    handleCategoryClick = (category) => {
         return (e) => {
             if (category === CATEGORY_ALL) {
-                this.props.getPosts();
                 this.props.history.push('/');
             } else {
-                this.props.getCategoryPosts(category);
                 this.props.history.push(`/${category}`);
             }
         }
-    }
+    };
 
 
     render() {
