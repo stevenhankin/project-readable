@@ -20,7 +20,6 @@ class Toast extends Component {
              * a few seconds time
              */
             setTimeout(function () {
-                console.log(props);
                 props.removeToast();
             }, 2000);
         }

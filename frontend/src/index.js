@@ -53,7 +53,7 @@ ReactDOM.render(
                     <Route path="/post/delete/:postId" component={PostDeleteView}/>
                     <Route path="/post/:postId/comment/create" component={CreateEditComment}/>
                     <Route path="/post/:postId/comment/:commentId/edit" component={CreateEditComment}/>
-                    <Route path="/postNotFound" component={Post404}/>
+                    <Route path="/post/notFound" component={Post404}/>
                 </Row>
             </Grid>
         </Router>

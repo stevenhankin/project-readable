@@ -86,7 +86,6 @@ class CommentEdit extends Component {
      * @param nextProps
      */
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         const r = nextProps.CommentReducer;
         const commentId = nextProps.commentId || r.newCommentId;
         this.setState({comment: r.comments[commentId], modified: r.modified});

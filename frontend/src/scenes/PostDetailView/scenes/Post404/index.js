@@ -2,7 +2,7 @@ import React from 'react';
 import NavHome from '../../../components/NavHome';
 
 
-const Post404 = (props) => {
+const Post404 = () => {
 
     return (
         <div>
