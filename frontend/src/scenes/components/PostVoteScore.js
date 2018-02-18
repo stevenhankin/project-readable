@@ -10,26 +10,20 @@ import PropTypes from 'prop-types';
  * and the icons for changing the vote
  */
 class PostVoteScore extends Component {
-    constructor(props) {
-        super(props);
-        this.upVoteHandler = this.upVoteHandler.bind(this)
-        this.downVoteHandler = this.downVoteHandler.bind(this)
-    }
 
-    upVoteHandler(e) {
+    upVoteHandler = (e) => {
         e.stopPropagation();
         this.props.upVote(this.props.postId);
 
     };
 
-    downVoteHandler(e) {
+    downVoteHandler = (e) => {
         e.stopPropagation();
         this.props.downVote(this.props.postId);
     };
 
-
     render() {
-        const post = this.props.PostReducer.posts[this.props.postId]||{};
+        const post = this.props.PostReducer.posts[this.props.postId] || {};
         return (
             <span onClick={(e) => {
                 e.stopPropagation()
