@@ -10,12 +10,6 @@ class CommentEdit extends Component {
     constructor(props) {
         super(props);
 
-        this.handleBodyChange = this.handleBodyChange.bind(this);
-        this.handleAuthorChange = this.handleAuthorChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.isCreating = this.isCreating.bind(this);
-        this.handleCancel = this.handleCancel(this);
-
         /*
         If a Comment ID is NOT passed in,
         a new Comment is being created
@@ -28,35 +22,35 @@ class CommentEdit extends Component {
                 author: '',
             }
         };
+    }
 
+    componentDidMount() {
         /*
         If not creating, we need to hydrate the comment fields
          */
         if (!this.isCreating()) {
-            props.getComment(props.commentId);
+            this.props.getComment(this.props.commentId);
         }
     }
 
     /*
     Return to previous page
      */
-    handleCancel() {
-        return (e) => {
+    handleCancel = ()  => {
             this.props.history.goBack();
-        }
-    }
+    };
 
-    handleBodyChange(event) {
+    handleBodyChange = (event) => {
         this.setState({comment: {...this.state.comment, body: event.target.value}});
-    }
+    };
 
-    handleAuthorChange(event) {
+    handleAuthorChange = (event) => {
         this.setState({comment: {...this.state.comment, author: event.target.value}});
-    }
+    };
 
-    isCreating() {
+    isCreating = () => {
         return !this.props.commentId;
-    }
+    };
 
     /**
      * Async update of current state to server
@@ -64,7 +58,7 @@ class CommentEdit extends Component {
      *
      * @param e
      */
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
         const comment = this.state.comment;
         if (!this.isCreating()) {
@@ -81,7 +75,7 @@ class CommentEdit extends Component {
             const newComment = {...comment, id: randomId, timestamp: Date.now(), parentId: this.props.parentId};
             this.props.createComment(newComment);
         }
-    }
+    };
 
 
     /**
