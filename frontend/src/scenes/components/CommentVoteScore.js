@@ -10,23 +10,17 @@ import PropTypes from 'prop-types';
  * and the icons for changing the vote
  */
 class CommentVoteScore extends Component {
-    constructor(props) {
-        super(props);
-        this.upVoteHandler = this.upVoteHandler.bind(this);
-        this.downVoteHandler = this.downVoteHandler.bind(this);
-    }
 
-    upVoteHandler(e) {
+    upVoteHandler = (e) => {
         e.stopPropagation();
         this.props.upVote(this.props.commentId);
 
     };
 
-    downVoteHandler(e) {
+    downVoteHandler = (e) => {
         e.stopPropagation();
         this.props.downVote(this.props.commentId);
     };
-
 
     render() {
         const comment = this.props.CommentReducer.comments[this.props.commentId] || {};
