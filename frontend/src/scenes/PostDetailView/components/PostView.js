@@ -14,7 +14,7 @@ class PostView extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.postId && !nextProps.PostReducer.posts[nextProps.postId]) {
             /* Post does not exist...redirecting to "404"-like page */
-            nextProps.history.replace('/post/notFound')
+            nextProps.history.replace('/post/not/found')
         }
     }
 

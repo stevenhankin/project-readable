@@ -93,7 +93,8 @@ class CommentEdit extends Component {
             /*
             Post parent redirect after submitting a new or modified comment
             */
-            nextProps.history.push(`/post/view/${nextProps.parentId}`);
+            const category = nextProps.PostReducer.posts[nextProps.parentId].category;
+            nextProps.history.push(`/${category}/${nextProps.parentId}`);
         }
     }
 
@@ -156,6 +157,6 @@ class CommentEdit extends Component {
 }
 
 
-const mapStateToProps = ({CommentReducer}) => ({CommentReducer});
+const mapStateToProps = ({CommentReducer,PostReducer}) => ({CommentReducer,PostReducer});
 
 export default withRouter(connect(mapStateToProps, {getComment, updateComment, createComment})(CommentEdit));

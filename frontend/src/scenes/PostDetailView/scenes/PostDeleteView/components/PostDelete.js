@@ -103,11 +103,7 @@ class PostView extends Component {
                     <Col xs={12}>
                         <Button className="h1 heading-button" bsStyle="warning" onClick={this.deleteHandler}>Yes!
                             Delete...</Button>
-
-                        {/*<Link to={`/post/view/${post.id}`}>*/}
                             <Button className="h1 heading-button" onClick={this.props.history.goBack}>Cancel</Button>
-                        {/*</Link>*/}
-
                     </Col>
                 </Row>
 

@@ -105,7 +105,8 @@ class PostEdit extends Component {
             to either the Created Post or Edited Post
             */
             const redirectPostId = thisPostId;
-            nextProps.history.push(`/post/view/${redirectPostId}`);
+            const category = nextProps.PostReducer.posts[redirectPostId].category;
+            nextProps.history.push(`/${category}/${redirectPostId}`);
         }
         this.setState({post: nextProps.PostReducer.posts[thisPostId], creating: false});
     }

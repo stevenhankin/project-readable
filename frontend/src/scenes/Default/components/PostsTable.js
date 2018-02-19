@@ -149,12 +149,14 @@ class PostsTable extends Component {
      * jump to the Post Detail View
      * @param postId
      */
-    cellClickHandler(postId) {
-        this.props.history.push(`/post/view/${postId}`);
+    cellClickHandler({category,id}) {
+        this.props.history.push(`/${category}/${id}`);
     }
 
     /**
      * Returns a filtered, sorted table body of PostsTable
+     *
+     * @param posts
      * @returns {*}
      */
     sortedTableBody(posts) {
@@ -197,7 +199,7 @@ class PostsTable extends Component {
             /* Guard against undefined post when returning from a 404 */
             if (!post.id) return <tr key={idx}/>
             return (
-                <tr key={post.id} onClick={() => this.cellClickHandler(post.id)}>
+                <tr key={post.id} onClick={() => this.cellClickHandler(post)}>
                     {this.columns.map((column, idx) =>
                         <td key={idx}>
 

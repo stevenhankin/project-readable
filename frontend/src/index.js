@@ -50,7 +50,7 @@ ReactDOM.render(
                         <Route exact path="/:category" component={CategoryView}/>
                         <Route path="/post/edit/:postId" component={CreateEditView}/>
                         <Route path="/post/create" component={CreateEditView}/>
-                        <Route path="/post/view/:postId" component={PostDetailView}/>
+                        <Route exact path="/:category/:postId" component={PostDetailView}/>
                         <Route path="/post/delete/:postId" component={PostDeleteView}/>
                         <Route path="/post/:postId/comment/create" component={CreateEditComment}/>
                         <Route path="/post/:postId/comment/:commentId/edit" component={CreateEditComment}/>
