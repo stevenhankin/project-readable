@@ -8,13 +8,12 @@ import CommentVoteScore from '../../components/CommentVoteScore';
 
 class CommentsView extends Component {
 
-    constructor(props) {
-        super(props);
-        this.commentClickHandler = this.commentClickHandler.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-    }
-
     commentClickHandler = (postId, commentId) => () => {
+        this.props.history.push(`/post/${postId}/comment/${commentId}/edit`);
+    };
+
+    handleEdit = (postId, commentId) => (e) => {
+        e.stopPropagation();
         this.props.history.push(`/post/${postId}/comment/${commentId}/edit`);
     };
 
@@ -31,6 +30,8 @@ class CommentsView extends Component {
                     <td>{comment.body}</td>
                     <td>{comment.author}</td>
                     <td><CommentVoteScore commentId={comment.id}/></td>
+                    <td onClick={this.handleEdit(props.postId, comment.id)}><span
+                        className="glyphicon glyphicon-pencil"/></td>
                     <td onClick={this.handleDelete(props.postId, comment.id)}><span
                         className="glyphicon glyphicon-trash"/></td>
                 </tr>
@@ -65,6 +66,7 @@ class CommentsView extends Component {
                         <th>Comment</th>
                         <th>Author</th>
                         <th>Vote Score</th>
+                        <th>Edit</th>
                         <th>Delete?</th>
                     </tr>
 

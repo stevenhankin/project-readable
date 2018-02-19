@@ -59,8 +59,6 @@ class PostsTable extends Component {
         }
     }
 
-    /*  */
-
     /**
      * Jump to Edit screen
      * Need to do this as an onClick handler to stop
